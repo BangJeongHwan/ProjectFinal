@@ -3,6 +3,7 @@ package kh.com.a.service;
 import java.util.List;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
@@ -19,5 +20,8 @@ public interface WeddingHallServ {
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList);
 	public List<WHallPicSumVO> getHallSumList(int whseq);
 	public List<WHallPictureDto> getAllHallPicList(int whseq);
+	public int picTotal(int whseq);
 	public List<WHallPictureDto> getHallPicList(String hallname,int whseq);
+	
+	public WeddingHallDto hallInfo(String hallname, int whseq);
 }

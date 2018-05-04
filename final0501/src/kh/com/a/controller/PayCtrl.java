@@ -34,6 +34,8 @@ import kh.com.a.service.MypageServ;
 import kh.com.a.service.PaymentServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.StudioServ;
+import kh.com.a.util.CalendarUtil;
+import kh.com.a.util.myCal;
 
 @Controller
 public class PayCtrl {
@@ -490,6 +492,59 @@ public class PayCtrl {
 			model.addAttribute("totalRecordCount", totalRecordCount);
 			
 			return "reservationDressList.tiles";
+		}
+		
+		// weddingHall 예약(정환)
+		@RequestMapping(value="reservationWd.do", method= {RequestMethod.GET, RequestMethod.POST})
+		public String reservationWd(Model model, ReservationDto rDto) throws Exception {
+			logger.info("PayCtrl reservationWd " + new Date());
+			System.out.println(rDto.toString());
+			reservServ.wdHallResv(rDto);		
+			
+			model.addAttribute("whseq", rDto.getPdseq());
+			return "redirect:/hallView.do";
+		}
+		
+		//예약 현황 확인
+		@ResponseBody
+		@RequestMapping(value="getWDResvListByPdseqRedate.do", method= {RequestMethod.GET, RequestMethod.POST})
+		public Map<String, Object> getWDResvListByPdseqRedate(ReservationDto resv) throws Exception {
+			logger.info("PayCtrl getDSReservListByPdseqRedate " + new Date());
+			
+			System.out.println("	" + resv.getRedate() + " / " + resv.getPdseq());
+			
+			List<ReservationDto> WdResvList = reservServ.getWDResvListByPdseqRedate(resv);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("WdResvList", WdResvList);
+			
+			return map;
+		}
+		
+		// 캘린더 정보
+		@ResponseBody
+		@RequestMapping(value="calenderDate.do", method={RequestMethod.GET,RequestMethod.POST})
+		public Map<String, Object> calenderDate(Model model, myCal jcal, int pdseq) throws Exception {
+			logger.info("WeddingHallCtrl calenderDate " + new Date());
+			
+			jcal.calculate();
+			String yymm = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());	// yyyy/mm
+			
+			ReservationDto fcal = new ReservationDto();
+			fcal.setPdseq(pdseq);
+			fcal.setRedate(yymm);
+			
+			
+			System.out.println("----------->"+yymm);
+			System.out.println("----------->"+jcal.getDateStr());
+			
+			List<ReservationDto> flist = reservServ.getWdRegList(fcal);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("jcal", jcal);
+			map.put("flist", flist);
+			
+			return map;
 		}
 }
 

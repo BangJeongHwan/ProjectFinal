@@ -22,13 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.service.WeddingHallServ;
+import kh.com.a.util.CalendarUtil;
 import kh.com.a.util.FUpUtil;
+import kh.com.a.util.myCal;
 
 @Controller
 public class WeddingHallCtrl {
@@ -36,6 +41,10 @@ public class WeddingHallCtrl {
 	
 	@Autowired
 	WeddingHallServ weddingHallServ;
+
+	//예약 때문에
+	@Autowired
+	ReservationServ reservServ;
 	
 	// 웨딩 업체 뷰
 	@RequestMapping(value="weddingHallView.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -99,18 +108,41 @@ public class WeddingHallCtrl {
 	//////////////////////////////////////////////////////////////////////////////
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String hallDetailView(Model model, int whseq) {
-		logger.info("WeddingHallCtrl hallDetailView" + new Date());
+	public String hallDetailView(Model model, int whseq, myCal jcal) {
+		logger.info("WeddingHallCtrl hallView" + new Date());
+		
+		
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
 		List<WHallPicSumVO> hallSumList = weddingHallServ.getHallSumList(whseq);
 		List<WHallPictureDto> piclist = weddingHallServ.getAllHallPicList(whseq);
 		
+		String pic1 ="";
+		System.out.println(piclist.size());
+		if(piclist.size()!=0) {
+			pic1 = piclist.get(0).getPicture();
+			model.addAttribute("pic1", pic1);	// 첫번째 사진
+		}
+		
+		// 예약 캘린더
+		jcal.calculate();
+		String yyyyMM = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());
+		ReservationDto fcal = new ReservationDto();
+		fcal.setPdseq(whseq);
+		fcal.setRedate(yyyyMM);
+		List<ReservationDto> flist = reservServ.getWdRegList(fcal);
+		
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
 		model.addAttribute("hallSumList", hallSumList); // 홀이름과 사진수
 		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
+		
+		
+		model.addAttribute("jcal", jcal);
+		model.addAttribute("flist", flist);
+		//int picTotal = weddingHallServ.picTotal(whseq);
+		//model.addAttribute("picTotal", picTotal);
 		
 		//System.out.println("----------->"+hallSumList.get(0).getSumpic());
 		return "hallView.tiles";
@@ -212,13 +244,71 @@ public class WeddingHallCtrl {
 		}else {
 			list = weddingHallServ.getHallPicList(hallname, whseq);
 		}
+		//System.out.println("----------->" + list.size());
+		
+		String picArr[] = new String[list.size()];
+		
+		for(int i=0;i<picArr.length;i++) {
+			picArr[i] = list.get(i).getPicture();
+		}
+		
+		//System.out.println("----------->" + picArr.length);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("list", list);
+		map.put("picArr", picArr);
 		
 		return map;
 	}
 	
+	@RequestMapping(value="resv.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String resv(Model model,String year,String month, String day, int whseq,HttpServletRequest req) throws Exception {
+		logger.info("WeddingHallCtrl resv " + new Date());
+		
+		//System.out.println("------------------>"+year);
+		//System.out.println("------------------>"+month);
+		//System.out.println("------------------>"+day);
+		//System.out.println("------------------>"+whseq);
+		
+		WeddingDto wd = weddingHallServ.getWedding(whseq);	// 웨딩홀 1개 업체
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");	// 로그인 정보
+		
+		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
+		/*
+		String hallArr[] = new String[hallList.size()];
+		for(int i=0;i<hallList.size();i++) {
+			hallArr[i] = hallList.get(i).getHallname();
+		}  
+		*/
+		String rdate = year+"/"+month+"/"+day;
+		
+		model.addAttribute("wd", wd);
+		model.addAttribute("login", login);
+		model.addAttribute("hallList", hallList);
+		//model.addAttribute("hallArr", hallArr);
+		model.addAttribute("rdate", rdate);
+		
+		
+		return "resv.tiles";
+	}
+	
+	// 홀 정보
+	@ResponseBody
+	@RequestMapping(value="hallInfo.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> hallInfo(Model model,String hallname, int whseq) throws Exception {
+		logger.info("WeddingHallCtrl hallInfo " + new Date());
+		
+		WeddingHallDto hall = weddingHallServ.hallInfo(hallname, whseq);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(hall==null) {
+			System.out.println("홀 정보가 없습니다.");
+			map.put("hall", "홀없음");
+		}else {
+			map.put("hall", hall);
+		}
+		
+		return map;
+	}
 	
 	
 	/*테스트*/

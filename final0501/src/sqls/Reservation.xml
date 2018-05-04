@@ -123,6 +123,27 @@
 	  FROM WD_RESERVATION
 	  WHERE 1=1 AND PDSEQ=(SELECT DSSEQ FROM DRESS WHERE CID=#{cid})
 	 </select>
+	 
+	 <!-- 정환 -->
+	<insert id="wdHallResv" parameterType="kh.com.a.model.ReservationDto">
+		INSERT INTO WD_RESERVATION(RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT)
+		VALUES(RV_SEQ.NEXTVAL, #{mid}, #{redate}, #{retime}, #{pdseq}, '승인중', #{content})
+	</insert>
+	
+	<select id="getWDResvListByPdseqRedate" parameterType="kh.com.a.model.ReservationDto" resultType="kh.com.a.model.ReservationDto">
+		SELECT RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+		FROM WD_RESERVATION
+		WHERE PDSEQ=#{pdseq} AND REDATE=#{redate} AND CONTENT=#{content} AND STATUS='승인완료'
+	</select>
+	<select id="getWdRegList" parameterType="kh.com.a.model.ReservationDto" resultType="kh.com.a.model.ReservationDto">
+		SELECT RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+		FROM (
+			SELECT ROW_NUMBER() OVER(PARTITION BY SUBSTR(REDATE, 1, 8) ORDER BY REDATE ASC) RN,
+					RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+			FROM WD_RESERVATION
+			WHERE PDSEQ = #{pdseq} AND SUBSTR(REDATE, 1, 5)=#{redate})
+		WHERE RN BETWEEN 1 AND 5
+	</select>
 </mapper>
 
 

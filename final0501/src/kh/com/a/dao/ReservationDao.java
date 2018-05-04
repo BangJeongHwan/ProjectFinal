@@ -29,5 +29,9 @@ public interface ReservationDao {
 	public int getReservCount(String id);
 	public List<ReservationDto> dressReservPagingComList(ReservDressParam param);
 	public int getReservDressCount(String cid);
+	//정환
+	public void wdHallResv(ReservationDto rDto);
+	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception;
+	public List<ReservationDto> getWdRegList(ReservationDto fcal);
 	
 }

@@ -45,6 +45,12 @@
 		WHERE WHSEQ=#{whseq}
 		ORDER BY PDSEQ DESC
 	</select>
+	<select id="hallInfo" parameterType="hashmap" resultType="kh.com.a.model.WeddingHallDto">
+		SELECT PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 
+			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, OPENTIME, CLOSETIME
+		FROM WD_WHALL
+		WHERE WHSEQ=#{whseq} AND HALLNAME=#{hallname}
+	</select>
 	
 	<!-- 사진 -->
 	<insert id="addHallPicture" parameterType="kh.com.a.model.WHallPictureDto">
@@ -52,7 +58,7 @@
 		VALUES(SEQ_WHPIC.NEXTVAL, #{whseq}, #{hallname}, #{picture})
 	</insert>
 	<select id="getHallSumList" parameterType="java.lang.Integer" resultType="kh.com.a.model2.WHallPicSumVO">
-		SELECT HALLNAME, SUM(WHSEQ) AS SUMPIC
+		SELECT HALLNAME, COUNT(WHSEQ) AS SUMPIC
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq}
 		GROUP BY HALLNAME
@@ -63,9 +69,16 @@
 		WHERE WHSEQ = #{whseq}
 		ORDER BY PICSEQ
 	</select>
+	<select id="picTotal" parameterType="java.lang.Integer" resultType="kh.com.a.model.WHallPictureDto">
+		SELECT SUM(WHSEQ) AS PICTOTAL
+		FROM WD_HALL_PICTURE
+		WHERE WHSEQ = #{whseq}
+		GROUP BY WHSEQ
+	</select>
 	<select id="getHallPicList" parameterType="hashmap" resultType="kh.com.a.model.WHallPictureDto">
 		SELECT PICSEQ, WHSEQ, HALLNAME, PICTURE
 		FROM WD_HALL_PICTURE
 		WHERE WHSEQ = #{whseq} AND HALLNAME=#{hallname}
 	</select>
+	
 </mapper>

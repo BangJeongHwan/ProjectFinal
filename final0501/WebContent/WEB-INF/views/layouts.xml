@@ -148,6 +148,14 @@
 	<definition name="hallwrite.tiles" extends="weddinghall.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallwrite.jsp"/>
 	</definition>
+	
+	<!-- 예약하기 창 -->
+	<definition name="resv.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/wedding/empty.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/wedding/resv.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/wedding/empty.jsp"/>
+	</definition>
+	
 	<!-- 테스트 
 	<definition name="NewFile.tiles" template="/WEB-INF/views/Test.jsp">
 		<put-attribute name="main" value="/WEB-INF/views/wedding/NewFile.jsp"/>

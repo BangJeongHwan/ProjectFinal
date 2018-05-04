@@ -121,21 +121,21 @@ td:nth-child(even) {
 				<tr>
 					<td>소개 내용</td>
 					<td colspan="3">
-						<textarea rows="5" cols="60" name="content" id="_content" ></textarea>
+						<textarea rows="10" cols="60" name="content" id="_content" ></textarea>
 					</td>
 				</tr>
 				
 				<tr>
 					<td>주차 정보</td>
 					<td colspan="3">
-						<textarea rows="3" cols="60" name="parking" id="_parking" ></textarea>
+						<textarea rows="5" cols="60" name="parking" id="_parking" ></textarea>
 					</td>
 				</tr>
 				
 				<tr>
 					<td>교통 정보</td>
 					<td colspan="3">
-						<textarea rows="3" cols="60" name="transpo" id="_transpo" ></textarea>
+						<textarea rows="5" cols="60" name="transpo" id="_transpo" ></textarea>
 					</td>
 				</tr>
 				
@@ -215,8 +215,8 @@ $(function () {
 			alert("소개 내용을 입력해주세요!");
 			$("#_content").focus();
 		}else{
-			//alert("위도 : "+$("#_latitude").val());
-			//alert("경도 : "+$("#_longitude").val());
+			alert("위도 : "+$("#_latitude").val());
+			alert("경도 : "+$("#_longitude").val());
 			$("#_frmForm").attr({"target":"_self", "action":"weddingwriteAf.do"}).submit();
 		}
 			
@@ -257,7 +257,6 @@ function getLatLong(addr){
 				//alert("위도1 : "+geo.lat+" 경도1 : "+geo.lng);
 				$("#_latitude").val(geo.lat);
 				$("#_longitude").val(geo.lng);
-				
 			}else{
 				alert("위치 정보가 없습니다.");
 			}

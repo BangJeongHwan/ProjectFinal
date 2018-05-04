@@ -18,9 +18,18 @@ public class WHallPictureDto implements Serializable {
 	private int whseq;
 	private String hallname;
 	private String picture;
+	private int pictotal;
 	
 	public WHallPictureDto() {}	
-	
+
+	public WHallPictureDto(int picseq, int whseq, String hallname, String picture, int pictotal) {
+		super();
+		this.picseq = picseq;
+		this.whseq = whseq;
+		this.hallname = hallname;
+		this.picture = picture;
+		this.pictotal = pictotal;
+	}
 
 	public WHallPictureDto(int picseq, int whseq, String hallname, String picture) {
 		super();
@@ -30,6 +39,14 @@ public class WHallPictureDto implements Serializable {
 		this.picture = picture;
 	}
 
+
+	public int getPictotal() {
+		return pictotal;
+	}
+
+	public void setPictotal(int pictotal) {
+		this.pictotal = pictotal;
+	}
 
 	public int getPicseq() {
 		return picseq;
