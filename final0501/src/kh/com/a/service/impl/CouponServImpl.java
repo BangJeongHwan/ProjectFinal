@@ -31,10 +31,6 @@ public class CouponServImpl implements CouponServ {
 		return couponDao.couponAlllist(sort);
 	}
 
-/*	@Override
-	public CouponDto registedCoupon(int sort) throws Exception {
-		return couponDao.registedCoupon(sort);
-	}*/
 
 	@Override
 	public boolean regCoupon(int seq, int sort) throws Exception {
@@ -85,6 +81,22 @@ public class CouponServImpl implements CouponServ {
 	public void allDel() throws Exception {
 		couponDao.allDel();
 		couponDao.userDel();
+	}
+
+	@Override
+	public List<couponVO> myCp(String mid) throws Exception {
+		return couponDao.myCp(mid);
+	}
+
+	@Override
+	public couponVO getCp(int seq) throws Exception {
+		couponDao.basketCp(seq);
+		return couponDao.getCp(seq);
+	}
+
+	@Override
+	public void rollbackCp() throws Exception {
+		couponDao.rollbackCp();
 	}
 
 }

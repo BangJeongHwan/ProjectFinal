@@ -1,4 +1,3 @@
-
 <%@page import="kh.com.a.model.CouponDto"%>
 <%@page import="java.util.List"%>
 <%@page import="kh.com.a.model2.LoginDto"%>
@@ -28,7 +27,13 @@
 	int persent1;
 	int persent2;
 	int persent3;
-	
+	 int seq0=0;
+	 int seq1=0;
+	 int seq2=0;
+	 int userremit0=0;
+	 int userremit1=0;
+	 int userremit2=0;
+	 
 	if(list.isEmpty()){
 		 persent1 = 0;
 		 persent2 = 0;
@@ -37,6 +42,12 @@
 		 persent1 = list.get(0).getDiscount();
 		 persent2 = list.get(1).getDiscount();
 		 persent3 = list.get(2).getDiscount();
+		 seq0 = list.get(0).getSeq();
+		 seq1 = list.get(1).getSeq();
+		 seq2 = list.get(2).getSeq();
+		  userremit0 = list.get(0).getUserremit();
+		  userremit1 = list.get(1).getUserremit();
+		  userremit2 = list.get(2).getUserremit();
 	}
 		
 	%>
@@ -580,27 +591,31 @@ if(mem==null){
     	if(memid == "guest"){
     		location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=450,scrollbars=no,resizable=no' ))";
     	}else{
-    		if(pro == 5){
+    	 	if(pro == 5){
 				$(".prodiv5").stop(true);
 				alert(<%=persent1%>+"% 당첨");
-				acqCp("<%=list.get(0).getSeq()%>","<%=list.get(0).getUserremit()%>");
+				acqCp("<%=seq0%>","<%=userremit0%>");
 			}else if(pro == 15){
 				$(".prodiv15").stop(true);
 				alert(<%=persent2%>+"% 당첨");
-				acqCp("<%=list.get(1).getSeq()%>","<%=list.get(1).getUserremit()%>");
+				acqCp("<%=seq1%>","<%=userremit1%>");
 			}else{
 				$(".prodiv20").stop(true);
 				alert(<%=persent3%>+"% 당첨");
-				acqCp("<%=list.get(2).getSeq()%>","<%=list.get(2).getUserremit()%>");
+				acqCp("<%=seq2%>","<%=userremit2%>");
 			}
     	}
     }
    $("#timebtn").hide();
-	if("${time}" != null){
+	if("${time}" != ""){
     
-	    var shour = ${time.shour};
-	    var smin = ${time.smin};
-	    var timeremit = ${time.timeremit};
+	    var shour = '${time.shour}';
+	    var smin = '${time.smin}';
+	    var timeremit = '${time.timeremit}';
+	    shour=Number(shour);
+	    smin=Number(smin);
+	    timeremit=Number(timeremit);
+	    
 	    var timer1 = setInterval("timer1start()", 1000);
 	    var timer2;
 	    

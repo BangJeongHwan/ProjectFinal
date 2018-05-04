@@ -87,7 +87,29 @@ public class CouponDaoImpl implements CouponDao {
 	public void userDel() throws Exception {
 		sqlSession.update("userDel");
 	}
-	
+
+	@Override
+	public List<couponVO> myCp(String mid) throws Exception {
+		return sqlSession.selectList(ns+"myCp", mid);
+	}
+
+	@Override
+	public couponVO getCp(int seq) throws Exception {
+		return sqlSession.selectOne(ns+"getCp",seq);
+	}
+
+	@Override
+	public void basketCp(int seq) throws Exception {
+		sqlSession.update(ns+"basketCp",seq);
+	}
+
+	@Override
+	public void rollbackCp() throws Exception {
+		sqlSession.update(ns+"rollbackCp");
+		
+	}
+
+
 	
 
 }

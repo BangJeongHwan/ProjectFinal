@@ -19,9 +19,6 @@
 		SELECT * FROM WD_COUPON WHERE SORT=${value} ORDER BY SEQ DESC
 	</select>
 	
-	<!-- <select id="registedCoupon" parameterType="Integer" resultType="kh.com.a.model.CouponDto">
-		SELECT * FROM WD_COUPON WHERE SORT=${value} AND DEL=1 ORDER BY SEQ DESC
-	</select> -->
 	
 	<update id="regPrevCoupon" parameterType="Integer">
 		UPDATE WD_COUPON SET DEL = 0 WHERE DEL = 1 AND SORT=#{sort}
@@ -49,8 +46,8 @@
 	</update>
 	
 	<insert id="acqCp" parameterType="kh.com.a.model2.couponVO">
-		INSERT INTO WD_USECOUPON(CP_SEQ, MID, REMIT, DEL)
-		VALUES(#{cp_seq}, #{mid}, SYSDATE+#{remit}, #{del})
+		INSERT INTO WD_USECOUPON(SEQ, CP_SEQ, MID, REMIT, DEL)
+		VALUES(SEQ_WD_UC.NEXTVAL, #{cp_seq}, #{mid}, SYSDATE+#{remit}, #{del})
 	</insert> 
 	
 	<select id="prevAcqCp" parameterType="kh.com.a.model2.couponVO" resultType="kh.com.a.model2.couponVO">
@@ -59,6 +56,25 @@
 	
 	<update id="userDel">
 		UPDATE WD_USECOUPON SET DEL = 1 WHERE MONTHS_BETWEEN(REMIT,SYSDATE)<![CDATA[ < ]]>0
+	</update>
+	
+	<select id="myCp" parameterType="String" resultType="kh.com.a.model2.couponVO">
+		SELECT W.SEQ SEQ, CP_SEQ, REMIT, TITLE, DISCOUNT  FROM WD_USECOUPON W,WD_COUPON C 
+		WHERE MID = #{mid} AND W.DEL = 0 AND CP_SEQ = C.SEQ ORDER BY DISCOUNT DESC, CP_SEQ ASC
+	</select>
+	
+	
+	<select id="getCp" parameterType="Integer" resultType="kh.com.a.model2.couponVO">
+		SELECT  W.SEQ SEQ, CP_SEQ, REMIT, TITLE, DISCOUNT FROM WD_USECOUPON W,WD_COUPON C 
+		WHERE W.SEQ = #{seq} AND CP_SEQ = C.SEQ
+	</select>
+	
+	<update id="basketCp" parameterType="Integer">
+		UPDATE WD_USECOUPON SET DEL=2 WHERE SEQ = #{seq}
+	</update>
+	
+	<update id="rollbackCp">
+		UPDATE WD_USECOUPON SET DEL=0 WHERE  DEL=2
 	</update>
 	
 </mapper>

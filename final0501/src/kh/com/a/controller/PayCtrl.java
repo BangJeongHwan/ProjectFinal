@@ -28,6 +28,7 @@ import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 import kh.com.a.service.BasketServ;
 import kh.com.a.service.CardService;
+import kh.com.a.service.CouponServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MemberServ;
 import kh.com.a.service.MypageServ;
@@ -59,7 +60,8 @@ public class PayCtrl {
 	CardService cdServ;
 	@Autowired
 	MypageServ mypageserv;
-
+	@Autowired
+	CouponServ couponServ;
 	
 	private static final Logger logger = LoggerFactory.getLogger(PayCtrl.class);
 	
@@ -117,7 +119,7 @@ public class PayCtrl {
 	   }
 	
 //	개인의 장바구니 화면을 띄운다.
-	@RequestMapping(value="basketListView.do", method={RequestMethod.GET,RequestMethod.POST})
+	/*@RequestMapping(value="basketListView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String basketListView(Model model, HttpServletRequest req, String flagPdseq, String flag) throws Exception {
 		logger.info("[PayCtrl] basketListView " + new Date());
 				
@@ -150,8 +152,66 @@ public class PayCtrl {
 		
 		model.addAttribute("bskList", bskList);
 		return "basketList.tiles";
-	}
+	}*/
 
+	@RequestMapping(value="basketListView.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String basketListView(Model model, HttpServletRequest req, String flagPdseq, String flag) throws Exception {
+		logger.info("[PayCtrl] basketListView " + new Date());
+		couponServ.rollbackCp();	
+		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		System.out.println("   login auth : " + login.getAuth());
+		if (!login.getAuth().equals("member")) {
+			return "redirect:/index.do";
+		}
+		
+		boolean hFlag = false; 	// 게시물이 있는지 없는지?
+		boolean cFlag = false; 
+		boolean sFlag = false; 
+		boolean mFlag = false; 
+		
+		String mid = login.getId();
+		List<BasketParam> bskList = bskServ.getBasketListByMid(mid);
+		System.out.println(" bskList.size()" +  bskList.size());
+		for (int i = 0; i < bskList.size(); i++) {
+			int pdseq = bskList.get(i).getPdseq();
+			if (pdseq >= 5000 && pdseq < 6000) {
+				ReservationDto reservDto = reservServ.getReservByRvseq(bskList.get(i).getRvseq());
+				bskList.get(i).setReservDto(reservDto);
+				bskList.get(i).setPdDto(muServ.getMakeupByMuseq(pdseq));
+				
+				System.out.println(bskList.get(i).toString());
+				mFlag = true;
+			}else if (pdseq >= 3000 && pdseq < 4000) {
+				ReservationDto reservDto = reservServ.getReservByRvseq(bskList.get(i).getRvseq());
+				bskList.get(i).setReservDto(reservDto);
+				bskList.get(i).setPdDto(studioserv.getStudioByStseq(pdseq));
+				
+				sFlag = true;
+			}else if (pdseq >= 2000 && pdseq < 3000) {
+				bskList.get(i).setPdDto(cdServ.carddetail(pdseq));
+				
+				cFlag = true;
+			}else {
+				hFlag =true;
+			}
+			
+		}
+		
+		
+		model.addAttribute("mFlag",mFlag);
+		model.addAttribute("sFlag",sFlag);
+		model.addAttribute("cFlag",cFlag);
+		model.addAttribute("hFlag",hFlag);
+		
+		if (flagPdseq != null) model.addAttribute("flagPdseq", flagPdseq);
+		if (flag != null) model.addAttribute("flag", flag);
+		
+		model.addAttribute("bskList", bskList);
+		return "basketList.tiles";
+	}
+	
+	
 //	선택된 장바구니 리스트를 삭제한다.
 	@RequestMapping(value="bskDel.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String bskDel(Model model, int[] bkseq, String flagPdseq, String flag) throws Exception {
@@ -244,10 +304,20 @@ public class PayCtrl {
 
 //	장바구니에서 결제하기를 눌렀을 때 실행되는 메소드. 결제 view를 띄워준다.
 	@RequestMapping(value="bskPayView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String bskPayView(Model model, int[] bkseq, HttpServletRequest req) throws Exception {
+	public String bskPayView(Model model, int[] bkseq, int[] dcprice, HttpServletRequest req) throws Exception {
 		logger.info("[PayCtrl] bskPayView" + new Date());
 
 		List<BasketParam> bskList = bskServ.getBskListByBkseq(bkseq);
+		
+		for (int i = 0; i < dcprice.length; i++) {
+			int j = dcprice.length-1;
+			if(i!=j) {
+				int finalprice = bskList.get(i).getTotal_price();
+				finalprice = finalprice - dcprice[i];
+				bskList.get(i).setTotal_price(finalprice);
+			}
+		}
+		
 		for (int i = 0; i < bskList.size(); i++) {
 			int pdseq = bskList.get(i).getPdseq();
 			if (pdseq >= 5000 && pdseq < 6000) {

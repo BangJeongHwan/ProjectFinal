@@ -42,7 +42,7 @@
     font-style: inherit;
     text-decoration: inherit;
     resize: none;
-    margin-left: 100px;
+    margin-left: 12%;
 }
 .se_textarea1 {
     font-weight: 200;
@@ -65,13 +65,13 @@
     font-style: inherit;
     text-decoration: inherit;
     resize: none;
-    margin-left: 100px;
+    margin-left: 20%;
 }
 #tab img{
 	max-width: 50%; 
 	max-height 50%;
 	resize: none; 
-	margin-left: 100px;
+	margin-left: 20%;
 }
 button{
 	margin-top: 3px;
@@ -171,11 +171,11 @@ var fileNameArray = new Array("", "", "", "", "");
 					</tr>
 				</table>
 			</div>
-						<input type="text" name="fileNameList[0]" id="_fileNameList0" value="">
-						<input type="text" name="fileNameList[1]" id="_fileNameList1" value="">
-						<input type="text" name="fileNameList[2]" id="_fileNameList2" value="">
-						<input type="text" name="fileNameList[3]" id="_fileNameList3" value="">
-						<input type="text" name="fileNameList[4]" id="_fileNameList4" value="">
+						<input type="hidden" name="fileNameList[0]" id="_fileNameList0" value="">
+						<input type="hidden" name="fileNameList[1]" id="_fileNameList1" value="">
+						<input type="hidden" name="fileNameList[2]" id="_fileNameList2" value="">
+						<input type="hidden" name="fileNameList[3]" id="_fileNameList3" value="">
+						<input type="hidden" name="fileNameList[4]" id="_fileNameList4" value="">
 																	
 						<input type="file" name="fileList[0]" id="_fileList0" onchange="fileSelect(0)" style="display:none;">
 						<input type="file" name="fileList[1]" id="_fileList1" onchange="fileSelect(1)" style="display:none;">

@@ -2,6 +2,8 @@ package kh.com.a.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.com.a.model.CouponDto;
+import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.couponVO;
 import kh.com.a.service.CouponServ;
 
@@ -52,6 +55,7 @@ public class CouponCtrl {
 		model.addAttribute("challenge", couponServ.getChallenge());
 		model.addAttribute("time", couponServ.getTime());
 		model.addAttribute("random", couponServ.getRandom());
+
 		return "couponmain.tiles";
 	}
 	@RequestMapping(value="sharecp.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -142,5 +146,39 @@ public class CouponCtrl {
 			return "false";
 		}
 	}	
-		
+	
+	@RequestMapping(value="myCp.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String myCp(Model model, HttpServletRequest req) throws Exception {
+			logger.info("CouponCtrl myCp.do ");
+			
+			LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+			List<couponVO> list = couponServ.myCp(login.getId());//쿠폰 리스트
+			if(!list.isEmpty()) {
+				for (int i = 0; i < list.size(); i++) {
+					String remit = list.get(i).getRemit().substring(0, 10);
+					list.get(i).setRemit(remit);
+				}
+			}
+			model.addAttribute("list", list);
+		return "myCp.tiles";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="getCp.do", method={RequestMethod.GET,RequestMethod.POST})
+	public couponVO getCp(Model model, int seq) throws Exception {
+		couponVO mcp = 	couponServ.getCp(seq);
+			
+		return mcp;
+	}
+	
+	
+	@RequestMapping(value="test.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String test(Model model, int seq) throws Exception {
+			logger.info("CouponCtrl test.do ");
+			
+		return "test.tiles";
+	}
+	
+
+	
 }

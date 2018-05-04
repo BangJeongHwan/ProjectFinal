@@ -16,6 +16,9 @@ public interface CouponServ {
 	public CouponDto getTime() throws Exception;
 	public CouponDto getRandom() throws Exception;
 	public boolean regChall(int seq1, int seq2, int seq3, int sort) throws Exception;
-	boolean acqCp(couponVO memcp) throws Exception;
-	void allDel() throws Exception;
+	public boolean acqCp(couponVO memcp) throws Exception;
+	public void allDel() throws Exception;
+	public List<couponVO> myCp(String mid) throws Exception;
+	public couponVO getCp(int seq) throws Exception;
+	void rollbackCp() throws Exception;
 }
