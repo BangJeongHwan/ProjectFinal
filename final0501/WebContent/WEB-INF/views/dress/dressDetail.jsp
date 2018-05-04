@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
+<% 
 LoginDto mem = (LoginDto)session.getAttribute("login");
 if(mem==null){
 	mem = new LoginDto("guest", "guest");
