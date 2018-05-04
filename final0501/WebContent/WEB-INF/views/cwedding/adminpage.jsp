@@ -10,6 +10,7 @@
 	int c = 1;
 %>
 
+<!-- git 확인용 수정  -->
 
 <c:if test="${ not empty flag && flag eq 'Gsuccess'}">
 	<script type="text/javascript">
