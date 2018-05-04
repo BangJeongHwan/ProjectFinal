@@ -11,6 +11,7 @@
 %>
 
 <!-- git 확인용 수정  -->
+<!-- git 확인용 수정 2 -->
 
 <c:if test="${ not empty flag && flag eq 'Gsuccess'}">
 	<script type="text/javascript">
