@@ -3,7 +3,9 @@ package kh.com.a.service;
 import java.util.List;
 
 import kh.com.a.model.CompanyDto;
+import kh.com.a.model.CpoDto;
 import kh.com.a.model.JjimDto;
+import kh.com.a.model2.PaymentViewParam;
 
 public interface MypageServ {
 

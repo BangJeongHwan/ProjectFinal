@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.ReservationDao;
 import kh.com.a.model.ReservationDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 
@@ -134,4 +135,10 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
 		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
+
+	@Override
+	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception {
+		return sqlSession.selectList(ns+"getReservCalListByPdseq", pdseq);
+	}
+	
 }

@@ -18,11 +18,13 @@ public interface MemberServ {
 	public LoginDto login(LoginDto mem) throws Exception;
 	public boolean checkLicense(String license) throws Exception;
 	public LoginDto kakaologin(String email) throws Exception;
-	//
 	public boolean updateCPwd(CompanyDto company) throws Exception;
 	public boolean updateAddre(CompanyDto company) throws Exception;
 	public boolean withdrawCompany(String cid) throws Exception;
 	public boolean updateMPwd(MemberDto member) throws Exception;
 	public boolean updateMAddre(MemberDto member) throws Exception;
 	public boolean withdrawMember(String mid) throws Exception;
+	// 혜영
+	public MemberDto getMnamePhoneByMid(String mid) throws Exception;
+	
 }

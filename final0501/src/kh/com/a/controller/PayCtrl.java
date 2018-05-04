@@ -116,7 +116,6 @@ public class PayCtrl {
 	      return "redirect:/reservationDressList.do";
 	   }
 	
-//	TODO 0423
 //	개인의 장바구니 화면을 띄운다.
 	@RequestMapping(value="basketListView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String basketListView(Model model, HttpServletRequest req, String flagPdseq, String flag) throws Exception {
@@ -132,7 +131,6 @@ public class PayCtrl {
 		List<BasketParam> bskList = bskServ.getBasketListByMid(mid);
 		for (int i = 0; i < bskList.size(); i++) {
 			int pdseq = bskList.get(i).getPdseq();
-//			TODO 0423
 			if (pdseq >= 5000 && pdseq < 6000) {
 				ReservationDto reservDto = reservServ.getReservByRvseq(bskList.get(i).getRvseq());
 				bskList.get(i).setReservDto(reservDto);
@@ -154,7 +152,6 @@ public class PayCtrl {
 		return "basketList.tiles";
 	}
 
-//	TODO 0423
 //	선택된 장바구니 리스트를 삭제한다.
 	@RequestMapping(value="bskDel.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String bskDel(Model model, int[] bkseq, String flagPdseq, String flag) throws Exception {
@@ -211,7 +208,6 @@ public class PayCtrl {
 		reserv.setRvseq(rvseq);
 		bsk.setRvseq(rvseq);
 
-//		TODO 0419
 		reserv.setStatus("장바구니");
 		
 //		pdseq, redate, retime이 일치하는 상품이 장바구니에 이미 있는지 확인
@@ -246,7 +242,6 @@ public class PayCtrl {
 	}
 	
 
-////////////////////TODO 0419
 //	장바구니에서 결제하기를 눌렀을 때 실행되는 메소드. 결제 view를 띄워준다.
 	@RequestMapping(value="bskPayView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String bskPayView(Model model, int[] bkseq, HttpServletRequest req) throws Exception {
@@ -357,7 +352,6 @@ public class PayCtrl {
 		List<PaymentViewParam> payList = payServ.getPaymentListByGrnum(grnum);
 		for (int i = 0; i < payList.size(); i++) {
 			int pdseq = payList.get(i).getPdseq();
-//			TODO
 			if (pdseq >= 5000 && pdseq < 6000) {
 				ReservationDto reservDto = reservServ.getReservByRvseq(payList.get(i).getRvseq());
 				payList.get(i).setReservDto(reservDto);
@@ -460,6 +454,26 @@ public class PayCtrl {
 			model.addAttribute("recordCountPerPage", param.getRecordCountPerPage());
 			model.addAttribute("totalRecordCount", totalRecordCount);
 
+			// TODO 0427 혜영
+			List<Integer> grnumList = payServ.getGrnumListByMid(id);
+			List<PaymentViewParam> payList = payServ.getPaymentListByMid(id);
+			for (int i = 0; i < payList.size(); i++) {
+				int pdseq = payList.get(i).getPdseq();
+				if (pdseq >= 5000 && pdseq < 6000) {
+					ReservationDto reservDto = reservServ.getReservByRvseq(payList.get(i).getRvseq());
+					payList.get(i).setReservDto(reservDto);
+					payList.get(i).setPdDto(muServ.getMakeupByMuseq(pdseq));
+				} else if (pdseq >= 3000 && pdseq < 4000) {
+					ReservationDto reservDto = reservServ.getReservByRvseq(payList.get(i).getRvseq());
+					payList.get(i).setReservDto(reservDto);
+					payList.get(i).setPdDto(studioserv.getStudioByStseq(pdseq));
+				} else {
+					payList.get(i).setPdDto(cdServ.carddetail(pdseq));
+				}
+			}
+			model.addAttribute("grnumList", grnumList);
+			model.addAttribute("payList", payList);
+			
 			return "memReservList.tiles";
 		}
 		

@@ -29,6 +29,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import kh.com.a.model.CpoDto;
+import kh.com.a.model.MemberDto;
 import kh.com.a.model.ReservationDto;
 
 public class PaymentViewParam implements Serializable {
@@ -49,6 +51,9 @@ public class PaymentViewParam implements Serializable {
 
 	Object pdDto;
 	ReservationDto reservDto;
+//	TODO 0427
+	CpoDto cpoDto;
+	MemberDto memDto;
 	
 //	편의상 추가
 	private List<String> optionList = new ArrayList<String>();
@@ -183,13 +188,29 @@ public class PaymentViewParam implements Serializable {
 		this.optionList = optionList;
 	}
 
+	public CpoDto getCpoDto() {
+		return cpoDto;
+	}
+
+	public void setCpoDto(CpoDto cpoDto) {
+		this.cpoDto = cpoDto;
+	}
+
+	public MemberDto getMemDto() {
+		return memDto;
+	}
+
+	public void setMemDto(MemberDto memDto) {
+		this.memDto = memDto;
+	}
+
 	@Override
 	public String toString() {
 		return "PaymentViewParam [payseq=" + payseq + ", mid=" + mid + ", grnum=" + grnum + ", pdseq=" + pdseq
 				+ ", option1=" + option1 + ", option2=" + option2 + ", option3=" + option3 + ", option4=" + option4
 				+ ", option5=" + option5 + ", rvseq=" + rvseq + ", total_price=" + total_price + ", buydate=" + buydate
-				+ ", cposeq=" + cposeq + ", pdDto=" + pdDto + ", reservDto=" + reservDto + ", optionList=" + optionList
-				+ "]";
+				+ ", cposeq=" + cposeq + ", pdDto=" + pdDto + ", reservDto=" + reservDto + ", cpoDto=" + cpoDto
+				+ ", memDto=" + memDto + ", optionList=" + optionList + "]";
 	}
 
 }

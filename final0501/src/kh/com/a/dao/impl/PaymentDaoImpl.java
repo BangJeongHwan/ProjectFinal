@@ -49,6 +49,37 @@ public class PaymentDaoImpl implements PaymentDao {
 		return sqlSession.insert(ns+"addPaymentCard", payDto)>0?true:false;
 	}
 	
+//	혜영
+	@Override
+	public List<Integer> getGrnumListByMid(String mid) throws Exception {
+		return sqlSession.selectList(ns+"getGrnumListByMid", mid);
+	}
+
+	@Override
+	public List<PaymentViewParam> getPaymentListByMid(String mid) throws Exception {
+		return sqlSession.selectList(ns+"getPaymentListByMid", mid);
+	}
+
+	@Override
+	public List<PaymentViewParam> getWiPaymentListByCid(String cid) throws Exception {
+		return sqlSession.selectList(ns+"getWiPaymentListByCid", cid);
+	}
+
+	@Override
+	public CpoDto getCpoBycposeq(int cposeq) throws Exception {
+		return sqlSession.selectOne(ns+"getCpoBycposeq", cposeq);
+	}
+
+	@Override
+	public List<PaymentViewParam> getMuPaymentListByCid(String cid) throws Exception {
+		return sqlSession.selectList(ns+"getMuPaymentListByCid", cid);
+	}
+
+	@Override
+	public List<PaymentViewParam> getStPaymentListByCid(String cid) throws Exception {
+		return sqlSession.selectList(ns+"getStPaymentListByCid", cid);
+	}
+	
 	
 	
 	

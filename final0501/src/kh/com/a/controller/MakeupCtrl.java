@@ -9,6 +9,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,10 @@ import kh.com.a.model.MuProductDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.MuPagingParam;
 import kh.com.a.model2.MuParam;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -37,6 +41,8 @@ public class MakeupCtrl {
 	private MakeupServ muServ;
 	@Autowired
 	private MypageServ mypageserv;
+	@Autowired
+	ReservationServ reservServ;
 	
 	@RequestMapping(value="muMainView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String muMainView(Model model, MuPagingParam param) throws Exception {
@@ -60,7 +66,6 @@ public class MakeupCtrl {
 		model.addAttribute("muList", muList);
 		
 		model.addAttribute("pageNumber", sn);
-		// TODO 0425
 		model.addAttribute("pageCountPerScreen", 10);
 		model.addAttribute("recordCountPerPage", param.getRecordCountPerPage());
 		model.addAttribute("totalRecordCount", totalRecordCount);
@@ -71,7 +76,8 @@ public class MakeupCtrl {
 		
 		return "muMain.tiles";
 	}
-	
+
+//	TODO 0501
 	@RequestMapping(value="muDetailView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String muDetailView(Model model, int museq, String flag, HttpServletRequest req) throws Exception {
 		logger.info("[MakeupCtrl] muDetailView " + new Date());
@@ -102,14 +108,40 @@ public class MakeupCtrl {
 			model.addAttribute("jjdto", false);
 		}
 		
+		///////////////// 예약일정
+		List<ReservCalParam> reservCalList = reservServ.getReservCalListByPdseq(muDto.getMuseq());
+		// json parsing
+		JSONArray regiData = new JSONArray();
+		for (int i = 0; i < reservCalList.size(); i++) {
+			ReservCalParam rcParm = reservCalList.get(i);
+			String title = rcParm.getMname();
+			
+			String redate = rcParm.getRedate();	// yyyy-mm-dd
+			String timeSplit[] = rcParm.getRetime().split("~");
+			String start = redate + "T" + timeSplit[0];
+			String end = redate + "T" + timeSplit[1];
+			
+			JSONObject jo = new JSONObject();
+			jo.put("title", title);
+			jo.put("start", start);
+			jo.put("end", end);
+			jo.put("color", "#121212");
+			//jo.put("url", "javascript:func()");
+			regiData.put(jo);
+		}
+
+		System.out.println("reservSize : " + reservCalList.size());
+		System.out.println("regiDataSize : " + regiData.length());
+		
+		model.addAttribute("regiData", regiData);
+		/////////////////
+		
 		model.addAttribute("muDto", muDto);
 		model.addAttribute("mupdList", mupdList);
 		model.addAttribute("openHour", openHour);
 		model.addAttribute("openMin", openMin);
 		model.addAttribute("closeHour", closeHour);
 		model.addAttribute("closeMin", closeMin);
-		
-		
 		
 		return "muDetail.tiles";
 	}
@@ -139,7 +171,6 @@ public class MakeupCtrl {
 			if (oriFileName != null && !oriFileName.trim().equals("")) {
 				String fupload = req.getServletContext().getRealPath("/upload");	// tomcat
 				String newFileName = FUpUtil.getNewFile(oriFileName);
-				// TODO
 				mu.getMuDto().getPic().set(i, newFileName);
 				System.out.println("[MakeupCtrl] addMu newFileName : " + mu.getMuDto().getPic().get(i));
 				
@@ -234,7 +265,6 @@ public class MakeupCtrl {
 
 				System.out.println("oriFileName : " + oriFileName);
 				System.out.println("newFileName : " + newFileName);
-				// TODO
 				int getIndex = 0;
 				for (int j = 0; j < upFileNameList.size(); j++) {
 					if (oriFileName.equals(upFileNameList.get(j))) {

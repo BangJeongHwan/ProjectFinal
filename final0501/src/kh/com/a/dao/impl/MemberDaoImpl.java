@@ -107,4 +107,9 @@ public class MemberDaoImpl implements MemberDao {
 	public boolean withdrawMember(String mid) throws Exception {
 		return sqlSession.update(ns+"withdrawMember", mid)>0?true:false;
 	}
+
+	@Override
+	public MemberDto getMnamePhoneByMid(String mid) throws Exception {
+		return sqlSession.selectOne(ns+"getMnamePhoneByMid", mid);
+	}
 }
