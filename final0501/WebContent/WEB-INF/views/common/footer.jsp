@@ -12,7 +12,7 @@
    			</p>
    			<div class="nino-followUs">
    				<div class="totalFollow"><span>15k</span> followers</div>
-   				<div class="socialNetwork">
+   			 	<div class="socialNetwork">
    					<span class="text">Follow Us: </span>
    					<a href="" class="nino-icon"><i class="mdi mdi-facebook"></i></a>
    					<a href="" class="nino-icon"><i class="mdi mdi-twitter"></i></a>
