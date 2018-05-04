@@ -112,5 +112,11 @@ public class MemberServImpl implements MemberServ {
 	public boolean withdrawMember(String mid) throws Exception {
 		return memberDao.withdrawMember(mid);
 	}
+	@Override
+	public MemberDto getMnamePhoneByMid(String mid) throws Exception {
+		return memberDao.getMnamePhoneByMid(mid);
+	}
+	
+
 	
 }

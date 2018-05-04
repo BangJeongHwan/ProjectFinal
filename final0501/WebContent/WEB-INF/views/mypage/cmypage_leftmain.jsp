@@ -5,7 +5,7 @@
 <h5 class="w3-bar-item">company mypage</h5>
 <button class="w3-bar-item w3-button tablink" onclick="commypage()">정보수정</button>
 <button class="w3-bar-item w3-button tablink" onclick="reserView()">예약승인</button>
-<button class="w3-bar-item w3-button tablink" onclick="">판매목록</button>
+<button class="w3-bar-item w3-button tablink" onclick="comPayView()">판매목록</button>
 
 <script>
 function commypage() {
@@ -13,6 +13,9 @@ function commypage() {
 }
 function reserView() {
 	location.href = "reservationDressList.do";
+}
+function comPayView() {
+	location.href = "comPayView.do";
 }
 </script>
 

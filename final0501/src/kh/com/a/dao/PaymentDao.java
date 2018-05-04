@@ -14,5 +14,13 @@ public interface PaymentDao {
 	public int getNextCposeq() throws Exception;
 	public boolean addCpo(CpoDto cpoDto) throws Exception;
 	public boolean addPaymentCard(PaymentDto payDto) throws Exception;
-
+//	혜영
+	public List<Integer> getGrnumListByMid(String mid) throws Exception;
+	public List<PaymentViewParam> getPaymentListByMid(String mid) throws Exception;
+	public List<PaymentViewParam> getWiPaymentListByCid(String cid) throws Exception;
+	public CpoDto getCpoBycposeq(int cposeq) throws Exception;
+	public List<PaymentViewParam> getMuPaymentListByCid(String cid) throws Exception;
+	public List<PaymentViewParam> getStPaymentListByCid(String cid) throws Exception;
+ 
+	
 }

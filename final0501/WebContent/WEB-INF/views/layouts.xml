@@ -290,6 +290,30 @@
 	</definition>
 	
 	<!-- /마이페이지 관리자 뷰 -->
+	
+	<!-- 혜영  -->
+	<definition name="wiPayList.tiles" extends="commypage.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/wiPayList.jsp"/>
+	</definition>
+	
+	<definition name="regiPayList.tiles" template="/WEB-INF/views/mypage/mypage-tiles2.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/mypage/mypage_header.jsp"/>
+		<put-attribute name="left_main" value="/WEB-INF/views/mypage/cmypage_leftmain.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/mypage/regiPayList.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/mypage/mypage_footer.jsp"/>
+	</definition>
+	
+	<!-- full calendar 사용을 위해 새로 정의 -->
+ 	<definition name="detail.tiles" template="/WEB-INF/views/layouts-tiles2.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/login/SelectRegi.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+	</definition>
+	
+	<definition name="muDetail.tiles" extends="detail.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/makeup/detail.jsp"/>
+	</definition>
+	
 </tiles-definitions>
 
 

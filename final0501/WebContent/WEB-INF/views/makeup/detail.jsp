@@ -6,6 +6,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
+
+<!-- fullcalender -->
+<link rel='stylesheet' href='FullCalendar/fullcalendar.css' />
+<link rel='stylesheet' media="print" href='FullCalendar/fullcalendar.print.min.css' />
+<script src='FullCalendar/lib/jquery.min.js'></script>
+<script src='FullCalendar/lib/moment.min.js'></script>
+<script src='FullCalendar/lib/jquery-ui.min.js'></script>
+<script src='FullCalendar/fullcalendar.min.js'></script>
+<script src='FullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
+
 
 <%
 LoginDto mem = (LoginDto)session.getAttribute("login");
@@ -15,12 +26,74 @@ if(mem==null){
 }
 %>
 
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
+
 <style type="text/css">
+
+.mySlides {display:none}
+.w3-left, .w3-right, .w3-badge {cursor:pointer}
+.w3-badge {height:13px;width:13px;padding:0}
+th, td {padding: 10px}
+
+table.type11 {
+    border-collapse: separate;
+    border-spacing: 1px;
+    text-align: center;
+    line-height: 1.5;
+    margin: 20px 10px;
+}
+table.type11 th {
+    width: 100px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: center;
+    color: #fff;
+    background: #ce4869 ;
+}
+table.type11 td {
+    width: 155px;
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #eee;
+}
+
+table.type05 {
+    border-collapse: separate;
+    border-spacing: 1px;
+    text-align: left;
+    line-height: 1.5;
+    border-top: 1px solid #ccc;
+    margin: 20px 10px;
+}
+table.type05 th {
+    width: 150px;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    background: #efefef;
+}
+table.type05 td {
+    width: 350px;
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+}
+
+.fontyle {
+        font-family: 'Hanna', Fantasy;
+        font-size: 20px;
+        color: black;
+      }
+
 .imgScroll td{
 	width:92px;
 	height:60px;
 	align-content: center;
 	text-align: center;
+	padding:1px;
 }
 </style>
 
@@ -55,130 +128,217 @@ var picArr = new Array("", "", "", "", "", "", "", "", "", "");
 	</c:if>
 </c:forEach>
 
-<div class="container">
-	<h2 class="nino-sectionHeading">
-	<span class="nino-subHeading">makeup</span>
-		${muDto.cname}
-	</h2>
-	<p class="nino-sectionDesc">
-		${ muDto.content }	
-	</p>
-	<div class="sectionContent">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="text-center">
-					<c:if test="${ empty muDto.pic1 || muDto.pic1 eq ''}">
-						<img src="assets/images/wedding/63img1_b.jpg" alt="" id="bigimg" style="width:551px;height: 367px;">
-					</c:if>
-					<c:if test="${ not empty muDto.pic1 && muDto.pic1 ne ''}">
-						<img src="upload/${ muDto.pic1 }" alt="" id="bigimg" style="width:551px;height: 367px;"/>
-					</c:if>
-					</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingOne">
-							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<i class="mdi mdi-chevron-up nino-icon arrow"></i>
-									<i class="mdi mdi-camera nino-icon"></i> 
-									상세정보 
-								</a>
-							</h4>
-						</div>
-						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-							<div class="panel-body">
-								<c:if test="${jjdto == 'false' }">
-									<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
-								</c:if>
-								<c:if test="${jjdto == 'true' }">
-									<img src="images/heart.gif" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
-								</c:if><br>
-								<font color="black">
-								${ muDto.cname }<br>
-								주소 : ${ muDto.address }<br>
-								오픈시간 : ${ muDto.opentime }<br>
-								마감시간 : ${ muDto.closetime }<br>
-								</font>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingTwo">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									<i class="mdi mdi-chevron-up nino-icon arrow"></i>
-									<i class="mdi mdi-owl nino-icon"></i> 
-									결제 및 예약
-								</a>
-							</h4>
-						</div>
-						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-							<div class="panel-body" style="font-style: normal" align="center">
-								 <form action="muBasket.do" method="post" id="_frmPay" onsubmit="return checkSubmit()">
-								 	<input type="hidden" name="cmd" id="_cmd" value="bsk">
-									<input type="hidden" name="pdseq" value="${ muDto.museq }">
-									<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
-									<input type="hidden" name="option1" id="_option1" value="${mupdList[0].title}">
-									<input type="hidden" name="total_price" id="_total_price" value="${mupdList[0].price}">
-									<font style="text-align: center" color="black">날짜 선택&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;시간 선택&nbsp;&nbsp;&nbsp;&nbsp;<br></font>
-									<input type="text" id="_redate" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
-									&nbsp;&nbsp;&nbsp;&nbsp;
-									<select name="retime" id="_retime">
-										<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
-											<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
-										</c:forEach>
-									</select><br><br>
-									<font style="text-align: center" color="black">옵션 선택&nbsp;&nbsp;</font>
-									<select id="_optionSelect" onchange="setOptionPrice()">
-										<c:forEach items="${ mupdList }" var="mupd" varStatus="i">
-											<option value="${ i.index }">${ mupd.title }-${ mupd.price }</option>
-										</c:forEach>
-									</select><br><br>
-									<button type="button" onclick="muPaymentView()">결제</button>&nbsp;&nbsp;
-									<button type="button" onclick="muBasket()">장바구니</button>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading" role="tab" id="headingThree">
-							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									<i class="mdi mdi-chevron-up nino-icon arrow"></i>
-									<i class="mdi mdi-laptop-mac nino-icon"></i> 
-									후기
-								</a>
-							</h4>
-						</div>
-						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-							<div class="panel-body">
-								Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-							</div>
-						</div>
-					</div>
-				</div>
+<div style="width: 1400px">
+	<div class="w3-display-container" style="padding-left:120px; padding-top:30px;padding-right: 80px; width: 60%;  float: left;">
+		<div class="text-center">
+			<c:if test="${ empty muDto.pic1 || muDto.pic1 eq ''}">
+				<img src="assets/images/wedding/63img1_b.jpg" alt="" id="bigimg" style="width:551px;height: 367px;">
+			</c:if>
+			<c:if test="${ not empty muDto.pic1 && muDto.pic1 ne ''}">
+				<img src="upload/${ muDto.pic1 }" alt="" id="bigimg" style="width:551px;height: 367px;"/>
+			</c:if>
+		</div>
+		<div style="height: 3px"></div>
+		<div class="w3-display-container" style="padding-left: 50px">
+			<table>
+				<tr id="_sPicTr" class="imgScroll"></tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="fontyle" style="width: 500px; float: left;">
+		<table class="type05" >
+			<colgroup>
+				<col width="20%"><col width="30%"><col width="20%"><col width="30%">
+			</colgroup>
+			<tr>
+				<td colspan="3" style="font-size:50px">${muDto.cname}</td>
+				<td>
+				<c:if test="${jjdto == 'false' }">
+					<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+				</c:if>
+				<c:if test="${jjdto == 'true' }">
+					<img src="images/heart.gif" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+				</c:if>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">${muDto.content}</td>
+			</tr>
+			<tr>
+				<td>오픈시간</td>
+				<td colspan="3">${muDto.opentime}</td>
+			</tr>
+			<tr>
+				<td>마감시간</td>
+				<td colspan="3">${muDto.closetime}</td>
+			</tr>
+			<tr >
+				<td>주소</td>
+				<td colspan="3">${muDto.address}</td>
+			</tr>
+		</table>
+		<form action="muBasket.do" method="post" id="_frmPay" onsubmit="return checkSubmit()">
+		 	<input type="hidden" name="cmd" id="_cmd" value="bsk">
+			<input type="hidden" name="pdseq" value="${ muDto.museq }">
+			<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
+			<input type="hidden" name="option1" id="_option1" value="${mupdList[0].title}">
+			<%-- <input type="hidden" name="total_price" id="_total_price" value="${mupdList[0].price}"> --%>
+			<table class="type05" >
+				<colgroup>
+					<col width="20%"><col width="80%">
+				</colgroup>
+				<tr>
+					<td>상품</td>
+					<td>
+						<select id="_optionSelect" onchange="setOptionPrice()">
+							<c:forEach items="${ mupdList }" var="mupd" varStatus="i">
+								<option value="${ mupd.price }">${ mupd.title }</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>예약날짜</td>
+					<td>
+						<input type="text" id="_redate" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td>예약시간</td>
+					<td>
+						<select name="retime" id="_retime">
+							<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
+								<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr >
+					<td>상품 가격</td>
+					<td>
+						<input type="text" name="total_price" id="_total_price" value="${mupdList[0].price}"
+										 style="border: 0"  readonly="readonly">원
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+						<button type="button" onclick="muPaymentView()"  class="w3-btn w3-white w3-border w3-border-red w3-round-large">결제</button>
+						&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+						<button type="button" onclick="muBasket()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">장바구니</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
+<div class="container" align="center" style="width:100px;">
+	<button onclick="list()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">목록</button>
+	<c:if test="${ not empty login && login.auth == 'admin'}">
+		<button onclick="mod()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">수정</button>
+		<button onclick="del()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">삭제</button>
+	</c:if>
+</div>
+<br><br><br>
+
+<div class="w3-container" style="color: black;" align="center">
+	<div class="w3-row" align="center">
+		<div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+      		style="font-family: 'Hanna', Fantasy;" onclick="openCity(event, 'regi');">예약 정보</div>
+		<div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+       		style="font-family: 'Hanna', Fantasy;" onclick="openCity(event, 'hugi');">상품 정보</div>
+	</div>
+  
+	<!-- 예약 뷰 -->
+	<div id="regi" class="w3-container city" style="display:inline">
+		<div class="w3-container" style="padding-left: 250px; font-family: 'Hanna', serif;">
+			<div align="center">
+				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
 			</div>
 		</div>
 	</div>
-</div>
-<div style="height: 3px"></div>
-<div class="container">
-	<table>
-		<tr id="_sPicTr" class="imgScroll"></tr>
-	</table>
-</div>
-
-<br><br>
-<div class="container" align="center">
-	<button onclick="list()">목록</button>
-	<c:if test="${ not empty login && login.auth == 'admin'}">
-		<button onclick="mod()">수정</button>
-		<button onclick="del()">삭제</button>
-	</c:if>
+	  
+	<!-- 후기 뷰 -->
+	<div id="hugi" class="w3-container city" style="display:none;">
+	  <div class="w3-container" style="padding-left: 250px; font-family: 'Hanna', serif;">
+	 		후기
+		</div>
+	</div>
+  
 </div>
 
+<!-- fullcalendar에 대한 스크립트 -->
+<!-- https://fullcalendar.io/ -->
+<script type="text/javascript">
+$(function() {
+	// 한국어 변환
+	var initialLocaleCode = 'ko';
+	
+	// 현재 날짜 설정
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth()+1;
+	var y = date.getFullYear();
+	var rdate = y+"-0"+m+"-"+d;	
+	//alert(rdate);
+	
+	// fullcalender 시작
+	$('#calendar').fullCalendar({
+		
+		// 한국어 변환
+	 	locale: initialLocaleCode
+	 	   
+		// header 설정
+  		,header: {
+  	        left: 'prev,next,today',	// 달 이동
+  	        center: 'title',			// 제목
+  	        right: 'month,agendaWeek,listMonth'	// 월별, 주별, 일별, list
+  	    }
+  		// 현재 보여줄 화면
+  	    ,defaultDate: rdate
+  	    // show the prev/next text <, >
+ 	    ,buttonIcons: true
+ 	    // 1년간의 주를 나타내 (주)는 부분
+ 	   	,weekNumbers: true
+  	    // 날짜 클릭 가능(true), 불가(false)
+  	    ,navLinks: true	    
+  	    // 일정 옮기기 가능
+  	    ,editable: true	    
+  		// 4개 이상 "more" 창 나타내기(true), 나타내지 않기(false)
+  	    ,eventLimit: true
+ 		// 일정 넣는 부분
+  	    ,events: ${regiData}
+ 	    ,editable:false
+ 	    ,height: 700
+  	});
+});
+
+function func() {
+	alert("alertddd");
+}
+</script>
+
+<script type="text/javascript">
+function openCity(evt, cityName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-border-red", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-border-red";
+}
+</script>
 
 <!-- 이미지 스크롤 관련 -->  
 <script type="text/javascript">
@@ -229,6 +389,34 @@ function imgChange(index) {
     
 <script type="text/javascript">
 
+function toggle(divId) {
+//	alert($(divId).attr("class"));
+/* 	if ($(divId).attr("class") == "panel-collapse collapse in") {
+		$(divId).attr("class", "panel-collapse collapse");
+	} else {
+		$(divId).attr("class", "panel-collapse collapse in");
+	} */
+	if ($(divId).attr("class") == "panel-collapse collapse in") return;
+	
+	if ($("#collapseOne").attr("class") == "panel-collapse collapse in") {
+		$("#collapseOne").attr("class", "panel-collapse collapse");
+		$("#collapseOne").hide();
+	} else if ($("#collapseTwo").attr("class") == "panel-collapse collapse in") {
+		$("#collapseTwo").attr("class", "panel-collapse collapse");
+		$("#collapseTwo").hide();
+	} else {
+		$("#collapseThree").attr("class", "panel-collapse collapse");
+		$("#collapseThree").hide();
+	}
+	$(divId).show('slow');
+	$(divId).attr("class", "panel-collapse collapse in");
+	
+	//$("#collapseOne").toggle('slow');
+	//$("#collapseOne").toggle('slow');
+}
+
+
+
 function checkSubmit() {
 	
 	if ($("#_redate").val().trim() == "") {
@@ -266,10 +454,8 @@ function list() {
 // 옵션 값이 바뀌었을 때
 function setOptionPrice() {
 	var mupdStr = $("#_optionSelect option:selected").text();
-	var splitStr = mupdStr.split("-");
-	$("#_option1").val(splitStr[0]);
-	$("#_total_price").val(parseInt(splitStr[1]));
-//	var i = parseInt($("#_optionSelect").val());
+	$("#_option1").val(mupdStr);
+	$("#_total_price").val($("#_optionSelect option:selected").val());
 }
 
 // 예약시 달력

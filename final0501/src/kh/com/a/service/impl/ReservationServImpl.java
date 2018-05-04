@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.ReservationDao;
 import kh.com.a.model.ReservationDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 import kh.com.a.service.ReservationServ;
@@ -124,4 +125,19 @@ public class ReservationServImpl implements ReservationServ {
 	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
 		return reservDao.getWdRegList(fcal);
 	}
+
+	@Override
+	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception {
+		
+		List<ReservCalParam> reservList = reservDao.getReservCalListByPdseq(pdseq);
+		for (int i = 0; i < reservList.size(); i++) {
+			String split[] = reservList.get(i).getRedate().split(" ");
+			reservList.get(i).setRedate(split[0]);
+		}
+		
+		return reservList;
+	}
+	
+	
+	
 }

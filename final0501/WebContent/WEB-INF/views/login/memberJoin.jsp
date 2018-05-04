@@ -80,13 +80,13 @@ td:nth-child(even) {
 							<td>
 								<input type="hidden" name="email" id="_email">
 								<input type="text" id="_email1">@
-								<!-- <input type="text" id="_email2"> -->
+								<!-- <input type="text" id="_email2"> ★-->
 								<select id="_email2">
 									<option selected>naver.com</option>
 									<option selected>daum.net</option>
 									<option selected>gmail.com</option>
 								</select>
-								<font id="_checkEmailDiv">※이메일을 입력해주세요</font>
+								<font id="_checkEmailDiv"><!-- ※이메일을 입력해주세요 --></font>
 							</td>
 						</tr>
 						<tr>
@@ -101,8 +101,9 @@ td:nth-child(even) {
 									<option value="018">018
 									<option value="019">019
 								</select>-
-								<input type="text" id="_phone2" size="4">-
-								<input type="text" id="_phone3" size="4">
+								<!-- ★ -->
+								<input type="text" id="_phone2" size="4" style="ime-mode:disabled;" onkeydown="return onlyNumber(event)">-
+								<input type="text" id="_phone3" size="4" style="ime-mode:disabled;" onkeydown="return onlyNumber(event)">
 							</td>
 						</tr>
 						<tr>
@@ -164,6 +165,21 @@ td:nth-child(even) {
 	<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script><!--인증 apk  -->
 	
 <script type="text/javascript">
+// 숫자만 입력가능한 text field ★
+function onlyNumber(event) {
+
+    var key = window.event ? event.keyCode : event.which;    
+
+    if ((event.shiftKey == false) && ((key  > 47 && key  < 58) || (key  > 95 && key  < 106)
+    || key  == 35 || key  == 36 || key  == 37 || key  == 39  // 방향키 좌우,home,end  
+    || key  == 8  || key  == 46 ) // del, back space
+    ) {
+        return true;
+    }else {
+        return false;
+    }    
+};
+
 var pwdFlag1 = false;
 var pwdFlag2 = false;
 var idFlag = false;
@@ -331,7 +347,7 @@ function DaumPostcode() {
     }).open();
 }
 
-//이메일 체크
+//이메일 체크 ★
 function emailCheck() {
 	// 이메일 조합
 	var email1 = $("#_email1").val();
@@ -342,23 +358,36 @@ function emailCheck() {
 		$("#_email").val("");
 	}
 	
+	if ($("#_email1").val() == "") {
+		$("#_checkEmailDiv").html("");
+        //$("#_checkEmailDiv").css("color","#ff0000");
+        return;
+	}
+	if (!isEngNum($("#_email1").val())) {
+		 $("#_checkEmailDiv").html("이메일 양식에 맞지 않습니다.");
+         $("#_checkEmailDiv").css("color","#ff0000");
+         emailFlag = false;
+         return;
+	}
+	
 	// 이메일 중복 확인(없어도 되지만 겹치는 건 안 됨 : unique)
 	$.ajax({
 		url:"checkEmail.do",
 		type:"get",
 		data:"email=" + $("#_email").val(),
 		success:function(msg){
-			if($("#_email1").val() == ""){
+			/* if($("#_email1").val() == ""){
 	            $("#_checkEmailDiv").html("이메일을 입력해주세요");
 	            $("#_checkEmailDiv").css("color","#ff0000");
-	            emailFlag = false;
-	         }else if(!isTrue($("#_email1").val())){
+	            //emailFlag = false;
+	         } else if(!isEngNum($("#_email1").val())){
 	            $("#_checkEmailDiv").html("이메일 양식에 맞지 않습니다.");
 	            $("#_checkEmailDiv").css("color","#ff0000");
 	            emailFlag = false;
-	         }else{
+	         } else{
 	            CheckMessage(msg);
-	         }
+	         } */
+	         CheckMessage(msg);
 		},
 		error:function(reqest, status, error){
 			alert("실패");
@@ -386,7 +415,7 @@ function CheckMessage(msg) {
 			/* div태그에 접근할 때 html방식으로 접근 */
 			$("#_checkEmailDiv").html("사용중인 이메일 주소입니다.");
 			$("#_checkEmailDiv").css("color","#ff0000");
-			$("#_email1").val("");
+			//$("#_email1").val("");
 			//$("#_email1").css("background-color", "#c1ecf2");
 			emailFlag = false;
 		}else{

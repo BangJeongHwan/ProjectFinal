@@ -33,6 +33,39 @@
 	VALUES(#{cposeq}, #{font}, #{content}, #{wfname}, #{wmname}, #{wc}, #{wname}, #{mfname}, #{mmname}, #{mc}, #{mname}, #{cpdate}, #{cpadd}, #{cptel})
 </insert>
 
+<!-- 혜영 -->
+<select id="getGrnumListByMid" parameterType="java.lang.String" resultType="java.lang.Integer">
+	SELECT DISTINCT GRNUM FROM WD_PAYMENT WHERE MID=#{mid} ORDER BY GRNUM DESC
+</select>
+
+<select id="getPaymentListByMid" parameterType="java.lang.String" resultType="kh.com.a.model2.PaymentViewParam">
+	SELECT * FROM WD_PAYMENT WHERE MID=#{mid}
+</select>
+
+<select id="getWiPaymentListByCid" parameterType="java.lang.String" resultType="kh.com.a.model2.PaymentViewParam">
+	SELECT * FROM WD_PAYMENT
+	WHERE PDSEQ IN (SELECT CDSEQ FROM CARDDETAIL
+					WHERE WISEQ IN (SELECT WISEQ FROM CARD WHERE CID=#{cid}))
+	ORDER BY BUYDATE DESC
+</select>
+
+<select id="getCpoBycposeq" parameterType="java.lang.Integer" resultType="kh.com.a.model.CpoDto">
+	SELECT * FROM WD_CPO WHERE CPOSEQ=#{cposeq}
+</select>
+
+<select id="getMuPaymentListByCid" parameterType="java.lang.String" resultType="kh.com.a.model2.PaymentViewParam">
+	SELECT * FROM WD_PAYMENT
+	WHERE PDSEQ IN (SELECT MUSEQ FROM WD_MAKEUP WHERE CID=#{cid})
+	ORDER BY BUYDATE DESC
+</select>
+
+<select id="getStPaymentListByCid" parameterType="java.lang.String" resultType="kh.com.a.model2.PaymentViewParam">
+	SELECT * FROM WD_PAYMENT
+	WHERE PDSEQ IN (SELECT STSEQ FROM WD_STUDIO WHERE CID=#{cid})
+	ORDER BY BUYDATE DESC
+</select>
+
+
 </mapper>
 
 
