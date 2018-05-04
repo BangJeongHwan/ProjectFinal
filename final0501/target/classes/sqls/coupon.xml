@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Coupon">
+	
+	<insert id="addcoupon" parameterType="kh.com.a.model.CouponDto">
+		INSERT INTO WD_COUPON(SEQ, TITLE, OPENDATE, CLOSEDATE, SHOUR, SMIN, TIMEREMIT, USERREMIT, DISCOUNT, SORT, DEL)
+		VALUES(SEQ_WD_COUPON.NEXTVAL, #{title}, #{opendate}, #{closedate}, #{shour}, #{smin}, #{timeremit}, #{userremit}, #{discount}, #{sort}, 0)
+	</insert> 
+	
+	<select id="couponlist" parameterType="Integer" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=${value} AND MONTHS_BETWEEN(OPENDATE,SYSDATE)>=0 AND DEL=0
+		ORDER BY SEQ DESC
+	</select>
+	
+	<select id="couponAlllist" parameterType="Integer" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=${value} ORDER BY SEQ DESC
+	</select>
+	
+	<!-- <select id="registedCoupon" parameterType="Integer" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=${value} AND DEL=1 ORDER BY SEQ DESC
+	</select> -->
+	
+	<update id="regPrevCoupon" parameterType="Integer">
+		UPDATE WD_COUPON SET DEL = 0 WHERE DEL = 1 AND SORT=#{sort}
+	</update>
+	
+	<update id="regNextCoupon" parameterType="Integer">
+		UPDATE WD_COUPON SET DEL = 1 WHERE SEQ = #{seq}
+	</update>
+	
+	<select id="getShare" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=1 AND DEL=1
+	</select>
+	<select id="getChallenge" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=2 AND DEL=1 ORDER BY DISCOUNT ASC
+	</select>
+	<select id="getTime" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=3 AND DEL=1
+	</select>
+	<select id="getRandom" resultType="kh.com.a.model.CouponDto">
+		SELECT * FROM WD_COUPON WHERE SORT=4 AND DEL=1
+	</select>
+	
+	<update id="allDel">
+		UPDATE WD_COUPON SET DEL = 2 WHERE MONTHS_BETWEEN(CLOSEDATE,SYSDATE)<![CDATA[ < ]]>0
+	</update>
+	
+	<insert id="acqCp" parameterType="kh.com.a.model2.couponVO">
+		INSERT INTO WD_USECOUPON(CP_SEQ, MID, REMIT, DEL)
+		VALUES(#{cp_seq}, #{mid}, SYSDATE+#{remit}, #{del})
+	</insert> 
+	
+	<select id="prevAcqCp" parameterType="kh.com.a.model2.couponVO" resultType="kh.com.a.model2.couponVO">
+		SELECT * FROM WD_USECOUPON WHERE CP_SEQ = #{cp_seq} AND MID = #{mid}
+	</select>
+	
+	<update id="userDel">
+		UPDATE WD_USECOUPON SET DEL = 1 WHERE MONTHS_BETWEEN(REMIT,SYSDATE)<![CDATA[ < ]]>0
+	</update>
+	
+</mapper>

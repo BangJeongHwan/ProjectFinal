@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Basket">
+
+<select id="getBasketListByMid" parameterType="java.lang.String" resultType="kh.com.a.model2.BasketParam">
+	SELECT * FROM WD_BASKET WHERE MID=#{mid}
+</select>
+
+<insert id="addMuBasket" parameterType="kh.com.a.model.BasketDto">
+	INSERT INTO WD_BASKET (BKSEQ, MID, PDSEQ, OPTION1, RVSEQ, TOTAL_PRICE)
+	VALUES(#{bkseq}, #{mid}, #{pdseq}, #{option1}, #{rvseq}, #{total_price})
+</insert>
+
+<delete id="delBskByBkseq" parameterType="java.util.HashMap">
+	DELETE FROM WD_BASKET
+	WHERE BKSEQ IN
+	<foreach collection="bkseq" item="bk" open="(" close=")" separator=",">
+		#{bk.value}
+	</foreach>
+</delete>
+
+<!-- 0419 -->
+<select id="getBskListByBkseq" parameterType="java.util.HashMap" resultType="kh.com.a.model2.BasketParam">
+	SELECT * FROM WD_BASKET
+	WHERE BKSEQ IN
+	<foreach collection="bkseq" item="bk" open="(" close=")" separator=",">
+		#{bk.value}
+	</foreach>
+</select>
+
+<select id="getRvseqByBkseq" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	SELECT RVSEQ FROM WD_BASKET
+	WHERE BKSEQ IN
+	<foreach collection="bkseq" item="bk" open="(" close=")" separator=",">
+		#{bk.value}
+	</foreach>
+	AND RVSEQ IS NOT NULL
+</select>
+
+<!-- 0423 -->
+<insert id="addCdBasket" parameterType="kh.com.a.model.BasketDto">
+	INSERT INTO WD_BASKET (BKSEQ, MID, PDSEQ, OPTION1, OPTION2, TOTAL_PRICE)
+	VALUES(#{bkseq}, #{mid}, #{pdseq}, #{option1}, #{option2}, #{total_price})
+</insert>
+
+<select id="getNextBkseq" resultType="java.lang.Integer">
+	SELECT SEQ_BKSEQ.NEXTVAL FROM DUAL
+</select>
+
+</mapper>
+
+
+
+
+

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Card">
+
+<select resultType="kh.com.a.model.CardDto" id="clist"> 
+SELECT WISEQ, CID, CNAME, PICTURE, CONTENT 
+FROM CARD 
+ORDER BY WISEQ DESC
+ </select>
+
+<select id="pagingclist" parameterType="kh.com.a.model.CardParam" resultType="kh.com.a.model.CardDto">
+	SELECT WISEQ, CID, CNAME, PICTURE, CONTENT
+ 	 FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY WISEQ DESC) AS RNUM,
+  		WISEQ, CID, CNAME, PICTURE, CONTENT
+  		FROM CARD
+  		WHERE 1=1
+  		<if test="s_category != '' and s_category != null 
+		 	and s_keyword != '' and s_keyword != null">		 	
+		 	<if test="s_category == 'cname'"> 
+		 		AND CNAME LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'content'">
+		 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+		 	</if>		 	
+		</if>
+	  ) A
+	  WHERE RNUM BETWEEN ${start} AND ${end}
+</select>
+
+
+<select id="cdetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.CardDetailDto">
+	SELECT CDSEQ,WISEQ,CID,CNAME,TITLE,CDATE,CATEGORY,CBAG,PRICE,CARDSIZE,CONTENT,PICTURE0,PICTURE1,PICTURE2,PICTURE3
+	FROM CARDDETAIL
+	WHERE CDSEQ=#{cdseq}
+</select>
+
+
+<insert id="cardwrite" parameterType="kh.com.a.model.CardDto">
+	INSERT INTO CARD(WISEQ, CID, CNAME, PICTURE, CONTENT)
+	VALUES(SEQ_CARD.NEXTVAL, (select cid from WD_COMPANY where cid=#{cid}), (select cname from WD_COMPANY where cid=#{cid}), #{picture}, #{content})
+</insert>
+
+<select id = "cdlist" parameterType="java.lang.Integer" resultType="kh.com.a.model.CardDetailDto">
+	SELECT CDSEQ,WISEQ,CID,CNAME,TITLE,CDATE,CATEGORY,CBAG,PRICE,CARDSIZE,CONTENT,PICTURE0,PICTURE1,PICTURE2,PICTURE3
+	FROM CARDDETAIL
+	WHERE WISEQ=#{wiseq}
+	ORDER BY WISEQ DESC
+</select>
+
+<select id="ccdetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.CardDto">
+	SELECT WISEQ, CID, CNAME, PICTURE, CONTENT
+	FROM CARD
+	WHERE WISEQ=#{wiseq}
+	ORDER BY WISEQ DESC
+</select>
+
+ <insert id="cdwrite" parameterType="kh.com.a.model.CardDetailDto"> 
+	INSERT INTO CARDDETAIL(CDSEQ,WISEQ,CID,CNAME,TITLE,CDATE,CATEGORY,CBAG,PRICE,CARDSIZE,CONTENT,PICTURE0,PICTURE1,PICTURE2,PICTURE3) 
+ 	VALUES(SEQ_CDSEQ.NEXTVAL,#{wiseq},#{cid},(SELECT CNAME FROM CARD WHERE WISEQ=#{wiseq}),#{title},SYSDATE,#{category},#{cbag},#{price},#{cardsize},#{content},#{picture0},#{picture1},#{picture2},#{picture3})
+ </insert> 
+
+<update id="ccupdate" parameterType="kh.com.a.model.CardDto" >
+	UPDATE CARD
+	SET CNAME=#{cname}, PICTURE=#{picture}, CONTENT=#{content}
+	WHERE WISEQ=#{wiseq}
+</update>
+
+<delete id="ccdelete" parameterType="kh.com.a.model.CardDetailDto">
+	DELETE FROM CARDDETAIL 
+	WHERE CDSEQ=#{cdseq}
+</delete>
+
+<update id="cdupdate" parameterType="kh.com.a.model.CardDetailDto">
+	UPDATE CARDDETAIL
+	SET CNAME=#{cname},TITLE=#{title},PRICE=#{price},CONTENT=#{content},PICTURE0=#{pic[0]},PICTURE1=#{pic[1]},PICTURE2=#{pic[2]},PICTURE3=#{pic[3]}
+	WHERE CDSEQ=#{cdseq}
+</update>
+
+<select id="clistcount" resultType="java.lang.Integer" parameterType="kh.com.a.model.CardParam">
+	SELECT NVL(COUNT(*), 0) AS CNT 
+	FROM CARD 
+	WHERE 1=1 
+	<if test="s_category != '' and s_category != null and s_keyword != '' and s_keyword != null">
+	<if test="s_category == 'title'"> AND CNAME LIKE '%'||#{s_keyword}||'%' </if>
+	<if test="s_category == 'contents'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
+	</if>
+</select>
+
+<select id="cdlistcount" resultType="java.lang.Integer" parameterType="kh.com.a.model.CDetailParam">
+	SELECT NVL(COUNT(*), 0) AS CNT 
+	FROM CARDDETAIL 
+	WHERE WISEQ=#{wiseq} AND 1=1
+	<if test="s_category != '' and s_category != null 
+  		and s_keyword != '' and s_keyword != null">
+		<if test="s_category == 'title'"> AND CNAME LIKE '%'||#{s_keyword}||'%' </if>
+		<if test="s_category == 'content'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
+		</if>
+		<if test="category == 'mobile'">AND CATEGORY LIKE '%'||#{category}||'%' </if>
+  		<if test="category == 'analog'">AND CATEGORY LIKE '%'||#{category}||'%' </if>
+  		<if test="cbag == 1">AND CBAG LIKE '%'||#{cbag}||'%' </if>
+  		<if test="cbag == 2">AND CBAG LIKE '%'||#{cbag}||'%' </if>
+  		<if test="cardsize=='recwidth'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+  		<if test="cardsize=='recheight'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+  		<if test="cardsize=='square'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+</select>
+
+<select id="pagingcdlist" parameterType="kh.com.a.model.CDetailParam" resultType="kh.com.a.model.CardDetailDto">
+	SELECT *
+ 	 FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY CDSEQ DESC) AS RNUM,
+  		CDSEQ,WISEQ,CID,CNAME,TITLE,CDATE,CATEGORY,CBAG,PRICE,CARDSIZE,CONTENT,PICTURE0,PICTURE1,PICTURE2,PICTURE3
+  		FROM CARDDETAIL
+  		WHERE WISEQ=#{wiseq} AND 1=1
+  		<if test="s_category != '' and s_category != null 
+   		and s_keyword != '' and s_keyword != null">
+		<if test="s_category == 'title'"> AND CNAME LIKE '%'||#{s_keyword}||'%' </if>
+		<if test="s_category == 'content'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
+		</if>
+		<if test="category == 'mobile'">AND CATEGORY LIKE '%'||#{category}||'%' </if>
+  		<if test="category == 'analog'">AND CATEGORY LIKE '%'||#{category}||'%' </if>
+  		<if test="cbag == 1">AND CBAG LIKE '%'||#{cbag}||'%' </if>
+  		<if test="cbag == 2">AND CBAG LIKE '%'||#{cbag}||'%' </if>
+  		<if test="cardsize=='recwidth'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+  		<if test="cardsize=='recheight'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+  		<if test="cardsize=='square'">AND CARDSIZE LIKE '%'||#{cardsize}||'%'</if>
+		  ) A
+		  WHERE RNUM BETWEEN ${start} AND ${end}
+		
+</select>
+
+<select id="cidcheck" parameterType="java.lang.String" resultType="kh.com.a.model.CardDto">
+	SELECT CID 
+	FROM CARD
+	WHERE CID=#{cid}
+</select>
+
+<select id = "getseq" resultType="java.lang.Integer">
+	SELECT SEQ_CDSEQ.NEXTVAL FROM DUAL
+</select>
+
+
+
+
+
+</mapper>

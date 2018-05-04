@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Dress">
+  
+  <select id="getDsseq" resultType="java.lang.Integer">
+   SELECT DSSEQ_DRESS.NEXTVAL FROM DUAL
+  </select>
+  
+  <insert id="companyUpload" parameterType="kh.com.a.model.DressDto">
+  INSERT INTO DRESS(DSSEQ, CID, DNAME, PICTURE0, PICTURE1, PICTURE2, PICTURE3,
+  					PICTURE4, PICTURE5, PICTURE6, PICTURE7, PICTURE8, PICTURE9, CONTENT, OPENTIME, ADDRE)
+  VALUES(#{dsseq}, #{cid}, #{dname}, #{pic[0]}, #{pic[1]}, #{pic[2]}, #{pic[3]}, #{pic[4]}, #{pic[5]},
+  		 #{pic[6]}, #{pic[7]}, #{pic[8]}, #{pic[9]}, #{content}, #{opentime}, #{addre})
+  </insert>
+  
+  <select id="getDressList" resultType="kh.com.a.model.DressDto">
+  SELECT DSSEQ, CID, DNAME, CONTENT, PICTURE0
+  FROM DRESS
+  ORDER BY DSSEQ DESC
+  </select>
+  
+  <select id="getPagingDressList" parameterType="kh.com.a.model2.DressParam"
+  			resultType="kh.com.a.model.DressDto">
+  SELECT DSSEQ, CID, DNAME, CONTENT, PICTURE0
+  FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY DSSEQ DESC) AS RNUM,
+  		DSSEQ, CID, DNAME, CONTENT, PICTURE0
+  		FROM DRESS
+  		WHERE 1=1
+  		<if test="s_category != '' and s_category != null 
+		 	and s_keyword != '' and s_keyword != null">		 	
+		 	<if test="s_category == 'dname'"> 
+		 		AND DNAME LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'content'">
+		 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+		 	</if>		 	
+		</if>
+  ) A
+  WHERE RNUM BETWEEN ${start} AND ${end}			
+  </select>
+  
+  <select id="getDressCount" parameterType="kh.com.a.model2.DressParam" resultType="java.lang.Integer">
+  SELECT NVL(COUNT(*), 0) AS CNT
+  FROM DRESS
+  WHERE 1=1
+  <if test="s_category != '' and s_category != null 
+	 	and s_keyword != '' and s_keyword != null">		 	
+	 	<if test="s_category == 'dname'"> 
+	 		AND DNAME LIKE '%'||#{s_keyword}||'%'
+	 	</if>	
+	 	<if test="s_category == 'content'">
+	 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+	 	</if>		 	
+	 </if>
+  </select>
+  
+  <select id="getDressDetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.DressDto">
+  SELECT DSSEQ, CID, DNAME, PICTURE0, PICTURE1, PICTURE2, PICTURE3,
+  					PICTURE4, PICTURE5, PICTURE6, PICTURE7, PICTURE8, PICTURE9, CONTENT, OPENTIME, ADDRE
+  FROM DRESS
+  WHERE DSSEQ=#{dsseq}
+  </select>
+  
+  <delete id="dressDelete" parameterType="java.lang.Integer">
+	DELETE FROM DRESS WHERE DSSEQ=#{dsseq}
+  </delete>
+  
+  <update id="dressUpdate" parameterType="kh.com.a.model.DressDto">
+	UPDATE DRESS
+	SET PICTURE0=#{pic[0]}, PICTURE1=#{pic[1]}, PICTURE2=#{pic[2]}, PICTURE3=#{pic[3]}, PICTURE4=#{pic[4]},
+		PICTURE5=#{pic[5]}, PICTURE6=#{pic[6]}, PICTURE7=#{pic[7]}, PICTURE8=#{pic[8]}, PICTURE9=#{pic[9]}, 
+		DNAME=#{dname}, CONTENT=#{content}, OPENTIME=#{opentime}, ADDRE=#{addre}
+	WHERE DSSEQ=#{dsseq}
+  </update>
+  
+  
+  
+  </mapper>

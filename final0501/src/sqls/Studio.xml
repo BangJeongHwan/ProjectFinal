@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 
+  스듀디오
+  
+  STSEQ NUMBER(8) PRIMARY KEY,
+  
+  CREATE SEQUENCE SEQ_STUDIO
+  START WITH 1 INCREMENT BY 1;
+  
+  스튜디오 상품
+  
+  SDPDSEQ NUMBER(8) PRIMARY KEY,
+  SDSEQ NUMBER(8) NOT NULL,
+  
+  CREATE SEQUENCE SEQ_SDPDSEQ
+  START WITH 3000 INCREMENT BY 1;
+
+  PDSEQ 스튜디오는 3000번대부터 시작!
+  CREATE SEQUENCE SEQ_SDSEQ
+  START WITH 1 INCREMENT BY 1;
+   -->
+
+<mapper namespace="Studio">
+
+<select id="getStseq" resultType="java.lang.Integer">
+	SELECT SEQ_STUDIO.NEXTVAL FROM DUAL
+</select>
+
+<insert id="addStudio" parameterType="kh.com.a.model.StudioDto">
+	INSERT INTO WD_STUDIO(STSEQ, CID, CNAME, PIC0, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, VIDEO, CONTENT, OPENTIME, CLOSETIME, ADDRE)
+	VALUES(#{stseq}, #{cid}, #{cname}, #{pic[0]}, #{pic[1]}, #{pic[2]}, #{pic[3]}, #{pic[4]}, #{pic[5]}, #{pic[6]}, #{pic[7]}, #{pic[8]}, #{pic[9]}, 
+			#{video}, #{content}, #{opentime}, #{closetime}, #{addre})
+</insert>
+
+<insert id="addStudioProduct" parameterType="kh.com.a.model.StudioProductDto">
+	INSERT INTO WD_SD_PRODUCT(SDPDSEQ, SDSEQ, TITLE, CONTENT, PRICE)
+	VALUES(SEQ_SDPDSEQ.NEXTVAL, #{sdseq}, #{title}, #{content}, #{price})
+</insert>
+
+<select id="getStudioAllList" resultType="kh.com.a.model.StudioDto">
+	SELECT * FROM WD_STUDIO
+</select>
+
+<select id="getStudioByStseq" parameterType="java.lang.Integer" resultType="kh.com.a.model.StudioDto">
+	SELECT * FROM WD_STUDIO WHERE STSEQ=#{stseq}
+</select>
+
+<select id="getStudioProductListBySdseq" parameterType="java.lang.Integer" resultType="kh.com.a.model.StudioProductDto">
+	SELECT * FROM WD_SD_PRODUCT WHERE SDSEQ=#{stseq}
+</select>
+
+<!-- db상에 등록되어 있는 스튜디오 업체의 총 갯수를 세어오는 sql문 -->
+<select id="getStudioCount" parameterType="kh.com.a.model2.StudioParam" resultType="java.lang.Integer">
+  SELECT NVL(COUNT(*), 0) AS CNT
+  FROM WD_STUDIO
+  WHERE 1=1
+  <if test="s_category != '' and s_category != null 
+       and s_keyword != '' and s_keyword != null">          
+       <if test="s_category == 'cid'"> 
+          AND CNAME LIKE '%'||#{s_keyword}||'%'
+       </if>   
+       <if test="s_category == 'content'">
+          AND CONTENT LIKE '%'||#{s_keyword}||'%'
+       </if>          
+    </if>
+</select>
+  
+<!-- 페이징 처리된 스튜디오 리스트를 불러오는 sql 문 -->
+<select id="getPagingStudioList" parameterType="kh.com.a.model2.StudioParam"
+			resultType="kh.com.a.model.StudioDto">
+SELECT STSEQ, CID, CNAME, PIC0, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, VIDEO, CONTENT, OPENTIME, CLOSETIME, ADDRE
+FROM (
+		SELECT ROW_NUMBER() OVER(ORDER BY STSEQ DESC) AS RNUM,
+		STSEQ, CID, CNAME, PIC0, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, VIDEO, CONTENT, OPENTIME, CLOSETIME, ADDRE
+		FROM WD_STUDIO
+		WHERE 1=1
+		<if test="s_category != '' and s_category != null 
+ 	and s_keyword != '' and s_keyword != null">		 	
+ 	<if test="s_category == 'cid'"> 
+ 		AND CNAME LIKE '%'||#{s_keyword}||'%'
+ 	</if>	
+ 	<if test="s_category == 'content'">
+ 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+ 	</if>		 	
+</if>
+) A
+WHERE RNUM BETWEEN ${start} AND ${end}			
+</select>
+
+<!-- 해당 스튜디오에 대한 디테일 정보를 가져오는 sql 문 -->
+<select id="getStudioDetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.StudioDto">
+  SELECT STSEQ, CID, CNAME, PIC0, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, VIDEO, CONTENT, OPENTIME, CLOSETIME, ADDRE
+  FROM WD_STUDIO
+  WHERE STSEQ=#{stseq}
+</select>
+
+<select id="getStudioProductDetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.StudioProductDto">
+  SELECT SDPDSEQ, SDSEQ, TITLE, CONTENT, PRICE
+  FROM WD_SD_PRODUCT
+  WHERE SDSEQ=#{stseq}
+</select>
+
+<select id="getProductPrice" parameterType="kh.com.a.model.StudioProductDto" resultType="java.lang.String">
+	SELECT PRICE
+	FROM WD_SD_PRODUCT
+	WHERE SDSEQ=${sdseq} AND SDPDSEQ=${sdpdseq}
+</select>
+
+<!-- cascade?  -->
+<delete id="delStudioByStseq" parameterType="java.lang.Integer">
+	DELETE FROM WD_STUDIO WHERE STSEQ=#{stseq}
+</delete>
+
+<delete id="delStudioProductByStseq" parameterType="java.lang.Integer">
+	DELETE FROM WD_SD_PRODUCT WHERE SDSEQ=#{stseq}
+</delete>
+
+<update id="modStudio" parameterType="kh.com.a.model.StudioDto">
+	UPDATE WD_STUDIO
+	SET PIC0=#{pic[0]}, PIC1=#{pic[1]}, PIC2=#{pic[2]}, PIC3=#{pic[3]}, PIC4=#{pic[4]},
+		PIC5=#{pic[5]}, PIC6=#{pic[6]}, PIC7=#{pic[7]}, PIC8=#{pic[8]}, PIC9=#{pic[9]}, 
+		CONTENT=#{content}, OPENTIME=#{opentime}, CLOSETIME=#{closetime}
+	WHERE STSEQ=#{stseq}
+</update>
+
+
+
+</mapper>

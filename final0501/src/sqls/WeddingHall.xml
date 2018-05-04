@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="WeddingHall">
+	<insert id="addWedding" parameterType="kh.com.a.model.WeddingDto">
+		INSERT INTO WD_WEDDING(WHSEQ, CID, CNAME, HTYPE, MINCOOK, MAXCOOK, MENUTYPE, MINPEOPLE, MAXPEOPLE, 
+			CONTENT, ADDRESS, LATITUDE, LONGITUDE, PICTURE, TRANSPO, PARKING, READCOUNT, COMMENTCOUNT)
+		VALUES(SEQ_WEDDING.NEXTVAL, #{cid}, #{cname}, #{htype}, #{mincook}, #{maxcook}, #{menutype}, #{minpeople}, #{maxpeople},
+			#{content}, #{address}, #{latitude}, #{longitude}, #{picture}, #{transpo}, #{parking}, 0, 0)
+	</insert>
+	<select id="getWeddingList" resultType="kh.com.a.model.WeddingDto">
+		SELECT WHSEQ, CID, CNAME, HTYPE, MINCOOK, MAXCOOK, MENUTYPE, MINPEOPLE, MAXPEOPLE, 
+			CONTENT, ADDRESS, LATITUDE, LONGITUDE, PICTURE, TRANSPO, PARKING, READCOUNT, COMMENTCOUNT
+		FROM WD_WEDDING
+		ORDER BY WHSEQ DESC
+	</select>
+	<select id="getWedding" parameterType="java.lang.Integer" resultType="kh.com.a.model.WeddingDto">
+		SELECT WHSEQ, CID, CNAME, HTYPE, MINCOOK, MAXCOOK, MENUTYPE, MINPEOPLE, MAXPEOPLE, 
+			CONTENT, ADDRESS, LATITUDE, LONGITUDE, PICTURE, TRANSPO, PARKING, READCOUNT, COMMENTCOUNT
+		FROM WD_WEDDING
+		WHERE WHSEQ=#{whseq}
+	</select>
+	
+	
+	<!-- hall -->
+	
+	<!-- hall list -->
+	<insert id="addHall" parameterType="kh.com.a.model.WeddingHallDto">
+		INSERT INTO WD_WHALL(PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 
+			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, OPENTIME, CLOSETIME)
+		VALUES(SEQ_WH_PDSEQ.NEXTVAL, #{whseq}, #{hallname}, #{floor}, #{mincook}, #{maxcook}, #{format}, #{facility}, 
+			#{minpeople}, #{maxpeople}, #{setpeople}, #{wstep}, #{pay}, #{menutype}, #{drink}, #{opentime}, #{closetime})
+	</insert>
+	<select id="checkHallName" parameterType="java.lang.String" resultType="kh.com.a.model.WeddingHallDto">
+		SELECT *
+		FROM WD_WHALL
+		WHERE hallname=#{hallname}
+	</select>
+	<select id="getHallList" parameterType="java.lang.Integer" resultType="kh.com.a.model.WeddingHallDto">
+		SELECT PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 
+			MINPEOPLE, MAXPEOPLE, SETPEOPLE, WSTEP, PAY, MENUTYPE, DRINK, OPENTIME, CLOSETIME
+		FROM WD_WHALL
+		WHERE WHSEQ=#{whseq}
+		ORDER BY PDSEQ DESC
+	</select>
+	
+	<!-- 사진 -->
+	<insert id="addHallPicture" parameterType="kh.com.a.model.WHallPictureDto">
+		INSERT INTO WD_HALL_PICTURE(PICSEQ, WHSEQ, HALLNAME, PICTURE)
+		VALUES(SEQ_WHPIC.NEXTVAL, #{whseq}, #{hallname}, #{picture})
+	</insert>
+	<select id="getHallSumList" parameterType="java.lang.Integer" resultType="kh.com.a.model2.WHallPicSumVO">
+		SELECT HALLNAME, SUM(WHSEQ) AS SUMPIC
+		FROM WD_HALL_PICTURE
+		WHERE WHSEQ = #{whseq}
+		GROUP BY HALLNAME
+	</select>
+	<select id="getAllHallPicList" parameterType="java.lang.Integer" resultType="kh.com.a.model.WHallPictureDto">
+		SELECT PICSEQ, WHSEQ, HALLNAME, PICTURE
+		FROM WD_HALL_PICTURE
+		WHERE WHSEQ = #{whseq}
+		ORDER BY PICSEQ
+	</select>
+	<select id="getHallPicList" parameterType="hashmap" resultType="kh.com.a.model.WHallPictureDto">
+		SELECT PICSEQ, WHSEQ, HALLNAME, PICTURE
+		FROM WD_HALL_PICTURE
+		WHERE WHSEQ = #{whseq} AND HALLNAME=#{hallname}
+	</select>
+</mapper>

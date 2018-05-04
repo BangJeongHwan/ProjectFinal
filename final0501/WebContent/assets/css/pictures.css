@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/* 
+참고
+#mv{position:relative;left:50%;width:2000px;padding:0 0 4px;margin:0 0 0 -1000px;}
+#mv:before,
+#mv:after{content:"";position:absolute;top:0;display:block;width:400px;height:100%;}
+#mv:before{left:0px;background:url('../images/main/mv_left.jpg') 100% 0 no-repeat;}
+#mv:after{right:0;background:url('../images/main/mv_right.jpg') 0 0 no-repeat;}
+#mv .mv_area{width:1200px;margin:0 auto;}
+#mv .mv_area:before{content:"";position:absolute;left:0;bottom:0;display:block;width:100%;height:4px;background:url('../images/main/mv_bdb.jpg') 0 0 repeat-x;}
+#mv .mv_area .mv_wrap{float:left;width:870px;}
+
+.mv_wrap{float:left;width:870px;}
+#mv .mv .visual_con{position:relative;}
+#mv .mv .visual .btn_wrap{position:absolute;left:0;top:314px;padding-left:50px;}
+#mv .mv .visual .btn_wrap a{display:block;width:210px;height:50px;line-height:50px;background-color:#0d8591;text-align:center;color:#fff;font-size:16px;font-weight:300;border-radius:50px;-moz-border-radius:50px;-webkit-border-radius:50px;-o-border-radius:50px;transition:.25s;}
+#mv .mv .visual .btn_wrap a:hover{background-color:#bbcd1d;}
+ */
+/* 이미지가 선택될 경우 */
+.select_img{border: 6px solid #7FFFD4;}

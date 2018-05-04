@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Makeup">
+
+<select id="getMuseq" resultType="java.lang.Integer">
+	SELECT SEQ_MUSEQ.NEXTVAL FROM DUAL
+</select>
+
+<insert id="addMakeup" parameterType="kh.com.a.model.MakeupDto">
+	INSERT INTO WD_MAKEUP(MUSEQ, CID, CNAME, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, PIC0, CONTENT, ADDRESS, OPENTIME, CLOSETIME, READCNT)
+	VALUES(#{museq}, #{cid}, #{cname}, #{pic[0]}, #{pic[1]}, #{pic[2]}, #{pic[3]}, #{pic[4]}, #{pic[5]}, #{pic[6]}, #{pic[7]}, #{pic[8]}, #{pic[9]}, 
+			#{content}, #{address}, #{opentime}, #{closetime}, 0)
+</insert>
+
+<insert id="addMuProduct" parameterType="kh.com.a.model.MuProductDto">
+	INSERT INTO WD_MU_PRODUCT(MUPDSEQ, MUSEQ, TITLE, PRICE)
+	VALUES(SEQ_MUPDSEQ.NEXTVAL, #{museq}, #{title}, #{price})
+</insert>
+
+<select id="getMakeupAllList" resultType="kh.com.a.model.MakeupDto">
+	SELECT * FROM WD_MAKEUP ORDER BY MUSEQ DESC
+</select>
+
+<select id="getMakeupByMuseq" parameterType="java.lang.Integer" resultType="kh.com.a.model.MakeupDto">
+	SELECT * FROM WD_MAKEUP WHERE MUSEQ=#{museq}
+</select>
+
+<select id="getMuProductListByMuseq" parameterType="java.lang.Integer" resultType="kh.com.a.model.MuProductDto">
+	SELECT * FROM WD_MU_PRODUCT WHERE MUSEQ=#{museq}
+</select>
+
+<delete id="delMuProductByMuseq" parameterType="java.lang.Integer">
+	DELETE FROM WD_MU_PRODUCT WHERE MUSEQ=#{museq}
+</delete>
+
+<!-- cascade?  -->
+<delete id="delMakeupByMuseq" parameterType="java.lang.Integer">
+	DELETE FROM WD_MAKEUP WHERE MUSEQ=#{museq}
+</delete>
+
+<update id="modMakeup" parameterType="kh.com.a.model.MakeupDto">
+	UPDATE WD_MAKEUP
+	SET PIC1=#{pic[0]}, PIC2=#{pic[1]}, PIC3=#{pic[2]}, PIC4=#{pic[3]}, PIC5=#{pic[4]},
+		PIC6=#{pic[5]}, PIC7=#{pic[6]}, PIC8=#{pic[7]}, PIC9=#{pic[8]}, PIC0=#{pic[9]}, 
+		CONTENT=#{content}, OPENTIME=#{opentime}, CLOSETIME=#{closetime}
+	WHERE MUSEQ=#{museq}
+</update>
+
+<select id="getMakeupAllCnt" parameterType="kh.com.a.model2.MuPagingParam" resultType="java.lang.Integer">
+	SELECT NVL(COUNT(*), 0) AS CNT
+	FROM WD_MAKEUP
+	WHERE 1 = 1
+	<if test="s_category != null and s_category != '' and s_keyword != null and s_keyword != '' ">
+		<if test="s_category == 'cname'">
+			AND CNAME LIKE '%'||#{s_keyword}||'%'
+		</if>
+		<!-- <if test="s_category" == 'contents'>  -->
+		<if test="s_category == 'content'">
+			AND CONTENT LIKE '%'||#{s_keyword}||'%'
+		</if>
+	</if>
+</select>
+
+<select id="getMakeupMainList" parameterType="kh.com.a.model2.MuPagingParam" resultType="kh.com.a.model.MakeupDto">
+	SELECT MUSEQ, CID, CNAME, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, PIC0, CONTENT, ADDRESS, OPENTIME, CLOSETIME, READCNT
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY ${orderCondition}	DESC) AS RNUM, 
+			MUSEQ, CID, CNAME, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, PIC0, CONTENT, ADDRESS, OPENTIME, CLOSETIME, READCNT
+		FROM WD_MAKEUP
+		WHERE 1=1
+		<if test="s_category != null and s_category != '' and s_keyword != null and s_keyword != '' ">
+			<if test="s_category == 'cname'">
+				AND CNAME LIKE '%'||#{s_keyword}||'%'
+			</if>
+			<if test="s_category == 'content'">
+				AND CONTENT LIKE '%'||#{s_keyword}||'%'
+			</if>
+		</if>
+		 ) A
+	WHERE RNUM BETWEEN ${start} AND ${end}
+</select>
+<!-- 
+<select id="getMakeupMainList" parameterType="kh.com.a.model2.MuPagingParam" resultType="kh.com.a.model.MakeupDto">
+	SELECT MUSEQ, CID, CNAME, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, PIC0, CONTENT, ADDRESS, OPENTIME, CLOSETIME, READCNT
+	FROM (SELECT ROW_NUMBER() OVER (ORDER BY MUSEQ DESC) AS RNUM, 
+			MUSEQ, CID, CNAME, PIC1, PIC2, PIC3, PIC4, PIC5, PIC6, PIC7, PIC8, PIC9, PIC0, CONTENT, ADDRESS, OPENTIME, CLOSETIME, READCNT
+		FROM WD_MAKEUP
+		WHERE 1=1
+		<if test="s_category != null and s_category != '' and s_keyword != null and s_keyword != '' ">
+			<if test="s_category == 'cname'">
+				AND CNAME LIKE '%'||#{s_keyword}||'%'
+			</if>
+			<if test="s_category == 'content'">
+				AND CONTENT LIKE '%'||#{s_keyword}||'%'
+			</if>
+		</if>
+		 ) A
+	WHERE RNUM BETWEEN ${start} AND ${end}
+</select>
+ -->
+<update id="upReadcnt" parameterType="java.lang.Integer">
+	UPDATE WD_MAKEUP SET READCNT=READCNT+1 WHERE MUSEQ=#{museq}
+</update>
+
+</mapper>
+
+
+
+
+
+
+
+

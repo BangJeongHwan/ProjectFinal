@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+	<insert id="addCompany" parameterType="kh.com.a.model.CompanyDto">
+		INSERT INTO WD_COMPANY(CID, PWD, CNAME, EMAIL, PHONE, ADDRESS, LICENSE, AUTH, GRADE)
+		VALUES(#{cid}, #{pwd}, #{cname}, #{email}, #{phone}, #{address}, #{license}, #{auth}, 0)
+	</insert>
+	<insert id="addMember" parameterType="kh.com.a.model.MemberDto">
+		INSERT INTO WD_MEMBER(MID, PWD, MNAME, SEX, EMAIL, PHONE, ADDRESS, AUTH)
+		VALUES (#{mid}, #{pwd}, #{mname}, #{sex}, #{email}, #{phone}, #{address}, #{auth})
+	</insert>
+	
+	<select id="getMemberByMid" parameterType="java.lang.String" resultType="kh.com.a.model.MemberDto">
+		SELECT * FROM WD_MEMBER WHERE MID=#{mid}
+	</select>
+	
+	<select id="getCompanyByCid" parameterType="java.lang.String" resultType="kh.com.a.model.CompanyDto">
+		SELECT * FROM WD_COMPANY WHERE CID=#{cid}
+	</select>
+	
+	<select id="getMemberByEmail" parameterType="java.lang.String" resultType="kh.com.a.model.MemberDto">
+		SELECT * FROM WD_MEMBER WHERE EMAIL=#{email}
+	</select>
+	
+	<select id="getCompanyByEmail" parameterType="java.lang.String" resultType="kh.com.a.model.CompanyDto">
+		SELECT * FROM WD_COMPANY WHERE EMAIL=#{email}
+	</select>
+	
+	<update id="upCompanyGrade" parameterType="java.lang.String">
+		UPDATE WD_COMPANY SET GRADE=1 WHERE CID=#{cid}
+	</update>
+	
+	<select id="loginmem" parameterType="kh.com.a.model2.LoginDto" resultType="kh.com.a.model2.LoginDto">
+		SELECT MID ID, MNAME NAME, EMAIL, PHONE, ADDRESS, AUTH FROM WD_MEMBER WHERE MID=#{id} AND PWD=#{pwd}
+	</select>
+	
+	<select id="logincom" parameterType="kh.com.a.model2.LoginDto" resultType="kh.com.a.model2.LoginDto">
+		SELECT CID ID, CNAME NAME, EMAIL, PHONE, ADDRESS, AUTH FROM WD_COMPANY WHERE CID=#{id} AND PWD=#{pwd}
+	</select>
+	
+	<select id="checkLicense" parameterType="java.lang.String" resultType="kh.com.a.model.CompanyDto">
+		SELECT * FROM WD_COMPANY WHERE LICENSE=#{license}
+	</select>
+		
+	<select id="kakaoLoginMem" parameterType="java.lang.String" resultType="kh.com.a.model2.LoginDto">
+		SELECT MID ID, MNAME NAME, EMAIL, PHONE, ADDRESS, AUTH FROM WD_MEMBER WHERE EMAIL=#{email}
+	</select>
+	
+	<select id="kakaoLoginCom" parameterType="java.lang.String" resultType="kh.com.a.model2.LoginDto">
+		SELECT CID ID, CNAME NAME, EMAIL, PHONE, ADDRESS, AUTH FROM WD_COMPANY WHERE EMAIL=#{email}
+	</select>
+	
+	<update id="updateCPwd" parameterType="kh.com.a.model.CompanyDto">
+		UPDATE WD_COMPANY SET PWD=#{pwd} WHERE CID=#{cid} 
+	</update>
+	
+	<update id="updateAddre" parameterType="kh.com.a.model.CompanyDto">
+		UPDATE WD_COMPANY SET ADDRESS=#{address} WHERE CID=#{cid} 
+	</update>
+	
+	<update id="withdrawCompany" parameterType="java.lang.String">
+		UPDATE WD_COMPANY SET GRADE=6 WHERE CID=#{cid}
+	</update>
+	
+	<update id="updateMPwd" parameterType="kh.com.a.model.MemberDto">
+		UPDATE WD_MEMBER SET PWD=#{pwd} WHERE MID=#{mid}
+	</update>
+	
+	<update id="updateMAddre" parameterType="kh.com.a.model.MemberDto">
+		UPDATE WD_MEMBER SET ADDRESS=#{address} WHERE MID=#{mid}
+	</update>
+	
+	<update id="withdrawMember" parameterType="java.lang.String">
+		UPDATE WD_MEMBER SET AUTH='DEL' WHERE MID=#{mid}
+	</update>
+</mapper>

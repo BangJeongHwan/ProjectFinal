@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Honey">
+	<!--                       WD_HONEY                             -->
+	<select id="arealist" parameterType="kh.com.a.model.HoneyMoonDto" resultType="kh.com.a.model.HoneyMoonDto">
+		SELECT NAME, STYLE, PRICE1, PRICE2, CONTENT, VISA, AIRPORT FROM WD_HONEY
+	</select>
+	
+	<!--                       WD_HONEYBBS                             -->
+	<select id="honeyBbsList" parameterType="kh.com.a.model2.HoneyBbsParam" resultType="kh.com.a.model.HoneyBbsDto">
+	SELECT SEQ, ID, TITLE, AREA
+	FROM (SELECT ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS RNUM, SEQ, ID, TITLE, AREA FROM WD_HONEYBBS WHERE DEL = 0
+	<if test="s_category != '' and s_category != null 
+		 	and s_keyword != '' and s_keyword != null">		 	
+		 	<if test="s_category == 'title'"> 
+		 		AND TITLE LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'contents'">
+		 		AND CONTENT0 LIKE '%'||#{s_keyword}||'%' 
+		 		OR CONTENT1 LIKE '%'||#{s_keyword}||'%'
+		 		OR CONTENT2 LIKE '%'||#{s_keyword}||'%'  
+		 		OR CONTENT3 LIKE '%'||#{s_keyword}||'%'
+		 		OR CONTENT4 LIKE '%'||#{s_keyword}||'%'
+		 	</if>
+		 	<if test="s_category == 'writer'">
+		 		AND ID = #{s_keyword}
+		 	</if>		 	
+		 	<if test="s_category == 'area'">
+		 		AND AREA = #{s_keyword}
+		 	</if>		 	
+		 </if>)
+	WHERE RNUM BETWEEN ${start} AND ${end}
+	ORDER BY SEQ DESC
+	</select>
+	
+	
+	<select id="honeyBbsCount" parameterType="kh.com.a.model2.HoneyBbsParam" resultType="Integer">
+		SELECT NVL(COUNT(*), 0) AS CNT
+	FROM WD_HONEYBBS WHERE DEL = 0
+	<if test="s_category != '' and s_category != null 
+		 	and s_keyword != '' and s_keyword != null">		 	
+		 	<if test="s_category == 'title'"> 
+		 		AND TITLE LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'contents'">
+		 		AND CONTENT0 LIKE '%||#{s_keyword}||'%' 
+		 		OR CONTENT1 LIKE '%'||#{s_keyword}||'%'
+		 		OR CONTENT2 LIKE '%'||#{s_keyword}||'%'  
+		 		OR CONTENT3 LIKE '%'||#{s_keyword}||'%'
+		 		OR CONTENT4 LIKE '%'||#{s_keyword}||'%'
+		 	</if>
+		 	<if test="s_category == 'writer'">
+		 		AND ID = #{s_keyword}
+		 	</if>		 	
+		 	<if test="s_category == 'area'">
+		 		AND AREA = #{s_keyword}
+		 	</if>		 	
+		 </if>
+	</select>
+	
+	<insert id="honeybbswrite" parameterType="kh.com.a.model.HoneyBbsDto">
+	INSERT INTO WD_HONEYBBS(SEQ, ID, TITLE, CONTENT0, CONTENT1, CONTENT2, CONTENT3, CONTENT4, AREA, FILE0, FILE1, FILE2, FILE3, FILE4, WDATE, DEL, READCOUNT)
+	VALUES(SEQ_HMSEQ.NEXTVAL, #{id}, #{title}, #{content0}, #{content1}, #{content2}, #{content3}, #{content4}, #{area}, #{file[0]}, #{file[1]}, #{file[2]}, #{file[3]}, #{file[4]}, SYSDATE, 0, 0)
+	</insert> 
+	
+	<select id="honeybbsdetail" parameterType="Integer" resultType="kh.com.a.model.HoneyBbsDto">
+		SELECT SEQ, ID, TITLE, CONTENT0, CONTENT1, CONTENT2, CONTENT3, CONTENT4, AREA, FILE0, FILE1, FILE2, FILE3, FILE4, WDATE, DEL, READCOUNT FROM WD_HONEYBBS
+		WHERE SEQ = #{seq}
+	</select>
+	
+	<update id="hmbbsreadcount" parameterType="Integer">
+		UPDATE WD_HONEYBBS SET READCOUNT = READCOUNT + 1 WHERE SEQ = #{seq}
+	</update>
+	
+	<update id="delhmbbs" parameterType="Integer">
+		UPDATE WD_HONEYBBS SET DEL = 1 WHERE SEQ = #{seq}
+	</update>
+	
+	<update id="uphmbbs" parameterType="kh.com.a.model.HoneyBbsDto">
+		UPDATE WD_HONEYBBS SET TITLE = #{title}, CONTENT0 = #{content0}, CONTENT1 = #{content1}, 
+		 CONTENT2 = #{content2},  CONTENT3 = #{content3},  CONTENT4 = #{content4},  AREA = #{area},
+		 FILE0 = #{file[0]}, FILE1 = #{file[1]},  FILE2 = #{file[2]},  FILE3 = #{file[3]},  FILE4 = #{file[4]}
+		 WHERE SEQ = #{seq} 
+	</update>
+	
+</mapper>

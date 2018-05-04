@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Review">
+
+<select id="getRseq" resultType="java.lang.Integer">
+	SELECT SEQ_RSEQ.NEXTVAL FROM DUAL
+</select>
+
+<insert id="rwrite" parameterType="kh.com.a.model.ReviewDto">
+	INSERT INTO WREVIEW(RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE )
+	VALUES(SEQ_RSEQ.NEXTVAL, #{rpdseq}, #{mid}, #{pname}, SYSDATE, #{title}, #{content}, #{pic[0]}, #{pic[1]}, #{pic[2]}, #{pic[3]}, 0)
+</insert>
+
+	<select id="rlistcount" parameterType="kh.com.a.model.ReviewParam" resultType="java.lang.Integer">
+	 	SELECT NVL(COUNT(*),0) AS CNT
+	 	FROM WREVIEW
+	 	WHERE RPDSEQ=#{rpdseq} AND 1=1
+	 	<if test="s_category != '' and s_category != null and s_keyword != '' and s_keyword != null">
+		<if test="s_category == 'mname'"> AND MID LIKE '%'||#{s_keyword}||'%' </if>
+		<if test="s_category == 'contents'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
+		</if>
+	</select>
+
+<select id="pagingrlist" parameterType="kh.com.a.model.ReviewParam" resultType="kh.com.a.model.ReviewDto">
+	SELECT RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE
+ 	 FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY RSEQ DESC) AS RNUM,
+  		RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE
+  		FROM WREVIEW
+  		WHERE RPDSEQ=#{rpdseq} AND 1=1
+  		<if test="s_category != '' and s_category != null 
+ 		 	and s_keyword != '' and s_keyword != null">		 	 
+		 	<if test="s_category == 'mname'"> 
+		 		AND MID LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'content'">
+		 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+		 	</if>		 	
+		</if>
+	  ) A
+	  WHERE RNUM BETWEEN ${start} AND ${end}
+</select>
+
+	<select id="mrlistcount" parameterType="kh.com.a.model.ReviewParam" resultType="java.lang.Integer">
+	 	SELECT NVL(COUNT(*),0) AS CNT
+	 	FROM WREVIEW
+	 	WHERE MID=#{mid} AND 1=1
+	 	<if test="s_category != '' and s_category != null and s_keyword != '' and s_keyword != null">
+		<if test="s_category == 'title'"> AND TITLE LIKE '%'||#{s_keyword}||'%' </if>
+		<if test="s_category == 'contents'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
+		</if>
+	</select>
+
+<select id="myrlist" parameterType="kh.com.a.model.ReviewParam" resultType="kh.com.a.model.ReviewDto">
+	SELECT RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE
+ 	 FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY RSEQ DESC) AS RNUM,
+  		RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE
+  		FROM WREVIEW
+  		WHERE MID=#{mid} AND 1=1 
+  		<if test="s_category != '' and s_category != null 
+ 		 	and s_keyword != '' and s_keyword != null">		 	 
+		 	<if test="s_category == 'title'"> 
+		 		AND TITLE LIKE '%'||#{s_keyword}||'%'
+		 	</if>	
+		 	<if test="s_category == 'content'">
+		 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
+		 	</if>		 	
+		</if>
+	  ) A
+	  WHERE RNUM BETWEEN ${start} AND ${end}
+</select>
+
+<select id="rdetail" parameterType="java.lang.Integer" resultType="kh.com.a.model.ReviewDto">
+	SELECT *
+	FROM WREVIEW
+	WHERE RSEQ=#{rseq}
+</select>
+
+<!-- 0430 소현 -->
+<select id="wdlist" parameterType="java.lang.Integer" resultType="kh.com.a.model.ReviewDto">
+	SELECT RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, RLIKE
+	FROM WREVIEW
+	WHERE RPDSEQ=#{rpdseq}
+	ORDER BY RDATE ASC
+</select>
+
+<insert id="writeWdlist" parameterType="kh.com.a.model.ReviewDto">
+	INSERT INTO WREVIEW(RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, RLIKE)
+	VALUES(SEQ_RSEQ.NEXTVAL, #{rpdseq}, #{mid}, #{pname}, SYSDATE, #{title}, #{content}, 0)
+</insert>
+
+</mapper>
