@@ -9,7 +9,7 @@ if(mem==null){
 	mem = new LoginDto("guest", "guest");
 	session.setAttribute("login", mem);
 }
-%>
+%> 
 
 <c:if test="${ not empty dflag && dflag eq 'DsSucc'}">
 	<script type="text/javascript">
