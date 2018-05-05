@@ -102,7 +102,7 @@
 		<!-----------------------------------------------------  웨딩홀  ------------------------------------------------------------->
 			<table class="backet">
 				<colgroup>
-					<col width="5%"><col width="5%"><col width="15%"><col width="40%"><col width="15%"><col width="10%"><col width="10%">
+					<col width="5%"><col width="15%"><col width="40%"><col width="20%"><col width="10%"><col width="10%">
 				</colgroup>
 				
 				<tr>
@@ -113,13 +113,13 @@
 						<th>
 							<input type="checkbox" id="_allck" onclick="allcheck(this.checked)">
 						</th>
-						<th>번호</th>
 						<th>상품정보</th>			<!-- 회사명 혹은 상품명 -->
 						<th>옵션</th>
 						<th>할인</th>
 						<th>가격</th>
-						<th>선택</th>			<!-- 결제/삭제 -->
+						<th>선택</th>	
 					</tr>
+
 					<c:if test="${ !hFlag }">
 						<tr>
 							<td colspan="7">장바구니에 담긴 상품이 없습니다.</td>
@@ -136,8 +136,6 @@
 										<td>
 											<input type="checkbox" name="bkseq" value="${bsk.bkseq}">
 										</td>
-										
-										<td>${i.count}</td>
 										
 										<td style="align-content: left; text-align: left;">
 													<a href="viewPdseqPage.do?pdseq=${bsk.pdseq}">
@@ -160,9 +158,14 @@
 											</c:if>
 										</td>
 							
-										<td>적용 가능 쿠폰:</td>
+										<td>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+										</td>
 								
-										<td>${bsk.total_price}</td>
+										<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly">원
+										</td>
 											
 									  	<td>
 											<a href="bskPayView.do?bkseq=${bsk.bkseq}">결제</a><br>
@@ -179,7 +182,7 @@
 				<!-----------------------------------------------------  청첩장  ------------------------------------------------------------->
 			<table class="backet">
 				<colgroup>
-					<col width="5%"><col width="5%"><col width="15%"><col width="40%"><col width="15%"><col width="10%"><col width="10%">
+					<col width="5%"><col width="15%"><col width="40%"><col width="20%"><col width="10%"><col width="10%">
 				</colgroup>
 				
 				<tr>
@@ -190,7 +193,6 @@
 						<th>
 							<input type="checkbox" id="_allck" onclick="allcheck(this.checked)">
 						</th>
-						<th>번호</th>
 						<th>상품정보</th>			<!-- 회사명 혹은 상품명 -->
 						<th>옵션</th>
 						<th>할인</th>
@@ -214,8 +216,6 @@
 											<input type="checkbox" name="bkseq" value="${bsk.bkseq}">
 										</td>
 										
-										<td>${i.count}</td>
-										
 										<td style="align-content: left; text-align: left;">
 													<a href="viewPdseqPage.do?pdseq=${bsk.pdseq}">
 													<img src="upload/${bsk.pdDto.picture0}" alt="사진없음" style="width:50px;height: 50px;"/>
@@ -237,9 +237,14 @@
 											</c:if>
 										</td>
 							
-										<td>적용 가능 쿠폰:</td>
+										<td>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+										</td>
 								
-										<td>${bsk.total_price}</td>
+										<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly">원
+										</td>
 											
 									  	<td>
 											<a href="bskPayView.do?bkseq=${bsk.bkseq}">결제</a><br>
@@ -257,7 +262,7 @@
 			<!-----------------------------------------------------  스튜디오  ------------------------------------------------------------->
 			<table class="backet">
 				<colgroup>
-					<col width="5%"><col width="5%"><col width="15%"><col width="40%"><col width="15%"><col width="10%"><col width="10%">
+					<col width="5%"><col width="15%"><col width="40%"><col width="20%"><col width="10%"><col width="10%">
 				</colgroup>
 				
 				<tr>
@@ -268,7 +273,6 @@
 						<th>
 							<input type="checkbox" id="_allck" onclick="allcheck(this.checked)">
 						</th>
-						<th>번호</th>
 						<th>상품정보</th>			<!-- 회사명 혹은 상품명 -->
 						<th>옵션</th>
 						<th>할인</th>
@@ -292,8 +296,6 @@
 											<input type="checkbox" name="bkseq" value="${bsk.bkseq}">
 										</td>
 										
-										<td>${i.count}</td>
-										
 										<td style="align-content: left; text-align: left;">
 													<a href="viewPdseqPage.do?pdseq=${bsk.pdseq}">
 													<img src="upload/${bsk.pdDto.pic1}" alt="사진없음" style="width:50px;height: 50px;"/>
@@ -315,9 +317,14 @@
 											</c:if>
 										</td>
 							
-										<td>적용 가능 쿠폰:</td>
+										<td>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+										</td>
 								
-										<td>${bsk.total_price}</td>
+										<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly">원
+										</td>
 											
 									  	<td>
 											<a href="bskPayView.do?bkseq=${bsk.bkseq}">결제</a><br>

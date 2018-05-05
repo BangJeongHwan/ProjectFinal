@@ -192,7 +192,7 @@ public class PayCtrl {
 				bskList.get(i).setPdDto(cdServ.carddetail(pdseq));
 				
 				cFlag = true;
-			}else {
+			}else if(pdseq >= 1000 && pdseq < 2000){
 				hFlag =true;
 			}
 			
