@@ -49,7 +49,7 @@ if(mem==null){
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="index.jsp">Wedding</a>
+						<a class="navbar-brand" href="index.jsp">For You, With Us</a>
 					</div>
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
