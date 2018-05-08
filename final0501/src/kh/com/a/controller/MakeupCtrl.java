@@ -77,7 +77,7 @@ public class MakeupCtrl {
 		return "muMain.tiles";
 	}
 
-//	TODO 0501
+//	TODO 0508
 	@RequestMapping(value="muDetailView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String muDetailView(Model model, int museq, String flag, HttpServletRequest req) throws Exception {
 		logger.info("[MakeupCtrl] muDetailView " + new Date());
@@ -118,8 +118,10 @@ public class MakeupCtrl {
 			
 			String redate = rcParm.getRedate();	// yyyy-mm-dd
 			String timeSplit[] = rcParm.getRetime().split("~");
+			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
 			String start = redate + "T" + timeSplit[0];
 			String end = redate + "T" + timeSplit[1];
+			System.out.println("   " + start);
 			
 			JSONObject jo = new JSONObject();
 			jo.put("title", title);
