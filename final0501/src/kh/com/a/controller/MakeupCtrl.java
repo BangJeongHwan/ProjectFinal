@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kh.com.a.model.JjimDto;
 import kh.com.a.model.MakeupDto;
 import kh.com.a.model.MuProductDto;
+import kh.com.a.model.ReviewDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.MuPagingParam;
 import kh.com.a.model2.MuParam;
@@ -30,6 +31,7 @@ import kh.com.a.model2.ReservCalParam;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReservationServ;
+import kh.com.a.service.ReviewServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -43,6 +45,8 @@ public class MakeupCtrl {
 	private MypageServ mypageserv;
 	@Autowired
 	ReservationServ reservServ;
+	@Autowired
+	ReviewServ reviewServ;
 	
 	@RequestMapping(value="muMainView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String muMainView(Model model, MuPagingParam param) throws Exception {
@@ -136,7 +140,11 @@ public class MakeupCtrl {
 		System.out.println("regiDataSize : " + regiData.length());
 		
 		model.addAttribute("regiData", regiData);
-		/////////////////
+		
+		////////////////후기
+		List<ReviewDto> dlist = reviewServ.WDlist(museq);
+		model.addAttribute("dlist", dlist);
+		////////////////
 		
 		model.addAttribute("muDto", muDto);
 		model.addAttribute("mupdList", mupdList);

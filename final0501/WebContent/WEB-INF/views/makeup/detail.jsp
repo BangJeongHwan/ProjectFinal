@@ -257,17 +257,23 @@ var picArr = new Array("", "", "", "", "", "", "", "", "", "");
 </div>
 <br><br><br>
 
-<div class="w3-container" style="color: black;" align="center">
-	<div class="w3-row" align="center">
-		<div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      		style="font-family: 'Hanna', Fantasy;" onclick="openCity(event, 'regi');">예약 정보</div>
-		<div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-       		style="font-family: 'Hanna', Fantasy;" onclick="openCity(event, 'hugi');">상품 정보</div>
+<div class="w3-container" style="color: black;" >
+	<div class="w3-row" align="center" style="padding-left: 450px">
+      	<a href="javascript:void(0)" onclick="openCity(event, 'regi');">
+	      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+	       	style="font-family: 'Hanna', Fantasy;">예약 정보
+	      </div>
+	    </a>
+	    <a href="javascript:void(0)" onclick="openCity(event, 'hugi');">
+	      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+	      	style="font-family: 'Hanna', Fantasy;">후기글
+	      </div>
+	    </a>
 	</div>
   
 	<!-- 예약 뷰 -->
-	<div id="regi" class="w3-container city" style="display:inline">
-		<div class="w3-container" style="padding-left: 250px; font-family: 'Hanna', serif;">
+	<div id="regi" class="w3-container city" style="display:inline;">
+		<div class="w3-container" style="padding-left:150px;padding-right:150px;font-family: 'Hanna', serif;">
 			<div align="center">
 				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
 			</div>
@@ -276,88 +282,52 @@ var picArr = new Array("", "", "", "", "", "", "", "", "", "");
 	  
 	<!-- 후기 뷰 -->
 	<div id="hugi" class="w3-container city" style="display:none;">
-	  <div class="w3-container" style="padding-left: 250px; font-family: 'Hanna', serif;">
-	 		후기
+		<div class="w3-container" style="padding-left:150px;padding-right:150px; font-family: 'Hanna', serif;">
+			<br><br><br>
+			<div align="center">
+				<table class="type11" style="width:85%; font-family: 'Hanna', serif;" >
+					<col width="110"><col width="300"><col width="100">	
+					<tr style="border-bottom: solid; border-bottom-color: lightgray">
+						<th align="center">작성일</th><th>댓글</th><th>작성자</th>
+					</tr>
+				
+					<c:if test="${empty dlist}">
+						<tr style="border-bottom: solid; border-bottom-color: lightgray">
+							<td colspan="3" style="text-align: center">작성된 댓글이 없습니다</td>
+						</tr>
+					</c:if>
+				
+					<c:forEach var="list" items="${dlist}" varStatus="i">
+						<tr style="border-bottom: solid; border-bottom-color: lightgray">
+							<td>${list.rdate.substring(0,10) }</td>
+							<td>${list.content }</td>
+							<td>${list.mid }</td>
+						</tr>
+					</c:forEach>
+				</table>
+				<br>
+				<form action="wmureview.do" onsubmit="return checkReviewSubmit('${login.id}')">
+					<input type="hidden" name="rpdseq" value="${muDto.museq}">
+					<input type="hidden" name="pname" value="${muDto.cname}">
+					<input type="hidden" name="mid" value="${login.id }">
+					<input type="hidden" name="title" value="${muDto.cname}">
+					
+					<table class="type11" style="width:85%; font-family: 'Hanna', serif;" >
+					<tr style="border: 0; border-bottom-color: lightgray">
+						<td colspan="2">
+							<input type="text" name="content" size="70">
+						</td>
+						<td>
+							<input class="w3-btn w3-white w3-border w3-border-red w3-round-large" type="submit" value="댓글">
+						</td>
+					</tr>
+					
+					</table>
+				</form>
+			</div>
 		</div>
 	</div>
   
-</div>
-
-<!-- ★Modal -->
-<div class="modal fade" id="_regiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="width:600px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <div align="center">
-      	  <h4 class="modal-title" id="myModalLabel">예약하기</h4>
-        </div>
-      </div>
-      <div class="modal-body">
-      	<!-- <input type="text" id="_index" value="0"> -->
-      	<div id="_modalContent" class="modalContent">
-      		<form action="muBasket.do" method="post" id="_frmPayModal" onsubmit="return checkSubmit('Modal')">
-			 	<input type="hidden" name="cmd" id="_cmdModal" value="bsk">
-				<input type="hidden" name="pdseq" value="${ muDto.museq }">
-				<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
-				<input type="hidden" name="option1" id="_option1Modal" value="${mupdList[0].title}">
-	      	  
-				<table class="type05" >
-					<colgroup>
-						<col width="20%"><col width="80%">
-					</colgroup>
-					<tr>
-						<td>상품</td>
-						<td>
-							<select id="_optionSelectModal" onchange="setOptionPrice('Modal')">
-								<c:forEach items="${ mupdList }" var="mupd" varStatus="i">
-									<option value="${ mupd.price }">${ mupd.title }</option>
-								</c:forEach>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>예약날짜</td>
-						<td>
-							<input type="text" id="_redateModal" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
-						</td>
-					</tr>
-					<tr>
-						<td>예약시간</td>
-						<td>
-							<select name="retime" id="_retimeModal">
-								<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
-									<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
-								</c:forEach>
-							</select>
-						</td>
-					</tr>
-					<tr >
-						<td>상품 가격</td>
-						<td>
-							<input type="text" name="total_price" id="_total_priceModal" value="${mupdList[0].price}"
-											 style="border: 0"  readonly="readonly">원
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-							<button type="button" onclick="muPaymentView('Modal')"  class="w3-btn w3-white w3-border w3-border-red w3-round-large">결제</button>
-							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-							<button type="button" onclick="muBasket('Modal')" class="w3-btn w3-white w3-border w3-border-red w3-round-large">장바구니</button>
-						</td>
-					</tr>
-				</table>
-			</form>
-      	
-      	</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-      </div>
-    </div>
-  </div>
 </div>
 
 
@@ -420,13 +390,7 @@ $(function() {
  	    	// date : 선택 날짜, jsEvent : 클릭 좌표, view : 현재 보고 있는 화면 상태 (month 등)
 			// change the day's background color just for fun
 			// $(this).css('background-color', 'red');
-			//alert("func date : " + date.format());
-			//alert("rdate : " + rdate);
-			//alert("date : " + oriDate.format());
-			//alert("y : " + y);
-			//alert("m : " + m);
-			//alert("d : " + d);
-			
+						
 			// 오늘날짜보다 이전 날짜는 클릭할 수 없도록 한다.
 			var date = oriDate.format();
 			var dateArr = date.split('-');
@@ -534,7 +498,13 @@ function toggle(divId) {
 	//$("#collapseOne").toggle('slow');
 }
 
-
+function checkReviewSubmit(id) {
+	if (id == "guest") {
+		alert("로그인 후 이용해주세요.");
+		return false;
+	}
+	return true;
+}
 
 function checkSubmit(tail) {
 	

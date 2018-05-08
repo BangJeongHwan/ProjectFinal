@@ -62,6 +62,15 @@ public class ReviewCtrl implements Serializable {
 		return "redirect:/dressDetail.do?dsseq="+dto.getRpdseq()+"&pdseq="+dto.getRpdseq()+"&usid="+dto.getMid();
 	}
 	
+//	0508 혜영
+	@RequestMapping(value="wmureview.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String wmureview(Model model, ReviewDto dto) throws Exception{
+		logger.info("ReviewCtrl wmureview " + new Date());
+		boolean b = reviewServ.writeWdlist(dto);
+		
+		model.addAttribute("museq", dto.getRpdseq());
+		return "redirect:/muDetailView.do";
+	}
 	
 	@RequestMapping(value="rwriteAf.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String rwriteAf(HttpServletRequest req, 
