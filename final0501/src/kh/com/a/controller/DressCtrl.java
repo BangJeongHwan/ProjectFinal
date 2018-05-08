@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,10 @@ import kh.com.a.model.ReviewDto;
 import kh.com.a.model2.DressParam;
 import kh.com.a.model2.DressVO;
 import kh.com.a.model2.LoginDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.service.DressServ;
 import kh.com.a.service.MypageServ;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
 import kh.com.a.util.FUpUtil;
 
@@ -43,6 +47,8 @@ public class DressCtrl {
 	private MypageServ mypageserv;
 	@Autowired
 	ReviewServ reviewServ;
+	@Autowired
+	ReservationServ reservServ;
 	
 	private static final Logger logger = LoggerFactory.getLogger(DressCtrl.class);
 	
@@ -141,6 +147,36 @@ public class DressCtrl {
 		}else {
 			model.addAttribute("jjdto", false);
 		}
+		
+		///////////////// 예약일정
+		List<ReservCalParam> reservCalList = reservServ.DgetReservCalListByPdseq(Ddto.getDsseq());
+		// json parsing
+		JSONArray regiData = new JSONArray();
+		for (int i = 0; i < reservCalList.size(); i++) {
+			ReservCalParam rcParm = reservCalList.get(i);
+			String title = rcParm.getMname();
+			
+			String redate = rcParm.getRedate();	// yyyy-mm-dd
+			String timeSplit[] = rcParm.getRetime().split("~");
+			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
+			String start = redate + "T" + timeSplit[0];
+			String end = redate + "T" + timeSplit[1];
+			System.out.println("   " + start);
+			
+			JSONObject jo = new JSONObject();
+			jo.put("title", title);
+			jo.put("start", start);
+			jo.put("end", end);
+			jo.put("color", "#121212");
+			//jo.put("url", "javascript:func()");
+			regiData.put(jo);
+		}
+		
+		System.out.println("reservSize : " + reservCalList.size());
+		System.out.println("regiDataSize : " + regiData.length());
+		
+		model.addAttribute("regiData", regiData);
+		/////////////////
 		
 		model.addAttribute("Ddto", Ddto);
 		model.addAttribute("dlist", dlist);

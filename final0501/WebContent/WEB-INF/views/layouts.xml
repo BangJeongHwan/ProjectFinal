@@ -334,6 +334,10 @@
 		<put-attribute name="main" value="/WEB-INF/views/makeup/detail.jsp"/>
 	</definition>
 	
+	<definition name="dressDetail.tiles" extends="detail.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressDetail.jsp"/>
+	</definition>
+	
 </tiles-definitions>
 
 
