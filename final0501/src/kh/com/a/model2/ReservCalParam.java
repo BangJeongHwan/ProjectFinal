@@ -1,7 +1,7 @@
 package kh.com.a.model2;
 
 import java.io.Serializable;
-
+ 
 public class ReservCalParam implements Serializable {
 
 	private int rvseq;
