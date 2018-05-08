@@ -410,7 +410,7 @@
 										</td>
 											
 									  	<td>
-											<a href="bskPayView.do?bkseq=${bsk.bkseq}">결제</a><br>
+											<a href="bskPayView.do?bkseq=${bsk.bkseq}&dcprice=0">결제</a><br>
 											<a href="bskDel.do?bkseq=${bsk.bkseq}">삭제</a>
 										</td>
 									</tr>		
