@@ -140,5 +140,10 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception {
 		return sqlSession.selectList(ns+"getReservCalListByPdseq", pdseq);
 	}
+
+	@Override
+	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception {
+		return sqlSession.selectList(ns+"DgetReservCalListByPdseq", pdseq);
+	}
 	
 }

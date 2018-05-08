@@ -46,9 +46,30 @@ var picArr = new Array("", "", "", "", "", "", "", "", "", "");
 	</c:if>
 </c:forEach>
 
+<!-- ★fullcalender -->
+<link rel='stylesheet' href='FullCalendar/fullcalendar.css' />
+<link rel='stylesheet' media="print" href='FullCalendar/fullcalendar.print.min.css' />
+<script src='FullCalendar/lib/jquery.min.js'></script>
+<script src='FullCalendar/lib/moment.min.js'></script>
+<script src='FullCalendar/lib/jquery-ui.min.js'></script>
+<script src='FullCalendar/fullcalendar.min.js'></script>
+<script src='FullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
+
+<!-- ★modal -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
 
 <style type="text/css">
+.modal-backdrop {
+    z-index: -1;
+}
+.modalContent {
+    font-size: 18px;
+    color: black;
+  }
+
 .imgScroll td{
 	width:92px;
 	height:60px;
@@ -198,8 +219,7 @@ img:hover {
 		<tr>
 			<td colspan="2">
 			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-			<input type="submit" value="reservation" class="w3-btn w3-white w3-border w3-border-red w3-round-large"
-			onclick="muBasket()">
+			<input type="submit" value="reservation" class="w3-btn w3-white w3-border w3-border-red w3-round-large">
 			</td>
 		</tr>
 		</table>
@@ -221,28 +241,30 @@ img:hover {
 
 <div class="w3-container" style="color: black;" >
   <div class="w3-row" style="padding-left: 450px">
-    <a href="javascript:void(0)" onclick="openCity(event, 'dressCalendar');">
+    <a href="javascript:void(0)" onclick="openCity(event, 'regi');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-       	style="font-family: 'Hanna', Fantasy;">달력
+       	style="font-family: 'Hanna', Fantasy;">예약 정보
       </div>
     </a>
     <a href="javascript:void(0)" onclick="openCity(event, 'dressreview');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      	style="font-family: 'Hanna', Fantasy;">후기글
+      	style="font-family: 'Hanna', Fantasy;">업체 후기
       </div>
     </a>
   </div>
-  	<div id="dressCalendar" class="w3-container city" style="display:inline">
-  		<br><br><br>
-  		달력 올 자리
-  		<br><br><br>
+  	<div id="regi" class="w3-container city" style="display:inline">
+  		<div class="w3-container" style="padding-left: 70px; font-family: 'Hanna', serif;">
+			<div align="center">
+				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
+			</div>
+		</div>
   	</div>
   
 	<!-- 후기글 -->
 	<div id="dressreview" class="w3-container city" style="display:none">
 	<br><br><br>
-		<div style="padding-left: 100px">
-		<table class="type11" style="width:85%; font-family: 'Hanna', serif;" >
+		<div style="padding-left: 250px">
+		<table class="type11" style="width:80%; font-family: 'Hanna', serif;" >
 			<col width="110"><col width="300"><col width="100">	
 			<tr style="border-bottom: solid; border-bottom-color: lightgray">
 				<th align="center">작성일</th><th>댓글</th><th>작성자</th>
@@ -285,6 +307,146 @@ img:hover {
 		</div>
 	</div>
 </div>
+
+<!-- ★Modal -->
+<div class="modal fade" id="_regiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div align="center">
+      	  <h4 class="modal-title" id="myModalLabel">예약하기</h4>
+        </div>
+      </div>
+      <div class="modal-body">
+      	<!-- <input type="text" id="_index" value="0"> -->
+      	<div id="_modalContent" class="modalContent">
+      		<form action="reservationDress.do" method="post" id="_frmPayModal" onsubmit="return checkSubmit('Modal')">
+			 	<input type="hidden" value="${Ddto.dsseq }" name="pdseq" id="_pdseq">
+				<input type="hidden" value="${login.id }" name="mid" id="_mid">
+				<input type="hidden" value="${login.id }" name="usid" id="_mid">
+	      	  
+				<table class="type05" >
+					<colgroup>
+						<col width="20%"><col width="80%">
+					</colgroup>
+					<tr>
+						<td>예약날짜</td>
+						<td>
+							<input type="text" id="_redateModal" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>예약시간</td>
+						<td>
+							<select name="retime" id="_retimeModal">
+								<c:forEach var="i" begin="09" end="17">
+									<option value="${i}:00~${i + 1}:00">${i}:00~${i + 1}:00</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+							<input type="submit" value="reservation" class="w3-btn w3-white w3-border w3-border-red w3-round-large">
+						</td>
+					</tr>
+				</table>
+			</form>
+      	
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ★fullcalendar에 대한 스크립트 -->
+<!-- https://fullcalendar.io/ -->
+<script type="text/javascript">
+
+
+function modalRegi(date) {
+	date = date.split("-").join("/");	// yyyy-mm-dd -> yyyy/mm/dd
+	$("#_redateModal").val(date);
+	
+	selectDate(date, 'Modal');
+	
+	$("#_regiModal").modal("show");
+	$("#_regiModal").css("z-index", "1500");
+}
+
+$(function() {
+	// 한국어 변환
+	var initialLocaleCode = 'ko';
+	
+	// 현재 날짜 설정
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth()+1;
+	var y = date.getFullYear();
+	var rdate = y+"-0"+m+"-"+d;	
+	//alert(rdate);
+	
+	// fullcalender 시작
+	$('#calendar').fullCalendar({
+		
+		// 한국어 변환
+	 	locale: initialLocaleCode
+	 	   
+		// header 설정
+  		,header: {
+  	        left: 'prev,next,today',	// 달 이동
+  	        center: 'title',			// 제목
+  	        right: 'month,agendaWeek,listMonth'	// 월별, 주별, 일별, list
+  	    }
+  		// 현재 보여줄 화면
+  	    ,defaultDate: rdate
+  	    // show the prev/next text <, >
+ 	    ,buttonIcons: true
+ 	    // 1년간의 주를 나타내 (주)는 부분
+ 	   	,weekNumbers: true
+  	    // 날짜 클릭 가능(true), 불가(false)
+  	    ,navLinks: true	    
+  	    // 일정 옮기기 가능
+  	    ,editable: true	    
+  		// 4개 이상 "more" 창 나타내기(true), 나타내지 않기(false)
+  	    ,eventLimit: true
+ 		// 일정 넣는 부분
+  	    ,events: ${regiData}
+ 	    ,editable:false
+ 	    ,height: 700
+ 	    ,  dayClick: function(oriDate, jsEvent, view) {
+ 	    	// date : 선택 날짜, jsEvent : 클릭 좌표, view : 현재 보고 있는 화면 상태 (month 등)
+			// change the day's background color just for fun
+			// $(this).css('background-color', 'red');
+			//alert("func date : " + date.format());
+			//alert("rdate : " + rdate);
+			//alert("date : " + oriDate.format());
+			//alert("y : " + y);
+			//alert("m : " + m);
+			//alert("d : " + d);
+			
+			// 오늘날짜보다 이전 날짜는 클릭할 수 없도록 한다.
+			var date = oriDate.format();
+			var dateArr = date.split('-');
+			if (parseInt(y) <= parseInt(dateArr[0])) {
+				if (parseInt(m) <= parseInt(dateArr[1])) {
+					if (parseInt(d) <= parseInt(dateArr[2])) {
+						modalRegi(date);
+					}
+				}
+			}
+ 	     }
+  	});
+});
+
+</script>
 
 <!-- 이미지 스크롤 관련 -->  
 <script type="text/javascript">

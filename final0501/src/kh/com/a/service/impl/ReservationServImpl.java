@@ -137,6 +137,17 @@ public class ReservationServImpl implements ReservationServ {
 		
 		return reservList;
 	}
+
+	@Override
+	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception {
+		List<ReservCalParam> reservList = reservDao.DgetReservCalListByPdseq(pdseq);
+		for (int i = 0; i < reservList.size(); i++) {
+			String split[] = reservList.get(i).getRedate().split(" ");
+			reservList.get(i).setRedate(split[0]);
+		}
+		
+		return reservList;
+	}
 	
 	
 	

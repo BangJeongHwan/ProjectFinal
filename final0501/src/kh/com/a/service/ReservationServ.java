@@ -34,6 +34,6 @@ public interface ReservationServ {
 	public List<ReservationDto> getWdRegList(ReservationDto fcal);
 //	혜영
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception;
-	
+	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception;
 	
 }

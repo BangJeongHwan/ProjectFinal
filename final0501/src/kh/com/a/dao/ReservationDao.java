@@ -33,7 +33,7 @@ public interface ReservationDao {
 	public List<ReservationDto> getWdRegList(ReservationDto fcal);
 //	0501
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception;
-	
+	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception;
 	
 	
 }

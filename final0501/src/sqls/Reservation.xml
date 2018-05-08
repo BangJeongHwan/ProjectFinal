@@ -154,6 +154,15 @@
 		    AND STATUS='결제완료'
 	 </select>
 	 
+	 <!-- 소현 -->
+	 <select id="DgetReservCalListByPdseq" parameterType="java.lang.Integer" resultType="kh.com.a.model2.ReservCalParam">
+		SELECT R.RVSEQ, R.MID, R.REDATE, R.RETIME, R.PDSEQ, R.STATUS, R.CONTENT, M.MNAME
+		FROM WD_RESERVATION R, WD_MEMBER M
+		WHERE R.MID=M.MID
+		    AND PDSEQ=#{pdseq}
+		    AND STATUS='승인완료'
+	 </select>
+	 
 	
 </mapper>
 
