@@ -166,8 +166,7 @@ public class PayCtrl {
 			return "redirect:/index.do";
 		}
 		
-		boolean hFlag = false; 	// 게시물이 있는지 없는지?
-		boolean cFlag = false; 
+		boolean cFlag = false; // 게시물이 있는지 없는지?
 		boolean sFlag = false; 
 		boolean mFlag = false; 
 		
@@ -193,8 +192,6 @@ public class PayCtrl {
 				bskList.get(i).setPdDto(cdServ.carddetail(pdseq));
 				
 				cFlag = true;
-			}else if(pdseq >= 1000 && pdseq < 2000){
-				hFlag =true;
 			}
 			
 		}
@@ -203,7 +200,6 @@ public class PayCtrl {
 		model.addAttribute("mFlag",mFlag);
 		model.addAttribute("sFlag",sFlag);
 		model.addAttribute("cFlag",cFlag);
-		model.addAttribute("hFlag",hFlag);
 		
 		if (flagPdseq != null) model.addAttribute("flagPdseq", flagPdseq);
 		if (flag != null) model.addAttribute("flag", flag);

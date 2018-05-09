@@ -127,7 +127,6 @@
 			});
 		
 			
-			<%-- var mid = "<%=((LoginDto)request.getAttribute("login")).getId() %>"; --%>
 			var data = {
 					seq: seq,
 					bkseq: bkseq,
@@ -139,7 +138,7 @@
 				data:data,
 				 async : true,
 				 success : function(msg){
-					 alert(msg);
+					 console.log(msg);
 				 }
 			}); 
 			
