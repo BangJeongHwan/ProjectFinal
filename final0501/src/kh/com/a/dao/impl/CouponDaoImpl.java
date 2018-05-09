@@ -104,9 +104,14 @@ public class CouponDaoImpl implements CouponDao {
 	}
 
 	@Override
-	public void rollbackCp() throws Exception {
-		sqlSession.update(ns+"rollbackCp");
+	public void rollbackCp(String mid) throws Exception {
+		sqlSession.update(ns+"rollbackCp",mid);
 		
+	}
+
+	@Override
+	public void cpBkseq(couponVO memcp) throws Exception {
+		 sqlSession.update(ns+"cpBkseq",memcp);
 	}
 
 

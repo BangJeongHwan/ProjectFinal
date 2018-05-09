@@ -26,5 +26,6 @@ public interface CouponDao {
 	List<couponVO> myCp(String mid) throws Exception;
 	couponVO getCp(int seq) throws Exception;
 	void basketCp(int seq) throws Exception;
-	void rollbackCp() throws Exception;
+	void rollbackCp(String mid) throws Exception;
+	void cpBkseq(couponVO memcp) throws Exception;
 }

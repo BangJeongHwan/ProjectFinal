@@ -148,8 +148,10 @@ public class CouponCtrl {
 	}	
 	
 	@RequestMapping(value="myCp.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String myCp(Model model, HttpServletRequest req) throws Exception {
+	public String myCp(Model model, int num, String command, HttpServletRequest req) throws Exception {
 			logger.info("CouponCtrl myCp.do ");
+			
+			
 			
 			LoginDto login = (LoginDto)req.getSession().getAttribute("login");
 			List<couponVO> list = couponServ.myCp(login.getId());//쿠폰 리스트
@@ -160,6 +162,8 @@ public class CouponCtrl {
 				}
 			}
 			model.addAttribute("list", list);
+			model.addAttribute("num", num);
+			model.addAttribute("command", command);
 		return "myCp.tiles";
 	}
 	
@@ -171,6 +175,18 @@ public class CouponCtrl {
 		return mcp;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="cpbkseq.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String cpbkseq(Model model, couponVO memcp, HttpServletRequest req) throws Exception {
+			logger.info("CouponCtrl cpbkseq.do ");
+			
+			
+			LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+			String mid = login.getId();
+			memcp.setMid(mid);
+			couponServ.cpBkseq(memcp);
+		return "Success";
+	}
 	
 	@RequestMapping(value="test.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String test(Model model, int seq) throws Exception {
@@ -178,7 +194,4 @@ public class CouponCtrl {
 			
 		return "test.tiles";
 	}
-	
-
-	
 }

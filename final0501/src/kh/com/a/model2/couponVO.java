@@ -8,7 +8,8 @@ CREATE TABLE WD_USECOUPON(
   CP_SEQ NUMBER(6) NOT NULL,
   MID VARCHAR2(50) NOT NULL,
   REMIT DATE NOT NULL,
-  DEL CHAR(1) NOT NULL -- 사용시 삭제
+  DEL CHAR(1) NOT NULL, -- 사용시 삭제
+  BKSEQ NUMBER(6)
 );
 
 DROP SEQUENCE SEQ_WD_UC;
@@ -19,6 +20,7 @@ START WITH 1 INCREMENT BY 1;
 
 ALTER TABLE WD_USECOUPON ADD CONSTRAINT FK_COU_ID FOREIGN KEY(MID) REFERENCES WD_MEMBER(MID);
 ALTER TABLE WD_USECOUPON ADD CONSTRAINT FK_COU_SEQ FOREIGN KEY(CP_SEQ) REFERENCES WD_COUPON(SEQ);
+ALTER TABLE WD_USECOUPON ADD CONSTRAINT FK_COU_BKSEQ FOREIGN KEY(BKSEQ) REFERENCES WD_BASKET(BKSEQ);
  * */
 public class couponVO {
 	
@@ -29,10 +31,11 @@ public class couponVO {
 	private int del;
 	private String title;
 	private int discount;
+	private int bkseq;
 	
 	public couponVO() {}
 
-	public couponVO(int seq, int cp_seq, String mid, String remit, int del, String title, int discount) {
+	public couponVO(int seq, int cp_seq, String mid, String remit, int del, String title, int discount, int bkseq) {
 		super();
 		this.seq = seq;
 		this.cp_seq = cp_seq;
@@ -41,6 +44,7 @@ public class couponVO {
 		this.del = del;
 		this.title = title;
 		this.discount = discount;
+		this.bkseq = bkseq;
 	}
 
 	public int getSeq() {
@@ -99,11 +103,20 @@ public class couponVO {
 		this.discount = discount;
 	}
 
+	public int getBkseq() {
+		return bkseq;
+	}
+
+	public void setBkseq(int bkseq) {
+		this.bkseq = bkseq;
+	}
+
 	@Override
 	public String toString() {
 		return "couponVO [seq=" + seq + ", cp_seq=" + cp_seq + ", mid=" + mid + ", remit=" + remit + ", del=" + del
-				+ ", title=" + title + ", discount=" + discount + "]";
+				+ ", title=" + title + ", discount=" + discount + ", bkseq=" + bkseq + "]";
 	}
 
+	
 	
 }

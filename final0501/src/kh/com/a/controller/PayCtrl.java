@@ -157,9 +157,10 @@ public class PayCtrl {
 	@RequestMapping(value="basketListView.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String basketListView(Model model, HttpServletRequest req, String flagPdseq, String flag) throws Exception {
 		logger.info("[PayCtrl] basketListView " + new Date());
-		couponServ.rollbackCp();	
+			
 		
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		couponServ.rollbackCp(login.getId());
 		System.out.println("   login auth : " + login.getAuth());
 		if (!login.getAuth().equals("member")) {
 			return "redirect:/index.do";
@@ -304,19 +305,10 @@ public class PayCtrl {
 
 //	장바구니에서 결제하기를 눌렀을 때 실행되는 메소드. 결제 view를 띄워준다.
 	@RequestMapping(value="bskPayView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String bskPayView(Model model, int[] bkseq, int[] dcprice, HttpServletRequest req) throws Exception {
+	public String bskPayView(Model model, int[] bkseq, HttpServletRequest req) throws Exception {
 		logger.info("[PayCtrl] bskPayView" + new Date());
 
 		List<BasketParam> bskList = bskServ.getBskListByBkseq(bkseq);
-		
-		for (int i = 0; i < dcprice.length; i++) {
-			int j = dcprice.length-1;
-			if(i!=j) {
-				int finalprice = bskList.get(i).getTotal_price();
-				finalprice = finalprice - dcprice[i];
-				bskList.get(i).setTotal_price(finalprice);
-			}
-		}
 		
 		for (int i = 0; i < bskList.size(); i++) {
 			int pdseq = bskList.get(i).getPdseq();
