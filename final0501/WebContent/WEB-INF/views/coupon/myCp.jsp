@@ -1,3 +1,5 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
+<%@page import="kh.com.a.model.MemberDto"%>
 <%@page import="java.time.Year"%>
 <%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -45,6 +47,23 @@
 	text-align: center;
 	cursor: pointer;
 }
+.upbtn{
+    background: #00bb00;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-weight: bold;
+}
+.delbtn{
+	background: #ff5555;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-weight: bold;
+    margin-left: 7px;
+}
 </style>
 
  <div class="modal-header">
@@ -82,11 +101,21 @@
 	</table>
 </div>	
 <div class="modal-footer">
-        	<!-- <button type="button" class="btn btn-default" id="modalbtn">적용</button> -->
-          <!-- <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button> -->
 </div> 
+
+
 	<script type="text/javascript">
+	var num = "${num}";
+	var command = "${command}";
+	
+	var btnid = "#_cpbtn"+num;
+	var totalprice = "#totalprice"+num;
+	var price = $(totalprice).val();
+	var bkseq = $(btnid).val();
+	
+	
  	function trclick(seq) {
+ 		console.log(seq);
 			$.ajax({
 				url:"getCp.do",
 				type:"post",
@@ -96,19 +125,41 @@
 					 createDiv(mcp.seq,mcp.title,mcp.discount);
 				 }
 			});
+		
+			
+			<%-- var mid = "<%=((LoginDto)request.getAttribute("login")).getId() %>"; --%>
+			var data = {
+					seq: seq,
+					bkseq: bkseq,
+			};
+			
+			$.ajax({
+				url:"cpbkseq.do",
+				type:"get",
+				data:data,
+				 async : true,
+				 success : function(msg){
+					 alert(msg);
+				 }
+			}); 
+			
 			$(".close").click();
 		} 
  	 function createDiv(seq,title,discount) {
- 		 var id = "_cpdiv"+seq;
-			$("#_cpdiv").attr("id",id);
-			var price = $("#"+id).html();
-			price = Number(price);
+ 		
+		
+			
 			dcprice = price*0.01*discount;
 			dcprice = Math.ceil(dcprice);
-			$("#"+id).html(title+"(-"+discount+"%)"+dcprice+"원");
+			console.log("price"+price);
+			console.log("dcprice"+dcprice);
+			console.log("bkseq"+bkseq);
 			
-			$("#_dcpricee").val(dcprice);
-			$("#_dcpricee").removeAttr("id");
 			
+			$(btnid).parent().append("<div id='_cdiv"+num+"'>"+title+"(-"+discount+"%)"+dcprice+"원"+"</div>");
+			$(btnid).parent().append("<input type='hidden' value='"+dcprice+"' id='dcp"+num+"'>");
+			$(btnid).parent().append("<button type='button' class='upbtn'>변경</button>");
+			$(btnid).parent().append("<button type='button' class='delbtn'>삭제</button>");
+			$(btnid).remove();
 		}
 	</script>

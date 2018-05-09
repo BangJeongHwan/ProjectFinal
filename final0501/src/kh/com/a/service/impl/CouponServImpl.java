@@ -95,8 +95,13 @@ public class CouponServImpl implements CouponServ {
 	}
 
 	@Override
-	public void rollbackCp() throws Exception {
-		couponDao.rollbackCp();
+	public void rollbackCp(String mid) throws Exception {
+		couponDao.rollbackCp(mid);
+	}
+
+	@Override
+	public void cpBkseq(couponVO memcp) throws Exception {
+		couponDao.cpBkseq(memcp);
 	}
 
 }

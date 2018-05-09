@@ -45,6 +45,8 @@
 		UPDATE WD_COUPON SET DEL = 2 WHERE MONTHS_BETWEEN(CLOSEDATE,SYSDATE)<![CDATA[ < ]]>0
 	</update>
 	
+	
+	
 	<insert id="acqCp" parameterType="kh.com.a.model2.couponVO">
 		INSERT INTO WD_USECOUPON(SEQ, CP_SEQ, MID, REMIT, DEL)
 		VALUES(SEQ_WD_UC.NEXTVAL, #{cp_seq}, #{mid}, SYSDATE+#{remit}, #{del})
@@ -59,7 +61,7 @@
 	</update>
 	
 	<select id="myCp" parameterType="String" resultType="kh.com.a.model2.couponVO">
-		SELECT W.SEQ SEQ, CP_SEQ, REMIT, TITLE, DISCOUNT  FROM WD_USECOUPON W,WD_COUPON C 
+		SELECT W.SEQ SEQ, CP_SEQ, REMIT, TITLE, DISCOUNT, BKSEQ  FROM WD_USECOUPON W,WD_COUPON C 
 		WHERE MID = #{mid} AND W.DEL = 0 AND CP_SEQ = C.SEQ ORDER BY DISCOUNT DESC, CP_SEQ ASC
 	</select>
 	
@@ -73,8 +75,12 @@
 		UPDATE WD_USECOUPON SET DEL=2 WHERE SEQ = #{seq}
 	</update>
 	
-	<update id="rollbackCp">
-		UPDATE WD_USECOUPON SET DEL=0 WHERE  DEL=2
+	<update id="rollbackCp" parameterType="String">
+		UPDATE WD_USECOUPON SET DEL=0 WHERE  DEL=2 AND MID = #{mid}
+	</update>
+	
+	<update id="cpBkseq" parameterType="kh.com.a.model2.couponVO">
+		UPDATE WD_USECOUPON SET BKSEQ = #{bkseq} WHERE SEQ = #{seq} AND MID = #{mid}
 	</update>
 	
 </mapper>

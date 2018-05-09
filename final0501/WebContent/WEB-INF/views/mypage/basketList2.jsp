@@ -401,12 +401,13 @@
 										</td>
 									
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index})">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
 											<input type="text" value="${bsk.total_price}" style="border: none; 
-											background: none; text-align: right;" size="8" readonly="readonly">원
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
+											
 										</td>
 											
 									  	<td>
@@ -490,7 +491,7 @@ $("input:checkbox").change(function () {
 	   $("input:checkbox").each(function() {
 		   if($(this).is(":checked")){
 			 var price = $(this).parent().parent().children(":eq(4)").children().val(); 
-			 var dcp = $(this).parent().parent().children(":eq(3)").children(":eq(1)").val();
+			 var dcp = $(this).parent().parent().children(":eq(3)").children(":eq(1)").val(); 
 			
 			 /*  _allprice _dcprice _pdprice */
 			
@@ -529,9 +530,30 @@ $("input:checkbox").change(function () {
 
 
 
+function cpfunc(command,num) {
+	console.log(command);
+	console.log("num"+num);
+	
+	
+	var param = new Object();
+	
+	param.command=command;
+	param.num=num;
+	
+	$.ajax({
+		url:"myCp.do",
+		type:"post",
+		data:param,
+		 async : true,
+		 success : function(html){
+			 var page = html;
+			 $(".modal-content").html(page);
+			 $("#myModal").modal();
+		 }
+	});
+}
 
-
-$(document).ready(function(){
+/*$(document).ready(function(){
 	$(".cpbtn").click(function () {
 		var btnval = $(this).val();
 		console.log(btnval);
@@ -558,15 +580,15 @@ $(document).ready(function(){
 		
 		
 	});
-/* 	$('#myModal').on('show.bs.modal', function (e) {
+ 	$('#myModal').on('show.bs.modal', function (e) {
 		  if (!data) return e.preventDefault() // stops modal from being shown
 		  console.log(e.data);
-		}); */
+		}); 
 		
 	$('#myModal').on('show.bs.modal', function (e) {
 	    alert('modal show');
 	});
-});
+});*/
 
 
 
