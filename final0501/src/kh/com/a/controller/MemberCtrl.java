@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,8 +80,24 @@ public class MemberCtrl {
 	
 //	로그아웃
 	@RequestMapping(value="logout.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String logout(Model model, HttpServletRequest req) throws Exception{
+	public String logout(Model model, HttpServletRequest req, HttpServletResponse res) throws Exception{
 		req.getSession().invalidate();
+		
+		Cookie[] cookies = req.getCookies() ;
+	     
+	    if(cookies != null){
+	        for(int i=0; i < cookies.length; i++){
+	             
+	            // 쿠키의 유효시간을 0으로 설정하여 만료시킨다
+	            cookies[i].setMaxAge(0) ;
+	            
+	            cookies[i].setPath("/");
+	             
+	            // 응답 헤더에 추가한다
+	            res.addCookie(cookies[i]) ;
+	        }
+	    }
+		
 		return "redirect:/index.do";
 	}
 		
