@@ -116,7 +116,7 @@ img:hover {
 <col width="20%"><col width="30%"><col width="20%"><col width="30%">
 </colgroup>
 <tr>
-	<td colspan="3" style="font-size:50px">${sdDto.cname }</td>
+	<td colspan="3" style="font-size:50px">${sdDto.cname}</td>
 	<td>
 	<c:if test="${jjdto == 'false' }">
 		<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
@@ -142,54 +142,59 @@ img:hover {
 	<td colspan="3">${sdDto.addre }</td>
 </tr>
 </table>
-<form action="muBasket.do" method="post" id="_frmPay" onsubmit="return checkSubmit()">
-<input type="hidden" name="pdseq" value="${ sdDto.stseq }">
-<input type="hidden" name="option1" id="_option1" value="${sdpdList[0].title}">
-<input type="hidden" name="total_price" id="_total_price" value="${sdpdList[0].price}">
-<table class="type05" >
-<colgroup>
-<col width="20%"><col width="80%">
-</colgroup>
-<tr >
-	<td>스튜디오 상품</td>
-	<td>
-		<select name="selectproduct" id="selectproduct" onchange="setOptionProduct()">
-				<option>옵션선택</option>
-			<c:forEach var="sdpdDto" items="${sdpdlist}" varStatus="sdpdDtoS">
-				<option value="${sdpdDto.sdpdseq}">${sdpdDto.title}</option>
-			</c:forEach>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td>예약날짜</td>
-	<td><input type="date" name="redate" id="_redate"></td>
-</tr>
-<tr>
-	<td>예약시간</td>
-	<td>
-		<select name="retime" id="_retime">
-			<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
-				<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
-			</c:forEach>
-		</select>
-	</td>
-</tr>
-<tr >
-	<td>상품 가격</td>
-	<td><input type="text" style="border: 0" id="sprice" readonly="readonly" value="0">원</td>
-</tr>
-<tr >
-	<td colspan="2">
-	&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-	<input type="button" name="basket" value="장바구니" class="w3-btn w3-white w3-border w3-border-red w3-round-large"
-	onclick="muBasket()">
-	&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
-	<input type="button" name="payment" value="결제하기" class="w3-btn w3-white w3-border w3-border-red w3-round-large">
-	</td>
-</tr>
-</table>
-</form>
+<form action="muBasket.do" method="post" id="_frmPay" onsubmit="return checkSubmit('')">
+		 	<input type="hidden" name="cmd" id="_cmd" value="bsk">
+			<input type="hidden" name="pdseq" value="${ sdDto.stseq }">
+			<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
+			<input type="hidden" name="option1" id="_option1" value="${sdpdList[0].title}">
+			<%-- <input type="hidden" name="total_price" id="_total_price" value="${mupdList[0].price}"> --%>
+			<table class="type05" >
+				<colgroup>
+					<col width="20%"><col width="80%">
+				</colgroup>
+				<tr>
+					<td>상품</td>
+					<td>
+						<select id="_optionSelect" onchange="setOptionPrice('')">
+							<c:forEach items="${ sdpdlist }" var="sdpdDto" varStatus="i">
+								<option value="${ sdpdDto.sdpdseq }">${ sdpdDto.title }</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>예약날짜</td>
+					<td>
+						<input type="text" id="_redate" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
+					</td>
+				</tr>
+				<tr>
+					<td>예약시간</td>
+					<td>
+						<select name="retime" id="_retime">
+							<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
+								<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr >
+					<td>상품 가격</td>
+					<td>
+						<input type="text" name="total_price" id="_total_price" value="${sdpdList[0].price}"
+										 style="border: 0"  readonly="readonly">원
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+						<button type="button" onclick="muPaymentView('')"  class="w3-btn w3-white w3-border w3-border-red w3-round-large">결제</button>
+						&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+						<button type="button" onclick="muBasket('')" class="w3-btn w3-white w3-border w3-border-red w3-round-large">장바구니</button>
+					</td>
+				</tr>
+			</table>
+		</form>
 </div>
 </div>
 
@@ -219,6 +224,10 @@ img:hover {
     <a href="javascript:void(0)" onclick="openCity(event, 'hugi');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
       	style="font-family: 'Hanna', Fantasy;">후기글</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openCity(event, 'regervation');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
+      	style="font-family: 'Hanna', Fantasy;">에약</div>
     </a>
   </div>
 
@@ -337,25 +346,66 @@ img:hover {
 
 <!-- 스튜디오에 대한 후기 뷰 -->
 <div id="hugi" class="w3-container city" style="display:none;">
-  <div class="w3-container" style="padding-left: 250px; font-family: 'Hanna', serif;">
- <%--  <c:forEach var="" items="" varStatus=""> --%> <!-- 해당 스튜디오에 대한 후기 리스트 -->
-  <br><br><br>
-  <div class="w3-card-4" style="width:70%;">
-    <header class="w3-container w3-light-grey" style="font-size:35px">
-      John Doe<!-- 회원 아이디 -->
-    </header>
-    <div class="w3-container">
-      <p>1 new friend request</p> <!-- 후기 제목 -->
-      <hr>
-      <img src="images/brand/img-1.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:100px; height:100px">
-      <p>CEO at Mighty Schools. Marketing and Advertising. Seeking a new job and new opportunities.</p> <!-- 후기내용 -->
-    </div>
-  </div>
-  <br><br><br>
- <%--  </c:forEach> --%>
+	<!-- 후기글 -->
+	<div style="padding-left: 100px">
+		<table class="type11" style="width:85%; font-family: 'Hanna', serif;" >
+			<col width="110"><col width="300"><col width="100">	
+			<tr style="border-bottom: solid; border-bottom-color: lightgray">
+				<th align="center">작성일</th><th>댓글</th><th>작성자</th>
+			</tr>
+			
+			<c:if test="${empty dlist}">
+				<tr style="border-bottom: solid; border-bottom-color: lightgray">
+					<td colspan="3" style="text-align: center">작성된 댓글이 없습니다</td>
+				</tr>
+			</c:if>
+			
+			<c:forEach var="list" items="${dlist }" varStatus="i">
+				<tr style="border-bottom: solid; border-bottom-color: lightgray">
+					<td>${list.rdate.substring(0,10) }</td>
+					<td>${list.content }</td>
+					<td>${list.mid }</td>
+				</tr>
+			</c:forEach>
+			
+			</table>
+			<br>
+			 <form action="wstudioview.do">
+				<input type="hidden" name="rpdseq" value="${sdDto.stseq}">
+				<input type="hidden" name="pname" value="${sdDto.cname}">
+				<input type="hidden" name="mid" value="${login.id }">
+				<input type="hidden" name="title" value="${sdDto.cname}">
+				
+				<table class="type11" style="width:85%; font-family: 'Hanna', serif;" >
+				<tr style="border: 0; border-bottom-color: lightgray">
+					<td colspan="2">
+						<input type="text" name="content" size="70">
+					</td>
+					<td>
+						<input class="w3-btn w3-white w3-border w3-border-red w3-round-large" type="submit" value="댓글">
+					</td>
+				</tr>
+				
+				</table>
+			</form>
+		</div>
+	</div>
+	
+	<!-- 스튜디오에 대한 에약 완료 뷰 -->
+	<div id="regervation" class="w3-container city" style="display:none;">
+		<!-- 예약완료 -->
+		<br>
+		<div class="w3-container" style="padding-left: 70px; font-family: 'Hanna', serif;">
+			<div align="center">
+				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
+			</div>
+		</div>
+		
+	</div>
+
 </div>
-</div>
-</div>
+
+
 
 <script>
 $(document).ready(function () {
@@ -442,6 +492,150 @@ function like(){
 			alert("해당 삼품이 찜 목록에 추가되지 않았습니다.");
 		}
 	});	
+}
+</script>
+
+<!-- ★fullcalendar에 대한 스크립트 -->
+<!-- https://fullcalendar.io/ -->
+<script type="text/javascript">
+
+
+function modalRegi(date) {
+	date = date.split("-").join("/");	// yyyy-mm-dd -> yyyy/mm/dd
+	$("#_redateModal").val(date);
+	
+	selectDate(date, 'Modal');
+	
+	$("#_regiModal").modal("show");
+	$("#_regiModal").css("z-index", "1500");
+}
+
+$(function() {
+	// 한국어 변환
+	var initialLocaleCode = 'ko';
+	
+	// 현재 날짜 설정
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth()+1;
+	var y = date.getFullYear();
+	var rdate = y+"-0"+m+"-"+d;	
+	//alert(rdate);
+	
+	// fullcalender 시작
+	$('#calendar').fullCalendar({
+		
+		// 한국어 변환
+	 	locale: initialLocaleCode
+	 	   
+		// header 설정
+  		,header: {
+  	        left: 'prev,next,today',	// 달 이동
+  	        center: 'title',			// 제목
+  	        right: 'month,agendaWeek,listMonth'	// 월별, 주별, 일별, list
+  	    }
+  		// 현재 보여줄 화면
+  	    ,defaultDate: rdate
+  	    // show the prev/next text <, >
+ 	    ,buttonIcons: true
+ 	    // 1년간의 주를 나타내 (주)는 부분
+ 	   	,weekNumbers: true
+  	    // 날짜 클릭 가능(true), 불가(false)
+  	    ,navLinks: true	    
+  	    // 일정 옮기기 가능
+  	    ,editable: true	    
+  		// 4개 이상 "more" 창 나타내기(true), 나타내지 않기(false)
+  	    ,eventLimit: true
+ 		// 일정 넣는 부분
+  	    ,events: ${regiData}
+ 	    ,editable:false
+ 	    ,height: 700
+ 	    ,  dayClick: function(oriDate, jsEvent, view) {
+ 	    	// date : 선택 날짜, jsEvent : 클릭 좌표, view : 현재 보고 있는 화면 상태 (month 등)
+			// change the day's background color just for fun
+			// $(this).css('background-color', 'red');
+			//alert("func date : " + date.format());
+			//alert("rdate : " + rdate);
+			//alert("date : " + oriDate.format());
+			//alert("y : " + y);
+			//alert("m : " + m);
+			//alert("d : " + d);
+			
+			// 오늘날짜보다 이전 날짜는 클릭할 수 없도록 한다.
+			var date = oriDate.format();
+			var dateArr = date.split('-');
+			if (parseInt(y) <= parseInt(dateArr[0])) {
+				if (parseInt(m) <= parseInt(dateArr[1])) {
+					if (parseInt(d) <= parseInt(dateArr[2])) {
+						modalRegi(date);
+					}
+				}
+			}
+ 	     }
+  	});
+});
+
+</script>
+
+<script>
+var startD = "";
+var endD = "";
+
+var year = "";
+var month = "";
+var day = "";
+  $("#_redate").datepicker(   // inputbox 의 id 가 startDate 
+          {dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011/04/29' 로표시
+           , showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
+           , buttonImage: 'assets/images/calen.png'  // 우측 달력 icon 의 이미지 패스 
+           , buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
+           , changeMonth: true // 월선택 select box 표시 (기본은 false)
+           , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+           , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+           , minDate : 0         // 오늘부터 시작
+           , onSelect: function(date){
+         		selectDate(date);
+           }
+     });
+  
+  $('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
+
+//datepicker 날짜 선택시 수행
+  function selectDate(date) {
+  	//alert(date);
+  	var adata = {
+  			redate:date,
+  			pdseq:${sdDto.stseq}
+  	};
+  	
+  	$.ajax({
+			url:"getDSReservListByPdseqRedate.do",
+			type:"get",
+			data:adata,
+			success:function(msg){
+				
+					$("#_retime").empty();
+					$("#_retime").append("<option value='09:00~10:00'>09:00 ~ 10:00</option>");
+					$("#_retime").append("<option value='10:00~11:00'>10:00 ~ 11:00</option>");
+					$("#_retime").append("<option value='11:00~12:00'>11:00 ~ 12:00</option>");
+					$("#_retime").append("<option value='12:00~13:00'>12:00 ~ 13:00</option>");
+					$("#_retime").append("<option value='14:00~15:00'>14:00 ~ 15:00</option>");
+					$("#_retime").append("<option value='15:00~16:00'>15:00 ~ 16:00</option>");
+					$("#_retime").append("<option value='16:00~17:00'>16:00 ~ 17:00</option>");
+					$("#_retime").append("<option value='17:00~18:00'>17:00 ~ 18:00</option>");
+					
+					//예약된 시간 삭제
+					for(var i = 0; i < msg.reservListDS.length; i++){
+	  				var retime = msg.reservListDS[i].retime;
+	  				var optionId = "#_retime option[value='" + retime +"']";
+	  				$(optionId).remove();
+	  				}
+			},
+			error:function(reqest, status, error){
+				alert("실패");
+			}
+			
+		 });
 }
 </script>
 

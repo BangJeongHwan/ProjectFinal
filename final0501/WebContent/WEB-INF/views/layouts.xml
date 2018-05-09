@@ -114,10 +114,6 @@
 		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioWrite.jsp"/>
 	</definition>
 	
-	<definition name="studioDetail.tiles" extends="SelectRegi.tiles">
-		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioDetail.jsp"/>
-	</definition>
-	
 	<definition name="sdMod.tiles" extends="company.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioMod.jsp"/>
 	</definition>
@@ -336,6 +332,10 @@
 	
 	<definition name="dressDetail.tiles" extends="detail.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/dress/dressDetail.jsp"/>
+	</definition>
+	
+	<definition name="studioDetail.tiles" extends="detail.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioDetail.jsp"/>
 	</definition>
 	
 </tiles-definitions>

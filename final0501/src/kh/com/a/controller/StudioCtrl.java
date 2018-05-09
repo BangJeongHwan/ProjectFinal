@@ -2,11 +2,16 @@ package kh.com.a.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -19,14 +24,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.CookieGenerator;
 
 import kh.com.a.model.JjimDto;
+import kh.com.a.model.RecentDto;
+import kh.com.a.model.ReviewDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
+import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.SdParam;
 import kh.com.a.model2.StudioParam;
 import kh.com.a.model2.StudioPicDto;
 import kh.com.a.service.MypageServ;
+import kh.com.a.service.ReviewServ;
 import kh.com.a.service.StudioServ;
 import kh.com.a.util.FUpUtil;
 
@@ -37,12 +47,21 @@ public class StudioCtrl {
 	private StudioServ studioserv;
 	@Autowired
 	private MypageServ mypageserv;
+	@Autowired
+	ReviewServ reviewServ;
+	
+	String Crp1 = null;
+	String Crp2 = null;
+	String Crp3 = null;
+	String Crp4 = null;
+	String Crp5 = null;
+	String Crp6 = null;
 	
 	private static final Logger logger = LoggerFactory.getLogger(StudioCtrl.class);
 	
 	//해당 기능에 대한 뷰로 이동
 	@RequestMapping(value="studiomain.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String detail(Model model, StudioParam sdDto) throws Exception{
+	public String detail(Model model, StudioParam sdDto, HttpServletRequest req) throws Exception{
 		logger.info("KhMemberController company" + new Date());
 		
 		// paging 처리
@@ -52,6 +71,124 @@ public class StudioCtrl {
 		
 		sdDto.setStart(start);
 		sdDto.setEnd(end);
+		
+		Cookie[] cookies = req.getCookies();
+		
+		if(cookies!=null && cookies.length > 0){
+			
+			System.out.println("쿠키 크기 & 길이가 null 과 0 이 아니다!");
+			
+			List<RecentDto> recentlist = new ArrayList<>();
+			RecentDto recentDto = null;
+			for(int i=0;i<cookies.length;i++)
+			{
+				
+				System.out.println("----------------------");
+				System.out.println("i의 값은? : " + i);
+				System.out.println("쿠키의 이름은? : " +cookies[i].getName());
+				System.out.println("쿠키의 값은? : " +cookies[i].getValue());
+				System.out.println("----------------------");
+				
+				if(cookies[i].getName().equals("rp0"))
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("첫번째 rp : " +rp);
+					
+					//이 부분을 if문을 사용 -> 넘어온 seq를 비교하여 각각 다른 db테이블에 접근하여 데이터를 가져와 recentDto에 넣어주어야 한다.
+					//rp는 seq 값이며 rp 값을 비교하여 각 해당하는 업체의 테이블에 접근! cid, cname, seq, pic1을 가지고 와서 recentDto에 넣어준다.
+					//sql에서 각 기업에 해당하는 seq를 as를 통해 seq로 변경시켜주어야 한다.
+					if(rp>=1000 && rp<2000) {
+					//웨딩홀
+					}else if(rp>=2000 && rp<3000) {
+					//청첩장
+					}else if(rp>=3000 && rp<4000) {
+					//스튜디오
+						recentDto = studioserv.getRecentProduct(rp);
+					}else if(rp>=4000 && rp<5000) {
+					//드레스	
+					}else if(rp>=5000 && rp<6000) {
+					//메이크업
+					}
+					
+					System.out.println("!!! cookie rp0 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+				}
+				else if(cookies[i].getName().equals("rp1")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("두번째 rp  : " +rp);
+					
+					recentDto = studioserv.getRecentProduct(rp);
+					
+					System.out.println("!!! cookie rp1 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp2")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("세번쨰 rp : " +rp);
+					
+					recentDto = studioserv.getRecentProduct(rp);
+					
+					System.out.println("!!! cookie rp2 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp3")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("네번째 rp : " +rp);
+					
+					recentDto = studioserv.getRecentProduct(rp);
+					
+					System.out.println("!!! cookie rp3 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp4")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("다섯번째 rp : " +rp);
+					
+					recentDto = studioserv.getRecentProduct(rp);
+					
+					System.out.println("!!! cookie rp4 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("JSESSIONID"))
+				{
+					System.out.println("JSESSIONID 통과");
+				}
+			}
+			model.addAttribute("recentlist",recentlist);
+		}
 		
 		int totalRecordCount = studioserv.getStudioCount(sdDto);
 		List<StudioDto> sdDtolist = studioserv.getPagingStudioList(sdDto);
@@ -164,10 +301,193 @@ public class StudioCtrl {
 	}
 	
 	@RequestMapping(value="studioDetail.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String studioDetail(Model model, int stseq, String flag, JjimDto jdto) throws Exception {
+	public String studioDetail(Model model, int stseq, String flag, JjimDto jdto, HttpSession session,
+			HttpServletRequest req, HttpServletResponse res) throws Exception {
 		logger.info("Welcome StudioCtrl studioDetail! "+ new Date());
 		
 		model.addAttribute("doc_title", "업체 디테일");
+		
+		LoginDto mem = (LoginDto)session.getAttribute("login");
+		
+		int  b = 1;
+		
+		if(mem != null && mem.getId() != "guest" && mem.getAuth() != "admin")
+		{
+			Cookie[] cookies = req.getCookies();
+			
+			StudioDto sttDto = studioserv.getStudioDetail(stseq);
+			
+			for(int i = 0; i < cookies.length; i++){
+				if(cookies[i].getName().equals("rp0")){
+					b++;
+				}
+			}
+			
+			if(b == 1){
+				CookieGenerator cookie = new CookieGenerator();
+				cookie.setCookieName("rp0");
+				cookie.setCookieMaxAge(24*60*60);
+				//cookie.addCookie(res, URLEncoder.encode(sttDto.getCid(), "UTF-8"));
+				cookie.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+				this.Crp1 = Integer.toString(sttDto.getStseq());
+				System.out.println("쿠키 rp0 생성 완료!");
+			}else{
+				for(int i = 0; i < cookies.length; i++)
+				{
+					if(cookies[i].getName().equals("rp0") && this.Crp2 == null)
+					{
+						System.out.println("Crp1 = " +Crp1);
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp1");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp0");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+						this.Crp2 = Integer.toString(sttDto.getStseq());
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp1") && this.Crp3 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2);
+						System.out.println("*****************");
+						
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp2");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp1");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp0");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+						this.Crp3 = Integer.toString(sttDto.getStseq());
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp2") && this.Crp4 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2+"  "+"Crp3 = "+Crp3);
+						System.out.println("*****************");
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp3");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp2");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp1");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp0");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+						this.Crp4 = Integer.toString(sttDto.getStseq());
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp3") && this.Crp5 == null)
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp4 생성 완료!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+						this.Crp5 = Integer.toString(sttDto.getStseq());
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp4"))
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp4 생성 완료!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp5, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getStseq()), "UTF-8"));
+						this.Crp6 = Integer.toString(sttDto.getStseq());
+						
+						this.Crp2 = Crp3;
+						this.Crp3 = Crp4;
+						this.Crp4 = Crp5;
+						this.Crp5 = Crp6;
+						
+						System.out.println("쿠키 rp0 생성 완료!");
+					}else{
+						System.out.println("----------통과-----------  : "+ i);
+					}
+				}
+			}
+		}
+
+		int rpdseq = stseq;
+		
+		List<ReviewDto> dlist = null;
+		dlist = reviewServ.WDlist(rpdseq);
+		model.addAttribute("dlist", dlist);
 		
 		System.out.println("jdto.getUsid() : " + jdto.getUsid());
 		System.out.println("jdto.getPdseq() : " + jdto.getPdseq());
@@ -241,7 +561,7 @@ public class StudioCtrl {
 	
 	// 파일 수정
 	@RequestMapping(value="modSd.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String modSd(Model model, SdParam sd, HttpServletRequest req) throws Exception {
+	public String modSd(Model model, SdParam sd, HttpServletRequest req, JjimDto jdto) throws Exception {
 		logger.info("[StudioCtrl] modSd " + new Date());
 		int stseq = sd.getSdDto().getStseq();
 		
@@ -313,7 +633,7 @@ public class StudioCtrl {
 		}
 		
 		model.addAttribute("stseq", stseq);
-		return "redirect:/studiomain.do";
+		return "redirect:/studiomain.do?stseq="+stseq+"&pdseq="+jdto.getPdseq()+"&usid="+jdto.getUsid();
 	}
 	
 //	삭제

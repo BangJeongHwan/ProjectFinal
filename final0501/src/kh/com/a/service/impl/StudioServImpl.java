@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.StudioDao;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.StudioParam;
@@ -100,5 +101,10 @@ public class StudioServImpl implements StudioServ {
 	@Override
 	public boolean modStudio(StudioDto sdDto) throws Exception {
 		return studiodao.modStudio(sdDto);
+	}
+	
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return studiodao.getRecentProduct(rp); 
 	}
 }

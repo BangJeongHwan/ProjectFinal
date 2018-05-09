@@ -22,4 +22,16 @@
 	WHERE PDSEQ=#{pdseq} AND USID=#{usid}
 </delete>
 
+<!-- 0509 -->
+<select id="getjjimlist" resultType="kh.com.a.model.JjimDto">
+	SELECT *
+	FROM JJIM
+</select>
+
+<select id="getJjimStudio" parameterType="java.lang.Integer" resultType="kh.com.model.JjimlistDto">
+	SELECT STSEQ AS SEQ, CNAME, PIC0 AS PIC
+	FROM WD_STUDIO
+	WEHRE STSEQ=#{SEQ}
+</select>
+
 </mapper>

@@ -11,6 +11,7 @@ import kh.com.a.dao.MypageDao;
 import kh.com.a.model.BasketDto;
 import kh.com.a.model.CompanyDto;
 import kh.com.a.model.JjimDto;
+import kh.com.a.model.JjimlistDto;
 
 @Repository
 public class MypageDaoImpl implements MypageDao {
@@ -35,5 +36,13 @@ public class MypageDaoImpl implements MypageDao {
 		return sqlSession.delete(ns+"deljjim", jdto)>0?true:false;
 	}
 
-	
+	@Override
+	public List<JjimDto> getJjimlist() throws Exception {
+		return sqlSession.selectList(ns+"getJjimlist");
+	}
+
+	@Override
+	public JjimlistDto getJjimStudio(int seq) throws Exception {
+		return sqlSession.selectOne(ns+"getJjimStudio",seq);
+	}
 }
