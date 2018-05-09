@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.StudioDao;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.SdParam;
@@ -97,5 +98,10 @@ public class StudioDaoImpl implements StudioDao {
 	@Override
 	public boolean modStudio(StudioDto sdDto) throws Exception {
 		return sqlSession.update(ns+"modStudio", sdDto)>0?true:false;
+	}
+	
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return sqlSession.selectOne(ns+"getRecentProduct", rp);
 	}
 }

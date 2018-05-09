@@ -2,6 +2,7 @@ package kh.com.a.dao;
 
 import java.util.List;
 
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.SdParam;
@@ -25,4 +26,5 @@ public interface StudioDao {
 	public boolean delStudioByStseq(int stseq) throws Exception;
 	public boolean modStudio(StudioDto sdDto) throws Exception;
 
+	public RecentDto getRecentProduct(int rp) throws Exception;
 }

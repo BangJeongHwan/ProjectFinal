@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.com.a.model.CompanyDto;
 import kh.com.a.model.JjimDto;
+import kh.com.a.model.JjimlistDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.PaymentViewParam;
@@ -135,18 +136,6 @@ public boolean like(Model model, JjimDto jdto) throws Exception{
 	return true;
 }
 
-//최근 본 상품에 추가된후 model에 rproductlist 추가
-//@ResponseBody
-@RequestMapping(value="rproduct.do", method={RequestMethod.GET,RequestMethod.POST})
-public String adminpage(Model model) throws Exception{
-	logger.info("MypageController rproduct" + new Date());
-
-	return "rproduct.tiles";
-}
-	
-
-
-
 /*@RequestMapping(value="rproductAf.do", method={RequestMethod.GET,RequestMethod.POST})
 public String adminpage(Model model, RproductDto rdto) throws Exception{
 	logger.info("MypageController rproduct" + new Date());
@@ -155,6 +144,41 @@ public String adminpage(Model model, RproductDto rdto) throws Exception{
 
 	return "rproduct.tiles";
 }*/
+
+//0509 수빈
+@RequestMapping(value="jjimlist.do", method={RequestMethod.GET,RequestMethod.POST})
+public String jjimlist(Model model) throws Exception{
+	logger.info("MypageController rproduct" + new Date());
+	
+	List<JjimlistDto> jjimlist = new ArrayList<>(); // jjim 테이블참조한 리스트를 seq따라 구별하여 다시  담을 리스트
+	List<JjimDto> jjim = mypageserv.getJjimlist(); //jjim테이블을 참조
+	
+	JjimlistDto jdto = null;
+	
+	
+	for(int i = 0; i < jjim.size(); i++)
+	{
+		int seq = jjim.get(i).getPdseq();
+			
+		if(seq >= 1000 && seq < 2000) {
+			//웨딩홀 (seq, pic, cname 가져와야함 *** sql에서 as 사용하여 상품 seq를 seq로 바꿔주어야 하고 as사용하여 사진컬럼 하나를 pic으로 변경해서 가져와야함)
+		}else if(seq >= 2000 && seq < 3000) {
+			//청첩장
+		}else if(seq >= 3000 && seq < 4000) {
+			jdto = mypageserv.getJjimStudio(seq);
+			jjimlist.add(jdto);
+		}else if(seq >= 4000 && seq < 5000) {
+			//드레스
+		}else if(seq >= 5000 && seq < 6000) {
+			//메이크업
+		}
+	}
+	
+	model.addAttribute("jjimlist", jjimlist);
+		
+	return "jjimlist.tiles";
+	
+}
 	
 //혜영
 @RequestMapping(value="comPayView.do", method={RequestMethod.GET,RequestMethod.POST})

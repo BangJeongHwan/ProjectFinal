@@ -2,6 +2,7 @@ package kh.com.a.service;
 
 import java.util.List;
 
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.StudioParam;
@@ -23,5 +24,6 @@ public interface StudioServ {
 	public boolean delStudioProductByStseq(int stseq) throws Exception;
 	public boolean delStudioByStseq(int stseq) throws Exception;
 	public boolean modStudio(StudioDto sdDto) throws Exception;
-
+	
+	public RecentDto getRecentProduct(int rp) throws Exception;
 }

@@ -33,6 +33,10 @@ function memReservList() {
 	location.href = "memReservList.do";
 }
 
+function jjimlist(){
+	location.href = "jjimList.do"
+}
+
 function mrlist() {
 	$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
 }
