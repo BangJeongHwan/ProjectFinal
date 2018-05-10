@@ -417,14 +417,71 @@ img:hover {
 	</div>
 	
 	<!-- 스튜디오에 대한 에약 달력 뷰 -->
-	<div id="regervation" class="w3-container city" style="display:none;">
-		<div class="w3-container" style="padding-left: 70px; font-family: 'Hanna', serif;">
+	<div id="regervation" class="w3-container city" style="display:inline;">
+		<div class="w3-container" style="padding-left:150px;padding-right:150px;font-family: 'Hanna', serif;">
 			<div align="center">
 				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
 			</div>
 		</div>
 	</div>
 
+</div>
+
+<!-- ★Modal -->
+<div class="modal fade" id="_regiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div align="center">
+      	  <h4 class="modal-title" id="myModalLabel">예약하기</h4>
+        </div>
+      </div>
+      <div class="modal-body">
+      	<!-- <input type="text" id="_index" value="0"> -->
+      	<div id="_modalContent" class="modalContent">
+      		<form action="reservationDress.do" method="post" id="_frmPayModal" onsubmit="return checkSubmit('Modal')">
+			 	<input type="hidden" value="${Ddto.dsseq }" name="pdseq" id="_pdseq">
+				<input type="hidden" value="${login.id }" name="mid" id="_mid">
+				<input type="hidden" value="${login.id }" name="usid" id="_mid">
+	      	  
+				<table class="type05" >
+					<colgroup>
+						<col width="20%"><col width="80%">
+					</colgroup>
+					<tr>
+						<td>예약날짜</td>
+						<td>
+							<input type="text" id="_redateModal" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>예약시간</td>
+						<td>
+							<select name="retime" id="_retimeModal">
+								<c:forEach var="i" begin="09" end="17">
+									<option value="${i}:00~${i + 1}:00">${i}:00~${i + 1}:00</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+							<input type="submit" value="reservation" class="w3-btn w3-white w3-border w3-border-red w3-round-large">
+						</td>
+					</tr>
+				</table>
+			</form>
+      	
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -486,7 +543,7 @@ function checkReviewSubmit(id) {
 }
 
 function checkSubmit(tail) {
-	
+
 	if ($("#_redate" + tail).val().trim() == "") {
 		alert("날짜를 선택해주세요.");
 		return false;
@@ -595,7 +652,7 @@ $(function() {
  		// 일정 넣는 부분
   	    ,events: ${regiData}
  	    ,editable:false
- 	    ,height: 700
+	    ,height: 700
  	    ,  dayClick: function(oriDate, jsEvent, view) {
  	    	// date : 선택 날짜, jsEvent : 클릭 좌표, view : 현재 보고 있는 화면 상태 (month 등)
 			// change the day's background color just for fun
@@ -640,7 +697,7 @@ $("#_redate").datepicker(   // inputbox 의 id 가 startDate
 	, showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	, minDate : 0         // 오늘부터 시작
 	, onSelect: function (date) {
-		selectDate(date, '');
+		selectDate(date,'');
 	}
 });
 $('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
@@ -678,6 +735,7 @@ function selectDate(date, tail) {
 			alert("실패");
 		}
 	});
+}
 </script>
 
 <!-- 이미지 슬라이드 관련 스크립트 -->

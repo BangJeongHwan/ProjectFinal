@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,13 @@ import kh.com.a.model.ReviewDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.LoginDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.SdParam;
 import kh.com.a.model2.StudioParam;
 import kh.com.a.model2.StudioPicDto;
+import kh.com.a.service.DressServ;
 import kh.com.a.service.MypageServ;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
 import kh.com.a.service.StudioServ;
 import kh.com.a.util.FUpUtil;
@@ -48,7 +53,11 @@ public class StudioCtrl {
 	@Autowired
 	private MypageServ mypageserv;
 	@Autowired
+	ReservationServ reservServ;
+	@Autowired
 	ReviewServ reviewServ;
+	@Autowired
+	DressServ dressServ;
 	
 	String Crp1 = null;
 	String Crp2 = null;
@@ -57,12 +66,15 @@ public class StudioCtrl {
 	String Crp5 = null;
 	String Crp6 = null;
 	
+	int check = 1;
+	
 	private static final Logger logger = LoggerFactory.getLogger(StudioCtrl.class);
 	
 	//해당 기능에 대한 뷰로 이동
 	@RequestMapping(value="studiomain.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String detail(Model model, StudioParam sdDto, HttpServletRequest req) throws Exception{
 		logger.info("KhMemberController company" + new Date());
+		
 		
 		// paging 처리
 		int sn = sdDto.getPageNumber();
@@ -92,6 +104,9 @@ public class StudioCtrl {
 				if(cookies[i].getName().equals("rp0"))
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(this.check == 1) {
+						Crp1 = Integer.toString(rp);
+					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
 					System.out.println("첫번째 rp : " +rp);
@@ -107,7 +122,8 @@ public class StudioCtrl {
 					//스튜디오
 						recentDto = studioserv.getRecentProduct(rp);
 					}else if(rp>=4000 && rp<5000) {
-					//드레스	
+					//드레스
+						recentDto = dressServ.getRecentProduct(rp);
 					}else if(rp>=5000 && rp<6000) {
 					//메이크업
 					}
@@ -121,11 +137,26 @@ public class StudioCtrl {
 				else if(cookies[i].getName().equals("rp1")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(this.check == 1) {
+						Crp2 = Integer.toString(rp);
+					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
 					System.out.println("두번째 rp  : " +rp);
 					
-					recentDto = studioserv.getRecentProduct(rp);
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+						}
 					
 					System.out.println("!!! cookie rp1 !!!");
 					System.out.println("recentDto.getCid() : " + recentDto.getCid());
@@ -137,11 +168,26 @@ public class StudioCtrl {
 				else if(cookies[i].getName().equals("rp2")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(this.check == 1) {
+						Crp3 = Integer.toString(rp);
+					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
 					System.out.println("세번쨰 rp : " +rp);
 					
-					recentDto = studioserv.getRecentProduct(rp);
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+						}
 					
 					System.out.println("!!! cookie rp2 !!!");
 					System.out.println("recentDto.getCid() : " + recentDto.getCid());
@@ -153,11 +199,26 @@ public class StudioCtrl {
 				else if(cookies[i].getName().equals("rp3")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(this.check == 1) {
+						Crp4 = Integer.toString(rp);
+					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
 					System.out.println("네번째 rp : " +rp);
 					
-					recentDto = studioserv.getRecentProduct(rp);
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+						}
 					
 					System.out.println("!!! cookie rp3 !!!");
 					System.out.println("recentDto.getCid() : " + recentDto.getCid());
@@ -169,11 +230,26 @@ public class StudioCtrl {
 				else if(cookies[i].getName().equals("rp4")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(this.check == 1) {
+						Crp5 = Integer.toString(rp);
+					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
 					System.out.println("다섯번째 rp : " +rp);
 					
-					recentDto = studioserv.getRecentProduct(rp);
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+						}
 					
 					System.out.println("!!! cookie rp4 !!!");
 					System.out.println("recentDto.getCid() : " + recentDto.getCid());
@@ -201,6 +277,8 @@ public class StudioCtrl {
 		
 		model.addAttribute("s_category", sdDto.getS_category());
 		model.addAttribute("s_keyword", sdDto.getS_keyword());
+		
+		this.check++;
 		
 		return "company.tiles";
 	}
@@ -503,6 +581,35 @@ public class StudioCtrl {
 		String splitClose[] = sdDto.getClosetime().split(":");
 		int closeHour = Integer.parseInt(splitClose[0]);
 		int closeMin = Integer.parseInt(splitClose[1]);
+		
+		///////////////// 예약일정
+		List<ReservCalParam> reservCalList = reservServ.getReservCalListByPdseq(sdDto.getStseq());
+		// json parsing
+		JSONArray regiData = new JSONArray();
+		for (int i = 0; i < reservCalList.size(); i++) {
+			ReservCalParam rcParm = reservCalList.get(i);
+			String title = rcParm.getMname();
+			
+			String redate = rcParm.getRedate();	// yyyy-mm-dd
+			String timeSplit[] = rcParm.getRetime().split("~");
+			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
+			String start = redate + "T" + timeSplit[0];
+			String end = redate + "T" + timeSplit[1];
+			System.out.println("   " + start);
+			
+			JSONObject jo = new JSONObject();
+			jo.put("title", title);
+			jo.put("start", start);
+			jo.put("end", end);
+			jo.put("color", "#121212");
+			//jo.put("url", "javascript:func()");
+			regiData.put(jo);
+		}
+		
+		System.out.println("reservSize : " + reservCalList.size());
+		System.out.println("regiDataSize : " + regiData.length());
+		
+		model.addAttribute("regiData", regiData);
 		
 		JjimDto jjdto = mypageserv.getJjim(jdto);
 		

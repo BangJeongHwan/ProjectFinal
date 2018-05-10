@@ -33,6 +33,19 @@ $(document).ready(function(){
 <!-- Main -->
 <div id="main">
 	<div class="inner">
+	
+		<c:if test="${not empty recentlist }">
+			<div style="border:1px solid pink;width:750px; height: 120px; border: 1px; padding-left:200px;">
+				<h3>최근 본 상품 목록</h3>
+					<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
+						<div style="float: left">
+							<img style="padding-left:10px; width:100px; hight: 100px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq })">  
+							<p style="size: 10px">${recentDto.cname }</p>
+						</div>
+					</c:forEach>
+			</div>
+		</c:if>
+	
 		<section class="tiles">
 			<c:forEach var="dto" items="${dDto}" varStatus="dDtoo">
 			<article class="style1">
@@ -109,5 +122,21 @@ $("#_btnSearch").click(function() {
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
 	$("#_frmFormSearch").attr("target","_self").attr("action","dressMain.do").submit();
+}
+
+function view(x){
+	if(x >= 1000 && x <2000){
+		//웨딩홀 
+	}else if(x >= 2000 && x < 3000){
+		//청첩장
+	}else if(x >= 3000 && x < 4000){
+		//스튜디오
+		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
+	}else if(x >= 4000 && x < 5000){
+		//드레스
+		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
+	}else if(x >= 5000 && x < 6000){
+		//메이크업
+	}
 }
 </script>

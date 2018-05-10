@@ -3,6 +3,7 @@ package kh.com.a.service;
 import java.util.List;
 
 import kh.com.a.model.DressDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.DressParam;
 
 public interface DressServ {
@@ -23,4 +24,5 @@ public interface DressServ {
 	
 	public List<DressDto> getPagingDressList(DressParam param) throws Exception;
 
+	public RecentDto getRecentProduct(int rp) throws Exception;
 }

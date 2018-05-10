@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.DressDao;
 import kh.com.a.model.DressDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.DressParam;
 
 @Repository
@@ -61,6 +62,11 @@ public class DressDaoImpl implements DressDao {
 	public List<DressDto> getPagingDressList(DressParam param) throws Exception {
 		List<DressDto> list = sqlSession.selectList(ns+"getPagingDressList", param);
 		return list;
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return sqlSession.selectOne(ns+"getRecentProduct", rp);
 	}
 
 	
