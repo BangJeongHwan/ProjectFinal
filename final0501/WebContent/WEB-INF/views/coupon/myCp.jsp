@@ -107,11 +107,12 @@
 	<script type="text/javascript">
 	var num = "${num}";
 	var command = "${command}";
+	var bkseq = "${bkseq}";
 	
 	var btnid = "#_cpbtn"+num;
 	var totalprice = "#totalprice"+num;
 	var price = $(totalprice).val();
-	var bkseq = $(btnid).val();
+	
 	
 	
  	function trclick(seq) {
@@ -122,7 +123,7 @@
 				data:"seq="+seq,
 				 async : true,
 				 success : function(mcp){
-					 createDiv(mcp.seq,mcp.title,mcp.discount);
+					 createDiv(mcp.seq,mcp.title,mcp.discount,bkseq);
 				 }
 			});
 		
@@ -144,7 +145,7 @@
 			
 			$(".close").click();
 		} 
- 	 function createDiv(seq,title,discount) {
+ 	 function createDiv(seq,title,discount,bkseq) {
  		
 		
 			
@@ -154,11 +155,14 @@
 			console.log("dcprice"+dcprice);
 			console.log("bkseq"+bkseq);
 			
-			
 			$(btnid).parent().append("<div id='_cdiv"+num+"'>"+title+"(-"+discount+"%)"+dcprice+"원"+"</div>");
+			$(btnid).parent().append("<button type='button' class='delbtn' id='_delbtn"+num+"'>삭제</button>");
+			$("#_delbtn"+num).attr("onclick","cpfunc('del',"+num+","+bkseq+")");
+			
 			$(btnid).parent().append("<input type='hidden' value='"+dcprice+"' id='dcp"+num+"'>");
-			$(btnid).parent().append("<button type='button' class='upbtn'>변경</button>");
-			$(btnid).parent().append("<button type='button' class='delbtn'>삭제</button>");
+			$(btnid).parent().append("<input type='hidden' value='"+seq+"' id='cpseq"+num+"'>");
+			
 			$(btnid).remove();
 		}
+ 	 
 	</script>

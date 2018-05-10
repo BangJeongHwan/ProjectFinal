@@ -322,7 +322,7 @@
 										</td>
 									
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index})">사용가능 쿠폰</button>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
@@ -412,7 +412,7 @@ $("input:checkbox").change(function () {
 	   $("input:checkbox").each(function() {
 		   if($(this).is(":checked")){
 			 var price = $(this).parent().parent().children(":eq(4)").children().val(); 
-			 var dcp = $(this).parent().parent().children(":eq(3)").children(":eq(1)").val(); 
+			 var dcp = $(this).parent().parent().children(":eq(3)").children(":eq(2)").val(); 
 			
 			 /*  _allprice _dcprice _pdprice */
 			
@@ -451,39 +451,45 @@ $("input:checkbox").change(function () {
 
 
 
-function cpfunc(command,num) {
+function cpfunc(command,num,bks) {
 	console.log(command);
 	console.log("num"+num);
 	
 	
-	var param = new Object();
-	
-	param.command=command;
-	param.num=num;
-	
-	$.ajax({
-		url:"myCp.do",
-		type:"post",
-		data:param,
-		 async : true,
-		 success : function(html){
-			 var page = html;
-			 $(".modal-content").html(page);
-			 $("#myModal").modal();
-		 }
-	});
-}
-
-/*$(document).ready(function(){
-	$(".cpbtn").click(function () {
-		var btnval = $(this).val();
-		console.log(btnval);
-		 var price = $(this).parent().parent().children(":eq(4)").children().val();
-		$(this).parent().append("<div class='cpdiv' id='_cpdiv' style='background-color=yellow;'>"+price+"</div>");
-		$(this).parent().append("<input type='hidden' name='dcprice' id='_dcpricee' value='0'>");
-		 
-		$(this).remove();
+	if(command =="del"){
+		var CdivId = "#_cdiv"+num;
+		var ChiddenDcp = "#dcp"+num;
+		var ChuddenCpseq = "#cpseq"+num;
+		var Cdelbtn = "#_delbtn"+num;
+		var Ccpbtn = "_cpbtn"+num;
+		
+		var upseq = $(ChuddenCpseq).val();
+		
+		$(CdivId).parent().append("<button type='button' class='cpbtn' value='"+bks+"' id='_cpbtn"+num+"'>사용가능 쿠폰</button>");
+		$("#_cpbtn"+num).attr("onclick","cpfunc('add',"+num+","+bks+")");
+		
+		$(CdivId).remove();
+		$(ChiddenDcp).remove();
+		$(Cdelbtn).remove();
+		$(ChuddenCpseq).remove();
+		
+		$.ajax({
+			url:"cpbkseqdel.do",
+			type:"get",
+			data:"seq="+upseq,
+			 async : true,
+			 success : function(msg){
+				 console.log(msg);
+			 }
+		}); 
+		
+	}else if(command =="add"){
 		var param = new Object();
+		
+		param.command=command;
+		param.num=num;
+		param.bkseq=bks;
+		
 		$.ajax({
 			url:"myCp.do",
 			type:"post",
@@ -495,27 +501,10 @@ function cpfunc(command,num) {
 				 $("#myModal").modal();
 			 }
 		});
-		
-		
-		
-		
-		
-	});
- 	$('#myModal').on('show.bs.modal', function (e) {
-		  if (!data) return e.preventDefault() // stops modal from being shown
-		  console.log(e.data);
-		}); 
-		
-	$('#myModal').on('show.bs.modal', function (e) {
-	    alert('modal show');
-	});
-});*/
-
-
-
-
-
-
+	}
+	
+	
+}
 
 </script>
 
