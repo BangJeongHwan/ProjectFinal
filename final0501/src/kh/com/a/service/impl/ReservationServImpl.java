@@ -10,6 +10,7 @@ import kh.com.a.model.ReservationDto;
 import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
+import kh.com.a.model2.ReservationVO;
 import kh.com.a.service.ReservationServ;
 
 @Service
@@ -122,9 +123,10 @@ public class ReservationServImpl implements ReservationServ {
 	
 	// 웨딩홀 예약된 것들 모두 불러오기
 	@Override
-	public List<ReservationDto> getWdRegList(ReservationDto fcal) {
+	public List<ReservationVO> getWdRegList(ReservationDto fcal) {
 		return reservDao.getWdRegList(fcal);
 	}
+	
 
 	@Override
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception {

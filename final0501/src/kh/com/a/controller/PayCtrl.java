@@ -26,6 +26,7 @@ import kh.com.a.model2.PaymentParam;
 import kh.com.a.model2.PaymentViewParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
+import kh.com.a.model2.ReservationVO;
 import kh.com.a.service.BasketServ;
 import kh.com.a.service.CardService;
 import kh.com.a.service.CouponServ;
@@ -600,17 +601,17 @@ public class PayCtrl {
 			logger.info("WeddingHallCtrl calenderDate " + new Date());
 			
 			jcal.calculate();
-			String yymm = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());	// yyyy/mm
+			String yymm = CalendarUtil.yymm(jcal.getYear(), jcal.getMonth());	// yy/mm
 			
 			ReservationDto fcal = new ReservationDto();
 			fcal.setPdseq(pdseq);
 			fcal.setRedate(yymm);
 			
 			
-			System.out.println("----------->"+yymm);
-			System.out.println("----------->"+jcal.getDateStr());
 			
-			List<ReservationDto> flist = reservServ.getWdRegList(fcal);
+			// 해당월의 값
+			List<ReservationVO> flist = reservServ.getWdRegList(fcal);
+			
 			
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("jcal", jcal);

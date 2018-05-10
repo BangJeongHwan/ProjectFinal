@@ -23,13 +23,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import kh.com.a.model.ReservationDto;
+import kh.com.a.model.ReviewDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
 import kh.com.a.model2.LoginDto;
+import kh.com.a.model2.ReservationVO;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
 import kh.com.a.service.ReservationServ;
+import kh.com.a.service.ReviewServ;
 import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.CalendarUtil;
 import kh.com.a.util.FUpUtil;
@@ -46,10 +49,17 @@ public class WeddingHallCtrl {
 	@Autowired
 	ReservationServ reservServ;
 	
+	// 후기
+	@Autowired
+	ReviewServ reviewServ;
+	
 	// 웨딩 업체 뷰
 	@RequestMapping(value="weddingHallView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String weddingHallView(Model model) {
+	public String weddingHallView(Model model, HttpServletRequest req) {
 		logger.info("WeddingHallCtrl weddingHallView" + new Date());
+		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		model.addAttribute("login", login);
 		
 		List<WeddingDto> list = weddingHallServ.getWeddingList();
 		model.addAttribute("list", list);
@@ -105,18 +115,51 @@ public class WeddingHallCtrl {
 		return "redirect:/weddingHallView.do";
 	}
 
+	// 웨딩 업체 추가 view
+	@RequestMapping(value="Weddingdel.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String Weddingdel(Model model, int whseq) {
+		logger.info("WeddingHallCtrl Weddingdel" + new Date());
+		
+		weddingHallServ.Weddingdel(whseq);
+
+		return "redirect:/weddingHallView.do";
+	}
+	
+	// 홀 별 변경
+	@ResponseBody
+	@RequestMapping(value="resetList.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> resetList(Model model, String type, String data) throws Exception {
+		logger.info("WeddingHallCtrl resetList " + new Date());
+		
+		List<WeddingDto> list = weddingHallServ.selWeddingList(type, data);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		
+		return map;
+	}
+		
+	
 	//////////////////////////////////////////////////////////////////////////////
 	// 웨딩 홀 디테일 뷰
 	@RequestMapping(value="hallView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String hallDetailView(Model model, int whseq, myCal jcal) {
+	public String hallDetailView(Model model, int whseq, myCal jcal,HttpServletRequest req) throws Exception {
 		logger.info("WeddingHallCtrl hallView" + new Date());
 		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
 		
+		// UPreadcount
+		weddingHallServ.upReadCount(whseq);
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
 		List<WHallPicSumVO> hallSumList = weddingHallServ.getHallSumList(whseq);
 		List<WHallPictureDto> piclist = weddingHallServ.getAllHallPicList(whseq);
+		
+		////////////////후기
+		List<ReviewDto> dlist = reviewServ.WDlist(whseq);
+		model.addAttribute("dlist", dlist);
+		////////////////
 		
 		String pic1 ="";
 		System.out.println(piclist.size());
@@ -125,26 +168,17 @@ public class WeddingHallCtrl {
 			model.addAttribute("pic1", pic1);	// 첫번째 사진
 		}
 		
-		// 예약 캘린더
-		jcal.calculate();
-		String yyyyMM = CalendarUtil.yyyymm(jcal.getYear(), jcal.getMonth());
-		ReservationDto fcal = new ReservationDto();
-		fcal.setPdseq(whseq);
-		fcal.setRedate(yyyyMM);
-		List<ReservationDto> flist = reservServ.getWdRegList(fcal);
 		
+		model.addAttribute("login", login);	// 로그인 정보
 		model.addAttribute("wd", wd);	// 웨딩 업체 1개
 		model.addAttribute("hallList", hallList);	// 홀 list
 		model.addAttribute("hallSumList", hallSumList); // 홀이름과 사진수
 		model.addAttribute("piclist", piclist);	// 업체에 해당하는 사진 모두 출력(초기값)
 		
-		
+		// 예약 캘린더
+		jcal.calculate();
 		model.addAttribute("jcal", jcal);
-		model.addAttribute("flist", flist);
-		//int picTotal = weddingHallServ.picTotal(whseq);
-		//model.addAttribute("picTotal", picTotal);
 		
-		//System.out.println("----------->"+hallSumList.get(0).getSumpic());
 		return "hallView.tiles";
 	}
 	
@@ -213,9 +247,6 @@ public class WeddingHallCtrl {
 				}
 			}
 		}
-		
-		//System.out.println("------------>"+FileNameList.size());
-		
 		// 나머지 세부 정보 기입
 		WeddingHallDto hallPd = wd.getHallPd();
 		System.out.println(hallPd.toString());
@@ -244,7 +275,6 @@ public class WeddingHallCtrl {
 		}else {
 			list = weddingHallServ.getHallPicList(hallname, whseq);
 		}
-		//System.out.println("----------->" + list.size());
 		
 		String picArr[] = new String[list.size()];
 		
@@ -252,7 +282,6 @@ public class WeddingHallCtrl {
 			picArr[i] = list.get(i).getPicture();
 		}
 		
-		//System.out.println("----------->" + picArr.length);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -261,31 +290,22 @@ public class WeddingHallCtrl {
 		return map;
 	}
 	
+	// 예약 창
 	@RequestMapping(value="resv.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String resv(Model model,String year,String month, String day, int whseq,HttpServletRequest req) throws Exception {
 		logger.info("WeddingHallCtrl resv " + new Date());
-		
-		//System.out.println("------------------>"+year);
-		//System.out.println("------------------>"+month);
-		//System.out.println("------------------>"+day);
-		//System.out.println("------------------>"+whseq);
 		
 		WeddingDto wd = weddingHallServ.getWedding(whseq);	// 웨딩홀 1개 업체
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");	// 로그인 정보
 		
 		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);	// 홀 리스트
-		/*
-		String hallArr[] = new String[hallList.size()];
-		for(int i=0;i<hallList.size();i++) {
-			hallArr[i] = hallList.get(i).getHallname();
-		}  
-		*/
+		
 		String rdate = year+"/"+month+"/"+day;
+		
 		
 		model.addAttribute("wd", wd);
 		model.addAttribute("login", login);
 		model.addAttribute("hallList", hallList);
-		//model.addAttribute("hallArr", hallArr);
 		model.addAttribute("rdate", rdate);
 		
 		
@@ -311,11 +331,163 @@ public class WeddingHallCtrl {
 	}
 	
 	
-	/*테스트*/
-	/*
-	@RequestMapping(value="calendarView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String hallDetailView() {
-		return "NewFile.tiles";
+	// 홀 수정 창
+	@RequestMapping(value="Hallmod.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String Hallmod(Model model, int whseq) throws Exception {
+		logger.info("WeddingHallCtrl Hallmod " + new Date());
+		
+		WeddingDto wd = weddingHallServ.getWedding(whseq);
+		List<WeddingHallDto> hallList = weddingHallServ.getHallList(whseq);
+		List<WHallPictureDto> hallpicList = weddingHallServ.getHallPicList(hallList.get(0).getHallname(), whseq);
+		
+		String hallpicArr[] = new String[hallpicList.size()];
+		for(int i=0;i<hallpicList.size();i++) {
+			hallpicArr[i] = hallpicList.get(i).getPicture();
+			System.out.println(hallpicArr[i]);
+		}
+		
+		model.addAttribute("wd", wd);	// 업체 정보
+		model.addAttribute("hallList",hallList);	// 업체 홀 list
+		model.addAttribute("hallpicArr", hallpicArr);
+		
+		return "hallmod.tiles";
 	}
-	*/
+	
+	// 홀 별 변경
+	@ResponseBody
+	@RequestMapping(value="Hallmodselect.do", method={RequestMethod.GET,RequestMethod.POST})
+	public Map<String, Object> Hallmodselect(Model model,String hallname, int whseq) throws Exception {
+		logger.info("WeddingHallCtrl Hallmodselect " + new Date());
+		
+		
+		WeddingHallDto hall = weddingHallServ.hallInfo(hallname, whseq);
+		List<WHallPictureDto> hallpicList = weddingHallServ.getHallPicList(hallname, whseq);
+		
+		String hallpicArr[] = new String[hallpicList.size()];
+		for(int i=0;i<hallpicList.size();i++) {
+			hallpicArr[i] = hallpicList.get(i).getPicture();
+			
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("hall", hall);
+		map.put("hallpicArr", hallpicArr);
+		return map;
+	}
+	
+	// 홀 수정 저장
+	@RequestMapping(value="hallmodAf.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String hallmodAf(Model model, WdParam wd, HttpServletRequest req) {
+		logger.info("WeddingHallCtrl hallmodAf" + new Date());
+		
+		// 전달받은 파일 리스트(size 고정) 중 value가 null인 것을 제외한 리스트 생성
+		List<MultipartFile> upFileList = new ArrayList<>();
+		List<String> upFileNameList = new ArrayList<>();
+		
+		for (int i = 0; i < wd.getFileList().size(); i++) {
+			if (wd.getFileList().get(i).getSize() != 0) {
+				upFileList.add(wd.getFileList().get(i));
+			}
+		}
+		System.out.println("upFileList.size = " + upFileList.size());
+		for (int i = 0; i < wd.getFileNameList().size(); i++) {
+			String tmpFileName = wd.getFileNameList().get(i);
+			if (tmpFileName != null && !tmpFileName.equals("")) {
+				upFileNameList.add(tmpFileName);
+			}
+		}
+		System.out.println("upFileNameList.size = " + upFileNameList.size());
+		
+		
+		// 파일 이름만 저장할 공간
+		List<WHallPictureDto> orpicList = weddingHallServ.getHallPicList(wd.getHallPd().getHallname(), wd.getHallPd().getWhseq());
+		
+		System.out.println("=======================");
+		// 파일 업로드
+		
+		for (int i = 0; i < upFileList.size(); i++) {
+			MultipartFile fileload = upFileList.get(i);
+			String oriFileName = fileload.getOriginalFilename();
+			if (oriFileName != null && !oriFileName.trim().equals("")) {
+				String fupload = req.getServletContext().getRealPath("/upload");	// tomcat
+				String newFileName = FUpUtil.getNewFile(oriFileName);
+				
+				//System.out.println("oriFileName : " + oriFileName);
+				//System.out.println("newFileName : " + newFileName);
+				// TODO
+				int getIndex = 0;
+				for (int j = 0; j < upFileNameList.size(); j++) {
+					if (oriFileName.equals(upFileNameList.get(j))) {
+						getIndex = j;
+						break;
+					}
+				}
+				System.out.println(upFileNameList.get(getIndex));
+				upFileNameList.set(getIndex, newFileName);
+				
+				// 파일 업로드
+				try {
+					File file = new File(fupload + "/" + newFileName);
+					FileUtils.writeByteArrayToFile(file, fileload.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// 나머지 세부 정보 기입
+		WeddingHallDto hallPd = wd.getHallPd();
+		System.out.println(hallPd.toString());
+		
+		boolean b = weddingHallServ.modHall(hallPd);
+		if(b) {
+			System.out.println("hall 수정성공");
+		}else {
+			System.out.println("hall 수정실패");
+		}
+		
+		
+		System.out.println("=======================");
+		// 파일 이름만 저장할 공간
+		List<String> FileNameList = new ArrayList<String>();
+		
+		System.out.println("upFileNameList.size() = " + upFileNameList.size());
+		
+		if(orpicList.size()>=upFileNameList.size()) {
+			for (int i = 0; i < upFileNameList.size(); i++) {
+				orpicList.get(i).setPicture(upFileNameList.get(i));
+				weddingHallServ.modHallPicture(hallPd.getWhseq(), hallPd.getHallname(), orpicList);
+			}
+		}else {
+			for (int i = 0; i < upFileNameList.size(); i++) {
+				if(i<orpicList.size()) {
+					// 홀 사진 수정
+					orpicList.get(i).setPicture(upFileNameList.get(i));
+					weddingHallServ.modHallPicture(hallPd.getWhseq(), hallPd.getHallname(), orpicList);
+				}else {
+					// 나머지는 추가
+					FileNameList.add(upFileNameList.get(i));
+				}
+			}
+			weddingHallServ.addHallPicture(hallPd.getWhseq(), hallPd.getHallname(), FileNameList);
+		}
+			
+		
+		model.addAttribute("whseq", hallPd.getWhseq());
+		return "redirect:/hallView.do";
+	}
+	
+	
+	// 홀 삭제
+	@RequestMapping(value="Halldel.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String Halldel(Model model, int pdseq, int whseq, String hallname) {
+		logger.info("WeddingHallCtrl Halldel" + new Date());
+		
+		weddingHallServ.Halldel(pdseq);
+		weddingHallServ.Hallpicdel(whseq, hallname);
+		
+		model.addAttribute("whseq",whseq);
+		return "redirect:/hallView.do";
+	}
+	
+	
 }
