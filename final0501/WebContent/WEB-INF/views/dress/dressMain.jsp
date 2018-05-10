@@ -131,10 +131,10 @@ function view(x){
 		//청첩장
 	}else if(x >= 3000 && x < 4000){
 		//스튜디오
-		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid="+<%=mem.getId()%>;
+		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
 	}else if(x >= 4000 && x < 5000){
 		//드레스
-		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid="+<%=mem.getId()%>;
+		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
 	}else if(x >= 5000 && x < 6000){
 		//메이크업
 	}
