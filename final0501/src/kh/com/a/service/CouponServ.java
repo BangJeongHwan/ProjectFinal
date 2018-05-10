@@ -22,4 +22,5 @@ public interface CouponServ {
 	public couponVO getCp(int seq) throws Exception;
 	void rollbackCp(String mid) throws Exception;
 	public void cpBkseq(couponVO memcp) throws Exception;
+	void cpBkseqDel(couponVO memcp) throws Exception;
 }

@@ -83,4 +83,8 @@
 		UPDATE WD_USECOUPON SET BKSEQ = #{bkseq} WHERE SEQ = #{seq} AND MID = #{mid}
 	</update>
 	
+	<update id="cpBkseqDel" parameterType="kh.com.a.model2.couponVO">
+		UPDATE WD_USECOUPON SET DEL = 0, BKSEQ = null WHERE SEQ = #{seq} AND MID = #{mid}
+	</update>
+	
 </mapper>

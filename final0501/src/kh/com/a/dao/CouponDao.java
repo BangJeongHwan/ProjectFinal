@@ -28,4 +28,6 @@ public interface CouponDao {
 	void basketCp(int seq) throws Exception;
 	void rollbackCp(String mid) throws Exception;
 	void cpBkseq(couponVO memcp) throws Exception;
+	void cpBkseqDel(couponVO memcp) throws Exception;
+	
 }

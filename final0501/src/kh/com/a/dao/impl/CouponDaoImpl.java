@@ -114,6 +114,12 @@ public class CouponDaoImpl implements CouponDao {
 		 sqlSession.update(ns+"cpBkseq",memcp);
 	}
 
+	@Override
+	public void cpBkseqDel(couponVO memcp) throws Exception {
+		sqlSession.update(ns+"cpBkseqDel",memcp);
+		
+	}
+
 
 	
 

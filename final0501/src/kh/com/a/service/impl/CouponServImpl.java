@@ -104,4 +104,10 @@ public class CouponServImpl implements CouponServ {
 		couponDao.cpBkseq(memcp);
 	}
 
+	@Override
+	public void cpBkseqDel(couponVO memcp) throws Exception {
+		couponDao.cpBkseqDel(memcp);
+		
+	}
+
 }
