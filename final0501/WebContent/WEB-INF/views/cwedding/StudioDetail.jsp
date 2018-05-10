@@ -1,9 +1,22 @@
 <%@page import="kh.com.a.model2.LoginDto"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
 
+<!-- ★fullcalender -->
+<link rel='stylesheet' href='FullCalendar/fullcalendar.css' />
+<link rel='stylesheet' media="print" href='FullCalendar/fullcalendar.print.min.css' />
+<script src='FullCalendar/lib/jquery.min.js'></script>
+<script src='FullCalendar/lib/moment.min.js'></script>
+<script src='FullCalendar/lib/jquery-ui.min.js'></script>
+<script src='FullCalendar/fullcalendar.min.js'></script>
+<script src='FullCalendar/locale-all.js'></script>	<!-- 한국어 변환 -->
+
+<!-- ★modal -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <%
 LoginDto mem = (LoginDto)session.getAttribute("login");
 if(mem==null){
@@ -11,6 +24,9 @@ if(mem==null){
 	session.setAttribute("login", mem);
 }
 %>
+
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
+
 
 <c:if test="${ not empty flag && flag eq 'bsk'}">
 	<script type="text/javascript">
@@ -30,6 +46,15 @@ if(mem==null){
 <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
 
 <style>
+/* ★ */
+.modal-backdrop {
+    z-index: -1;
+}
+.modalContent {
+    font-size: 18px;
+    color: black;
+  }
+
 .mySlides {display:none}
 .w3-left, .w3-right, .w3-badge {cursor:pointer}
 .w3-badge {height:13px;width:13px;padding:0}
@@ -227,7 +252,7 @@ img:hover {
     </a>
     <a href="javascript:void(0)" onclick="openCity(event, 'regervation');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      	style="font-family: 'Hanna', Fantasy;">에약</div>
+      	style="font-family: 'Hanna', Fantasy;">예약</div>
     </a>
   </div>
 
@@ -391,16 +416,13 @@ img:hover {
 		</div>
 	</div>
 	
-	<!-- 스튜디오에 대한 에약 완료 뷰 -->
+	<!-- 스튜디오에 대한 에약 달력 뷰 -->
 	<div id="regervation" class="w3-container city" style="display:none;">
-		<!-- 예약완료 -->
-		<br>
 		<div class="w3-container" style="padding-left: 70px; font-family: 'Hanna', serif;">
 			<div align="center">
 				<div id='calendar' style="width:80%; height: 800px; margin-top:20px;" ></div>
 			</div>
 		</div>
-		
 	</div>
 
 </div>
@@ -455,19 +477,45 @@ function mod() {
 </script>
 
 <script>
-function checkSubmit() {
+function checkReviewSubmit(id) {
+	if (id == "guest") {
+		alert("로그인 후 이용해주세요.");
+		return false;
+	}
 	return true;
 }
 
-function muBasket() {
-	$("#_frmPay").attr({ "target":"_self", "action":"muBasket.do" }).submit();
+function checkSubmit(tail) {
+	
+	if ($("#_redate" + tail).val().trim() == "") {
+		alert("날짜를 선택해주세요.");
+		return false;
+	}
+	
+	return true;
 }
 
+function muBasket(tail) {
+	$("#_cmd" + tail).val("bsk");
+	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+}
+
+function muPaymentView(tail) {
+	$("#_cmd" + tail).val("pay");
+	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+}
+
+//이부분 혜영이 한테 설명 듣기.
+/* 
+function list() {
+	location.href = "muMainView.do";
+} */
+
 //옵션 값이 바뀌었을 때
-function setOptionProduct(){
-	var sproduct = $("#selectproduct option:selected").text();
-	$("#_option1").val(sproduct);
-//	var i = parseInt($("#_optionSelect").val());
+function setOptionProduct(tail){
+	var sproduct = $("#_optionSelect"+ tail +"option:selected").text();
+	$("#_option1" + tail).val(sproduct);
+	$("#_total_price" + tail).val($("#_optionSelect" + tail +" option:selected").val());
 }
 </script>
 
@@ -498,8 +546,6 @@ function like(){
 <!-- ★fullcalendar에 대한 스크립트 -->
 <!-- https://fullcalendar.io/ -->
 <script type="text/javascript">
-
-
 function modalRegi(date) {
 	date = date.split("-").join("/");	// yyyy-mm-dd -> yyyy/mm/dd
 	$("#_redateModal").val(date);
@@ -574,71 +620,67 @@ $(function() {
  	     }
   	});
 });
-
 </script>
 
 <script>
+//예약시 달력
 var startD = "";
 var endD = "";
 
 var year = "";
 var month = "";
 var day = "";
-  $("#_redate").datepicker(   // inputbox 의 id 가 startDate 
-          {dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011/04/29' 로표시
-           , showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
-           , buttonImage: 'assets/images/calen.png'  // 우측 달력 icon 의 이미지 패스 
-           , buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
-           , changeMonth: true // 월선택 select box 표시 (기본은 false)
-           , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
-           , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
-           , minDate : 0         // 오늘부터 시작
-           , onSelect: function(date){
-         		selectDate(date);
-           }
-     });
-  
-  $('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
+$("#_redate").datepicker(   // inputbox 의 id 가 startDate 
+	{dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011/04/29' 로표시
+	, showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
+	, buttonImage: 'assets/images/selectCal.jpg' // 우측 달력 icon 의 이미지 패스 
+	, buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
+	, changeMonth: true // 월선택 select box 표시 (기본은 false)
+	, changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+	, showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	, minDate : 0         // 오늘부터 시작
+	, onSelect: function (date) {
+		selectDate(date, '');
+	}
+});
+$('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
 
-//datepicker 날짜 선택시 수행
-  function selectDate(date) {
-  	//alert(date);
-  	var adata = {
-  			redate:date,
-  			pdseq:${sdDto.stseq}
-  	};
-  	
-  	$.ajax({
-			url:"getDSReservListByPdseqRedate.do",
-			type:"get",
-			data:adata,
-			success:function(msg){
-				
-					$("#_retime").empty();
-					$("#_retime").append("<option value='09:00~10:00'>09:00 ~ 10:00</option>");
-					$("#_retime").append("<option value='10:00~11:00'>10:00 ~ 11:00</option>");
-					$("#_retime").append("<option value='11:00~12:00'>11:00 ~ 12:00</option>");
-					$("#_retime").append("<option value='12:00~13:00'>12:00 ~ 13:00</option>");
-					$("#_retime").append("<option value='14:00~15:00'>14:00 ~ 15:00</option>");
-					$("#_retime").append("<option value='15:00~16:00'>15:00 ~ 16:00</option>");
-					$("#_retime").append("<option value='16:00~17:00'>16:00 ~ 17:00</option>");
-					$("#_retime").append("<option value='17:00~18:00'>17:00 ~ 18:00</option>");
-					
-					//예약된 시간 삭제
-					for(var i = 0; i < msg.reservListDS.length; i++){
-	  				var retime = msg.reservListDS[i].retime;
-	  				var optionId = "#_retime option[value='" + retime +"']";
-	  				$(optionId).remove();
-	  				}
-			},
-			error:function(reqest, status, error){
-				alert("실패");
+// datepicker 날짜 선택시 수행
+function selectDate(date, tail) {
+	//alert(date);
+	var adata = {
+			redate:date,
+			pdseq:${sdDto.stseq}
+		};
+	
+	$.ajax({
+		url:"getMuReservListByPdseqRedate.do",
+		type:"get",
+		data:adata,
+		success:function(msg){
+
+			$("#_retime" + tail).empty();
+			for (var i = ${openHour}; i < ${closeHour - 1}; i++) {
+				var retimeStr = i + ":" + ${openMin} + "~" + (i + 1) + ":" + ${openMin};
+				var tagStr = "<option value="+ retimeStr +">" + retimeStr + "</option>";
+				$("#_retime" + tail).append(tagStr);
 			}
 			
-		 });
-}
+			// 예약된 시간 삭제
+			for(var i = 0; i < msg.reservList.length; i++) {
+				var retime = msg.reservList[i].retime;
+				var optionId = "#_retime"+ tail +" option[value='" + retime + "']";
+				$(optionId).remove();
+			}
+			
+		},
+		error:function(reqest, status, error){
+			alert("실패");
+		}
+	});
 </script>
 
+<!-- 이미지 슬라이드 관련 스크립트 -->
 <script>
 var slideIndex = 1;
 showDivs(slideIndex);
