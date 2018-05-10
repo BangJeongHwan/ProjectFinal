@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import kh.com.a.model.DressDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.DressParam;
 
 public interface DressDao {
@@ -24,4 +25,5 @@ public interface DressDao {
 
 	public List<DressDto> getPagingDressList(DressParam param) throws Exception;
 
+	public RecentDto getRecentProduct(int rp) throws Exception;
 }

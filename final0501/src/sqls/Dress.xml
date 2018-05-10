@@ -78,6 +78,12 @@
 	WHERE DSSEQ=#{dsseq}
   </update>
   
+  <!-- 5010 -->
+  <select id="getRecentProduct" parameterType="java.lang.Integer" resultType="kh.com.a.model.RecentDto">
+	SELECT CID, DNAME AS CNAME, DSSEQ AS SEQ, PICTURE0 AS PIC
+	FROM DRESS
+	WHERE DSSEQ=#{rp}
+</select>
   
   
   </mapper>

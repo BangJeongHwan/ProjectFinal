@@ -38,6 +38,7 @@ import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.SdParam;
 import kh.com.a.model2.StudioParam;
 import kh.com.a.model2.StudioPicDto;
+import kh.com.a.service.DressServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
@@ -55,6 +56,8 @@ public class StudioCtrl {
 	ReservationServ reservServ;
 	@Autowired
 	ReviewServ reviewServ;
+	@Autowired
+	DressServ dressServ;
 	
 	String Crp1 = null;
 	String Crp2 = null;
@@ -119,7 +122,8 @@ public class StudioCtrl {
 					//스튜디오
 						recentDto = studioserv.getRecentProduct(rp);
 					}else if(rp>=4000 && rp<5000) {
-					//드레스	
+					//드레스
+						recentDto = dressServ.getRecentProduct(rp);
 					}else if(rp>=5000 && rp<6000) {
 					//메이크업
 					}
@@ -149,6 +153,7 @@ public class StudioCtrl {
 							recentDto = studioserv.getRecentProduct(rp);
 						}else if(rp>=4000 && rp<5000) {
 						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
 						}
@@ -179,6 +184,7 @@ public class StudioCtrl {
 							recentDto = studioserv.getRecentProduct(rp);
 						}else if(rp>=4000 && rp<5000) {
 						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
 						}
@@ -209,6 +215,7 @@ public class StudioCtrl {
 							recentDto = studioserv.getRecentProduct(rp);
 						}else if(rp>=4000 && rp<5000) {
 						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
 						}
@@ -239,6 +246,7 @@ public class StudioCtrl {
 							recentDto = studioserv.getRecentProduct(rp);
 						}else if(rp>=4000 && rp<5000) {
 						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
 						}

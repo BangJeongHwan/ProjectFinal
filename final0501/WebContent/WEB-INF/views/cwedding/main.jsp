@@ -134,6 +134,7 @@ function view(x){
 		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid="+<%=mem.getId()%>;
 	}else if(x >= 4000 && x < 5000){
 		//드레스
+		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid="+<%=mem.getId()%>;
 	}else if(x >= 5000 && x < 6000){
 		//메이크업
 	}

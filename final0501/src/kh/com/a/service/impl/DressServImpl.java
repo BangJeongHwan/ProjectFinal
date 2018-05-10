@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.DressDao;
 import kh.com.a.model.DressDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.DressParam;
 import kh.com.a.service.DressServ;
 
@@ -66,6 +67,11 @@ public class DressServImpl implements DressServ {
 	@Override
 	public List<DressDto> getPagingDressList(DressParam param) throws Exception {
 		return dressDao.getPagingDressList(param);
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return dressDao.getRecentProduct(rp); 
 	}
 
 	
