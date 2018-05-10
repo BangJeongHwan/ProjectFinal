@@ -36,6 +36,7 @@ import kh.com.a.model.JjimDto;
 import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReviewDto;
 import kh.com.a.model.StudioDto;
+import kh.com.a.model.CookieDto;
 import kh.com.a.model2.DressParam;
 import kh.com.a.model2.DressVO;
 import kh.com.a.model2.LoginDto;
@@ -61,15 +62,6 @@ public class DressCtrl {
 	@Autowired
 	private StudioServ studioserv;
 	
-	String Crp1 = null;
-	String Crp2 = null;
-	String Crp3 = null;
-	String Crp4 = null;
-	String Crp5 = null;
-	String Crp6 = null;
-	
-	int check = 1;
-	
 	private static final Logger logger = LoggerFactory.getLogger(DressCtrl.class);
 	
 	@RequestMapping(value="dressMain.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -85,6 +77,9 @@ public class DressCtrl {
 		param.setEnd(end);
 		
 		Cookie[] cookies = req.getCookies();
+		
+		CookieDto cdto = new CookieDto();
+		int check = cdto.getCheck();
 		
 		if(cookies!=null && cookies.length > 0){
 			
@@ -104,8 +99,8 @@ public class DressCtrl {
 				if(cookies[i].getName().equals("rp0"))
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
-					if(this.check == 1) {
-						Crp1 = Integer.toString(rp);
+					if(check == 1) {
+						cdto.setCrp1(Integer.toString(rp));
 					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
@@ -137,8 +132,8 @@ public class DressCtrl {
 				else if(cookies[i].getName().equals("rp1")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
-					if(this.check == 1) {
-						Crp2 = Integer.toString(rp);
+					if(check == 1) {
+						cdto.setCrp2(Integer.toString(rp));
 					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
@@ -168,8 +163,8 @@ public class DressCtrl {
 				else if(cookies[i].getName().equals("rp2")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
-					if(this.check == 1) {
-						Crp3 = Integer.toString(rp);
+					if(check == 1) {
+						cdto.setCrp3(Integer.toString(rp));
 					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
@@ -199,8 +194,8 @@ public class DressCtrl {
 				else if(cookies[i].getName().equals("rp3")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
-					if(this.check == 1) {
-						Crp4 = Integer.toString(rp);
+					if(check == 1) {
+						cdto.setCrp4(Integer.toString(rp));
 					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
@@ -230,8 +225,8 @@ public class DressCtrl {
 				else if(cookies[i].getName().equals("rp4")) 
 				{
 					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
-					if(this.check == 1) {
-						Crp5 = Integer.toString(rp);
+					if(check == 1) {
+						cdto.setCrp5(Integer.toString(rp));
 					}
 					
 					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
@@ -279,7 +274,8 @@ public class DressCtrl {
 		model.addAttribute("s_category", param.getS_category());
 		model.addAttribute("s_keyword", param.getS_keyword());
 		
-		this.check++;
+		check++;
+		cdto.setCheck(check);
 		
 		return "dressMain.tiles";
 	}
@@ -337,7 +333,15 @@ public class DressCtrl {
 		
 		LoginDto mem = (LoginDto)session.getAttribute("login");
 		
-		int  b = 1;
+		CookieDto cdto = new CookieDto();		
+		int  bcheck = cdto.getB();
+		
+		String Crp1 = cdto.getCrp1();
+		String Crp2 = cdto.getCrp2();
+		String Crp3 = cdto.getCrp3();
+		String Crp4 = cdto.getCrp4();
+		String Crp5 = cdto.getCrp5();
+		String Crp6 = cdto.getCrp6();
 		
 		if(mem != null && mem.getId() != "guest" && mem.getAuth() != "admin")
 		{
@@ -347,22 +351,24 @@ public class DressCtrl {
 			
 			for(int i = 0; i < cookies.length; i++){
 				if(cookies[i].getName().equals("rp0")){
-					b++;
+					bcheck++;
+					cdto.setB(bcheck);
 				}
 			}
 			
-			if(b == 1){
+			if(bcheck == 1){
 				CookieGenerator cookie = new CookieGenerator();
 				cookie.setCookieName("rp0");
 				cookie.setCookieMaxAge(24*60*60);
 				//cookie.addCookie(res, URLEncoder.encode(sttDto.getCid(), "UTF-8"));
 				cookie.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-				this.Crp1 = Integer.toString(Ddto.getDsseq());
+				Crp1 = Integer.toString(Ddto.getDsseq());
+				cdto.setCrp1(Integer.toString(Ddto.getDsseq()));
 				System.out.println("쿠키 rp0 생성 완료!");
 			}else{
 				for(int i = 0; i < cookies.length; i++)
 				{
-					if(cookies[i].getName().equals("rp0") && this.Crp2 == null)
+					if(cookies[i].getName().equals("rp0") && Crp2 == null)
 					{
 						System.out.println("Crp1 = " +Crp1);
 						CookieGenerator cookie = new CookieGenerator();
@@ -375,10 +381,11 @@ public class DressCtrl {
 						cookie1.setCookieName("rp0");
 						cookie1.setCookieMaxAge(24*60*60);
 						cookie1.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-						this.Crp2 = Integer.toString(Ddto.getDsseq());
+						Crp2 = Integer.toString(Ddto.getDsseq());
+						cdto.setCrp2(Integer.toString(Ddto.getDsseq()));
 						System.out.println("쿠키 rp0 생성 완료!");
 					}
-					else if(cookies[i].getName().equals("rp1") && this.Crp3 == null)
+					else if(cookies[i].getName().equals("rp1") && Crp3 == null)
 					{
 						System.out.println("*****************");
 						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2);
@@ -400,10 +407,11 @@ public class DressCtrl {
 						cookie2.setCookieName("rp0");
 						cookie2.setCookieMaxAge(24*60*60);
 						cookie2.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-						this.Crp3 = Integer.toString(Ddto.getDsseq());
+						Crp3 = Integer.toString(Ddto.getDsseq());
+						cdto.setCrp3(Integer.toString(Ddto.getDsseq()));
 						System.out.println("쿠키 rp0 생성 완료!");
 					}
-					else if(cookies[i].getName().equals("rp2") && this.Crp4 == null)
+					else if(cookies[i].getName().equals("rp2") && Crp4 == null)
 					{
 						System.out.println("*****************");
 						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2+"  "+"Crp3 = "+Crp3);
@@ -430,10 +438,11 @@ public class DressCtrl {
 						cookie3.setCookieName("rp0");
 						cookie3.setCookieMaxAge(24*60*60);
 						cookie3.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-						this.Crp4 = Integer.toString(Ddto.getDsseq());
+						Crp4 = Integer.toString(Ddto.getDsseq());
+						cdto.setCrp4(Integer.toString(Ddto.getDsseq()));
 						System.out.println("쿠키 rp0 생성 완료!");
 					}
-					else if(cookies[i].getName().equals("rp3") && this.Crp5 == null)
+					else if(cookies[i].getName().equals("rp3") && Crp5 == null)
 					{
 						CookieGenerator cookie = new CookieGenerator();
 						cookie.setCookieName("rp4");
@@ -463,7 +472,8 @@ public class DressCtrl {
 						cookie4.setCookieName("rp0");
 						cookie4.setCookieMaxAge(24*60*60);
 						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-						this.Crp5 = Integer.toString(Ddto.getDsseq());
+						Crp5 = Integer.toString(Ddto.getDsseq());
+						cdto.setCrp5(Integer.toString(Ddto.getDsseq()));
 						System.out.println("쿠키 rp0 생성 완료!");
 					}
 					else if(cookies[i].getName().equals("rp4"))
@@ -496,12 +506,13 @@ public class DressCtrl {
 						cookie4.setCookieName("rp0");
 						cookie4.setCookieMaxAge(24*60*60);
 						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(Ddto.getDsseq()), "UTF-8"));
-						this.Crp6 = Integer.toString(Ddto.getDsseq());
-						
-						this.Crp2 = Crp3;
-						this.Crp3 = Crp4;
-						this.Crp4 = Crp5;
-						this.Crp5 = Crp6;
+						Crp6 = Integer.toString(Ddto.getDsseq());
+						cdto.setCrp6(Integer.toString(Ddto.getDsseq()));
+										
+						cdto.setCrp2((cdto.getCrp3()));
+						cdto.setCrp3((cdto.getCrp4()));						
+						cdto.setCrp4((cdto.getCrp5()));						
+						cdto.setCrp5((cdto.getCrp6()));
 						
 						System.out.println("쿠키 rp0 생성 완료!");
 					}else{

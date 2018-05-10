@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.com.a.model.CompanyDto;
+import kh.com.a.model.CookieDto;
 import kh.com.a.model.MemberDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.service.MemberServ;
@@ -84,6 +85,7 @@ public class MemberCtrl {
 		req.getSession().invalidate();
 		
 		Cookie[] cookies = req.getCookies() ;
+		CookieDto cdto = new CookieDto();
 	     
 	    if(cookies != null){
 	        for(int i=0; i < cookies.length; i++){
@@ -97,6 +99,14 @@ public class MemberCtrl {
 	            res.addCookie(cookies[i]) ;
 	        }
 	    }
+	    cdto.setB(1);
+	    cdto.setCheck(1);
+	    cdto.setCrp1(null);
+	    cdto.setCrp2(null);
+	    cdto.setCrp3(null);
+	    cdto.setCrp4(null);
+	    cdto.setCrp5(null);
+	    cdto.setCrp6(null);
 		
 		return "redirect:/index.do";
 	}
