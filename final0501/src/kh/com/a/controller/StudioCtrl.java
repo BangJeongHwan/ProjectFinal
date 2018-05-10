@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,12 @@ import kh.com.a.model.ReviewDto;
 import kh.com.a.model.StudioDto;
 import kh.com.a.model.StudioProductDto;
 import kh.com.a.model2.LoginDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.SdParam;
 import kh.com.a.model2.StudioParam;
 import kh.com.a.model2.StudioPicDto;
 import kh.com.a.service.MypageServ;
+import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
 import kh.com.a.service.StudioServ;
 import kh.com.a.util.FUpUtil;
@@ -49,6 +53,8 @@ public class StudioCtrl {
 	private MypageServ mypageserv;
 	@Autowired
 	ReviewServ reviewServ;
+	@Autowired
+	ReservationServ reservServ;
 	
 	String Crp1 = null;
 	String Crp2 = null;
@@ -515,6 +521,35 @@ public class StudioCtrl {
 		if (flag != null) {
 			model.addAttribute("flag", flag);
 		}
+				
+		///////////////// 예약일정
+		List<ReservCalParam> reservCalList = reservServ.getReservCalListByPdseq(sdDto.getStseq());
+		// json parsing
+		JSONArray regiData = new JSONArray();
+		for (int i = 0; i < reservCalList.size(); i++) {
+			ReservCalParam rcParm = reservCalList.get(i);
+			String title = rcParm.getMname();
+			
+			String redate = rcParm.getRedate();	// yyyy-mm-dd
+			String timeSplit[] = rcParm.getRetime().split("~");
+			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
+			String start = redate + "T" + timeSplit[0];
+			String end = redate + "T" + timeSplit[1];
+			System.out.println("   " + start);
+			
+			JSONObject jo = new JSONObject();
+			jo.put("title", title);
+			jo.put("start", start);
+			jo.put("end", end);
+			jo.put("color", "#121212");
+			//jo.put("url", "javascript:func()");
+			regiData.put(jo);
+		}
+		
+		System.out.println("reservSize : " + reservCalList.size());
+		System.out.println("regiDataSize : " + regiData.length());
+		
+		model.addAttribute("regiData", regiData);
 		
 		model.addAttribute("openHour", openHour);
 		model.addAttribute("openMin", openMin);
