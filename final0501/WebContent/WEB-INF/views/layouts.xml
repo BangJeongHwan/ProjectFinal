@@ -124,8 +124,8 @@
 	<!-- 웨딩홀 -->
 	
 	<!-- main -->
-	<definition name="weddinghall.tiles" template="/WEB-INF/views/wh-tiles.jsp">
-		<put-attribute name="header" value="/WEB-INF/views/common/wh_header.jsp"/>
+	<definition name="weddinghall.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
 		<put-attribute name="main" value="/WEB-INF/views/wedding/weddinghall.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
 	</definition>
@@ -140,23 +140,24 @@
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallview.jsp"/>
 	</definition>
 	
+	
 	<!-- 홀 추가 -->
 	<definition name="hallwrite.tiles" extends="weddinghall.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallwrite.jsp"/>
 	</definition>
 	
 	<!-- 예약하기 창 -->
-	<definition name="resv.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
-		<put-attribute name="header" value="/WEB-INF/views/wedding/empty.jsp"/>
+	<definition name="resv.tiles" extends="weddinghall.tiles">
+		<put-attribute name="header" value="/WEB-INF/views/common/resv_header.jsp"/>
 		<put-attribute name="main" value="/WEB-INF/views/wedding/resv.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/wedding/empty.jsp"/>
 	</definition>
 	
-	<!-- 테스트 
-	<definition name="NewFile.tiles" template="/WEB-INF/views/Test.jsp">
-		<put-attribute name="main" value="/WEB-INF/views/wedding/NewFile.jsp"/>
+	<!-- 홀 수정 -->
+	<definition name="hallmod.tiles" extends="weddinghall.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/hallmod.jsp"/>
 	</definition>
-	 -->
+	
 	<!-- /웨딩홀 -->
 	
 	

@@ -33,24 +33,47 @@ td:nth-child(even) {
 
 </style>
 
+<script type="text/javascript">
+var hallcount = 0;
+</script>
+
 <div class="container">
 	<h2 class="nino-sectionHeading">
 	<span class="nino-subHeading">wedding Hall</span>
 		${wd.cname }
 	</h2>
-	<p class="nino-sectionDesc">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-	</p>
+	
+	
 	<div class="sectionContent">
 		<div class="row" align="center">
-		
+			
+			
+			<!-- 홀 선택 -->
+			<div align="center">
+				<c:forEach items="${hallList }" var="list" varStatus="i" begin="0" step="1">
+					<span style="cursor: pointer; font-size: 30px" onclick="selectHall(${i.index})" id="_hallsel${i.index}">${list.hallname }홀</span>&nbsp;&nbsp;
+					
+					<script>
+						hallcount++;
+					</script>
+					
+				</c:forEach>
+			</div>
+			<br>
+			<div align="center">
+				<button onclick="delhall()" style="background-color: white;">홀 삭제</button>
+			</div>
+	
+			<br><br>
+			
 			<!-- action = "hallwriteAf.do" -->
 			<form name="frmForm" id="_frmForm" action="#none" method="post" 
 			enctype="multipart/form-data">
 			
 			<!-- 글 번호 -->
-			<input type="hidden" name="hallPd.whseq" value="${wd.whseq }">		
-			
+			<input type="hidden" name="hallPd.whseq" id="_whseq" value="${wd.whseq }">		
+			<!-- 홀 번호 -->
+			<input type="hidden" name="hallPd.pdseq" id="_pdseq" value="${hallList[0].pdseq }">	
 			<table class="list_table" style="width:85%;">
 				<colgroup>
 					<col width="20%"><col width="30%">
@@ -58,56 +81,58 @@ td:nth-child(even) {
 				<tr>
 					<th>홀 이름</th>
 					<td>	
-						<input type="text" name="hallPd.hallname" id="_hallname" size="20">&nbsp;&nbsp;&nbsp;&nbsp;<font id="_hnameCheckFld"></font>
+						<input type="text" name="hallPd.hallname" id="_hallname" size="20" value="${hallList[0].hallname}" readonly>
 					</td>
 				</tr>
 				<tr>
 					<th>층 수</th>
 					<td>
-						<input type="text" name="hallPd.floor" id="_floor" size="10">층
+						<input type="text" name="hallPd.floor" id="_floor" size="10" value="${hallList[0].floor}">층
 					</td>
 				</tr>
 				
 				<tr>
 					<th>시설 구분</th>
 					<td>
-						<input type="hidden" name="hallPd.facility" id="_facility">
+						<input type="hidden" name="hallPd.facility" id="_facility" value="${hallList[0].facility}">
 						<input type="checkbox" name="faci" value="컨벤션">컨벤션&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="호텔">호텔&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="채플">채플&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="전통">전통&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="야외">야외&nbsp;&nbsp;
 						<input type="checkbox" name="faci" value="종교">종교&nbsp;&nbsp;
-						<input type="checkbox" name="faci" value="기타">기타
+						<input type="checkbox" name="faci" id="_faci" value="기타">기타
 					</td>
 				</tr>
 				
 				<tr>
 					<th>음식 종류</th>
 					<td>
-						<input type="hidden" name="hallPd.menutype" id="_menutype">
+						<input type="hidden" name="hallPd.menutype" id="_menutype" value="${hallList[0].menutype}">
 						<input type="checkbox" name="menu" value="뷔페">뷔페&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="양식">양식&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="한식">한식&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="중식">중식&nbsp;&nbsp;
 						<input type="checkbox" name="menu" value="일식">일식&nbsp;&nbsp;
-						<input type="checkbox" name="menu" value="기타">기타
+						<input type="checkbox" name="menu" id="_menu" value="기타">기타
 					</td>
 				</tr>
 				
 				<tr>
 					<th>식대 가격대</th>
-					<td><input type="text" name="hallPd.mincook" id="_mincook" size="10" value="${wd.mincook }">원
-					 ~ <input type="text" name="hallPd.maxcook" id="_maxcook" size="10" value="${wd.maxcook }">원
+					<td><input type="text" name="hallPd.mincook" id="_mincook" size="10" value="${hallList[0].mincook }">원
+					 ~ <input type="text" name="hallPd.maxcook" id="_maxcook" size="10" value="${hallList[0].maxcook }">원
 					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_cookCheckFld">※ 최소 가격 ~ 최대 가격 순으로 입력해주세요!</font>
 					 </td>
 				</tr>
 				
 				<tr>
 					<th>식사 동시 가능 여부</th>
+					
 					<td>
+						<input type="hidden" id="_formatStr" value="${hallList[0].format }">
 						<select id="_format" name="hallPd.format">
-							<option value="분리" selected="selected">분리</option>
+							<option value="분리">분리</option>
 							<option value="동시">동시</option>
 						</select>
 					</td>
@@ -115,15 +140,15 @@ td:nth-child(even) {
 				
 				<tr>
 					<th>수용 인원 범위</th>
-					<td><input type="text" name="hallPd.minpeople" id="_minpeople" size="10" value="${wd.minpeople }">명
-					 ~ <input type="text" name="hallPd.maxpeople" id="_maxpeople" size="10" value="${wd.maxpeople }">명
+					<td><input type="text" name="hallPd.minpeople" id="_minpeople" size="10" value="${hallList[0].minpeople }">명
+					 ~ <input type="text" name="hallPd.maxpeople" id="_maxpeople" size="10" value="${hallList[0].maxpeople }">명
 					 &nbsp;&nbsp;&nbsp;&nbsp;<font id="_peopleCheckFld">※ 최소 인원 ~ 최대인원 순으로 입력해주세요!</font>
 					 </td>
 				</tr>
 				<tr>
 					<th>착석 인원</th>
 					<td>
-						<input type="text" name="hallPd.setpeople" id="_setpeople" size="10">명
+						<input type="text" name="hallPd.setpeople" id="_setpeople" size="10" value="${hallList[0].setpeople }">명
 					 </td>
 				</tr>
 				 
@@ -134,6 +159,20 @@ td:nth-child(even) {
 							<button type="button" id="_fileBtn" onclick="fileBtn()">사진 선택</button>&nbsp;&nbsp;&nbsp;&nbsp;
 								<font>※  최대 15개까지 가능합니다.</font>
 							<!--  style="display:none;" -->
+							<input type="hidden" name="fileNameList[0]" id="_fileNameList0" value="">
+							<input type="hidden" name="fileNameList[1]" id="_fileNameList1" value="">
+							<input type="hidden" name="fileNameList[2]" id="_fileNameList2" value="">
+							<input type="hidden" name="fileNameList[3]" id="_fileNameList3" value="">
+							<input type="hidden" name="fileNameList[4]" id="_fileNameList4" value="">
+							<input type="hidden" name="fileNameList[5]" id="_fileNameList5" value="">
+							<input type="hidden" name="fileNameList[6]" id="_fileNameList6" value="">
+							<input type="hidden" name="fileNameList[7]" id="_fileNameList7" value="">
+							<input type="hidden" name="fileNameList[8]" id="_fileNameList8" value="">
+							<input type="hidden" name="fileNameList[9]" id="_fileNameList9" value="">
+							<input type="hidden" name="fileNameList[10]" id="_fileNameList10" value="">
+							<input type="hidden" name="fileNameList[11]" id="_fileNameList11" value="">
+							<input type="hidden" name="fileNameList[12]" id="_fileNameList12" value="">
+						
 							<input type="file" name="fileList[0]" id="_fileList0" onchange="fileSelect(0)" style="display:none;">
 							<input type="file" name="fileList[1]" id="_fileList1" onchange="fileSelect(1)" style="display:none;">
 							<input type="file" name="fileList[2]" id="_fileList2" onchange="fileSelect(2)" style="display:none;">
@@ -160,25 +199,17 @@ td:nth-child(even) {
 				<tr>
 					<th>오픈, 마감 시간</th>
 					<td>
+						<input type="hidden" id="_opentimeStr" value="${hallList[0].opentime }">
+						<input type="hidden" id="_closetimeStr" value="${hallList[0].closetime }">
 						<select id="_opentime" name="hallPd.opentime">
 							<c:forEach var="i" begin="1" end="23" step="1">
-								<c:if test="${i==9 }">
-									<option value="${i }" selected="selected">${i }시</option>
-								</c:if>
-								<c:if test="${i!=9 }">
-									<option value="${i }">${i }시</option>
-								</c:if>
+								<option value="${i }">${i }시</option>
 							</c:forEach>
 						</select>
 						~
 						<select id="_closetime" name="hallPd.closetime">
 							<c:forEach var="i" begin="1" end="23" step="1">
-								<c:if test="${i==20 }">
-									<option value="${i }" selected="selected">${i }시</option>
-								</c:if>
-								<c:if test="${i!=20 }">
-									<option value="${i }">${i }시</option>
-								</c:if>
+								<option value="${i }">${i }시</option>
 							</c:forEach>
 						</select>
 					</td>
@@ -186,6 +217,7 @@ td:nth-child(even) {
 				<tr>
 					<th>이용 시간</th>
 					<td>
+						<input type="hidden" id="_wstepStr" value="${hallList[0].wstep}">
 						<select id="_wstep" name="hallPd.wstep">
 							<c:forEach var="i" begin="40" end="200" step="10">
 								<option value="${i }분">${i }분</option>
@@ -196,7 +228,7 @@ td:nth-child(even) {
 				<tr>
 					<th>사용료</th>
 					<td>
-						 <input type="text" name="hallPd.pay" id="_pay" size="10">만원&nbsp;&nbsp;&nbsp;&nbsp;
+						 <input type="text" name="hallPd.pay" id="_pay" size="10" value="${hallList[0].pay }">만원&nbsp;&nbsp;&nbsp;&nbsp;
 						 <font>※ 단위는 '만원' 입니다.</font>
 					</td>
 				</tr>
@@ -204,8 +236,9 @@ td:nth-child(even) {
 				<tr>
 					<th>음주류 포함 여부</th>
 					<td>
+						<input type="hidden" id="_drinkStr" value="${hallList[0].drink }">
 						<select id="_drink" name="hallPd.drink">
-							<option value="포함" selected="selected">포함</option>
+							<option value="포함">포함</option>
 							<option value="미포함">미포함</option>
 						</select>
 					</td>
@@ -226,48 +259,24 @@ td:nth-child(even) {
 	</div>
 </div>
 
-<!-- 홀 이름 체크 -->
-<script type="text/javascript">
-$(function () {
-	$("#_hallname").blur(function () {
-		var hallname="";
-		var hallnameArr = $("#_hallname").val().split(' ');
-		for(i=0;i<hallnameArr.length;i++){
-			hallname += hallnameArr[i];
-		}
-		
-		$.ajax({
-			url:"checkhallname.do",
-	        data:"hallname="+hallname,      // parameter 타입으로 이동
-	        success:function(msg){
-	        	if(hallname==""){
-	        		$("#_hnameCheckFld").text("※ 홀 이름을 입력해주세요!");
-	                $("#_hnameCheckFld").css("color","#ff0000");
-	        	}else if(msg.message=="true"){
-	        		$("#_hnameCheckFld").text("※ 해당되는 이름이 있습니다.");
-	                $("#_hnameCheckFld").css("color","#ff0000");
-	                $("#_hallname").val("");
-	        	}else{
-	        		$("#_hnameCheckFld").text("※ 사용가능합니다.");
-	                $("#_hnameCheckFld").css("color","#0000ff");
-	                $("#_hallname").val(hallname);
-	        	}
-	        },
-	        error:function(reqest, status, error){
-	            alert("실패");
-	        }
-		});
-	});
-});
-</script>
-
-
 <!-- 파일 업로드 -->
 <script type="text/javascript">
 
 var fileSize = 0;
 var fileNameArray = new Array("", "", "", "", "", "", "", "", "", "","","","","","");
+</script>
 
+<c:forEach items="${ hallpicArr }" varStatus="i">
+	<c:if test="${ not empty hallpicArr[i.index] && hallpicArr[i.index] != '' }">
+		<script type="text/javascript">
+			fileNameArray[fileSize] = "${hallpicArr[i.index]}";
+			fileSize++;
+		</script>
+	</c:if>
+</c:forEach>
+
+<script>
+drawFileNameDiv();
 //파일 선택버튼 클릭시
 function fileBtn() {
 	for (var i = 0; i < fileNameArray.length; i++) {
@@ -335,19 +344,163 @@ function drawFileNameDiv() {
 			tagStr += fileNameArray[i];
 			tagStr += "<br>";
 		}
+		var fileNameInputId = "#_fileNameList" + i;
+		$(fileNameInputId).val(fileNameArray[i]);
 	}
 	
 	$("#_fileNameDiv").html(tagStr);
 }
 
-/* 
-function changeimg(fileName) {
-	fileName = "/uploadFile/"+fileName;
-	$("#_imgshow").attr("src","fileName");
-} 
-*/
 </script>
 
+<!-- 홀 이름에 따른 입력 변경 -->
+<script>
+
+// 초기 값 입력
+changeHallInfo(0,"","");
+
+function changeHallInfo(hallnum,hall,picArr){
+	for(var i=0;i<hallcount;i++){
+		if(i==hallnum){
+			$("#_hallsel"+i).css("border-bottom","1px solid red");
+		}else{
+			$("#_hallsel"+i).css("border-bottom","");
+		}
+	}
+	
+	if(hall!="" && picArr!=""){		
+		$("#_pdseq").val(hall.pdseq);
+		$("#_hallname").val(hall.hallname);
+		$("#_floor").val(hall.floor);
+		$("#_facility").val(hall.facility);
+		$("#_menutype").val(hall.menutype);
+		$("#_mincook").val(hall.mincook);
+		$("#_maxcook").val(hall.maxcook);
+		$("#_formatStr").val(hall.format);
+		$("#_minpeople").val(hall.minpeople);
+		$("#_maxpeople").val(hall.maxpeople);
+		$("#_setpeople").val(hall.setpeople);
+		
+		for(var i=0;i<picArr.length;i++){
+			fileNameArray[i]=picArr[i];
+		}
+		drawFileNameDiv();
+		
+		$("#_opentimeStr").val(hall.opentime);
+		$("#_closetimeStr").val(hall.closetime);
+		$("#_wstepStr").val(hall.wstep);
+		$("#_pay").val(hall.pay);
+		$("#_drinkStr").val(hall.drink);
+	}
+	changeVal();
+}
+
+function changeVal(){
+	var faci = $("#_facility").val().split(" ");
+	for(var i=0;i<faci.length;i++){
+		if(faci[i].trim()=='컨벤션'){
+			$("input[value='컨벤션']").prop("checked",true);
+		}else if(faci[i].trim()=='호텔'){
+			$("input[value='호텔']").prop("checked",true);
+		}else if(faci[i].trim()=='채플'){
+			$("input[value='채플']").prop("checked",true);
+		}else if(faci[i].trim()=='전통'){
+			$("input[value='전통']").prop("checked",true);
+		}else if(faci[i].trim()=='채플'){
+			$("input[value='채플']").prop("checked",true);
+		}else if(faci[i].trim()=='야외'){
+			$("input[value='야외']").prop("checked",true);
+		}else if(faci[i].trim()=='종교'){
+			$("input[value='종교']").prop("checked",true);
+		}else if(faci[i].trim()=='기타'){
+			$("#_faci").prop("checked",true);
+		}
+	}
+
+	var menu = $("#_menutype").val().split(" ");
+	for(var i=0;i<menu.length;i++){
+		if(menu[i]=='뷔페'){
+			$("input[value='뷔페']").prop("checked",true);
+		}else if(menu[i]=='양식'){
+			$("input[value='양식']").prop("checked",true);
+		}else if(menu[i]=='한식'){
+			$("input[value='한식']").prop("checked",true);
+		}else if(menu[i]=='중식'){
+			$("input[value='중식']").prop("checked",true);
+		}else if(menu[i]=='일식'){
+			$("input[value='일식']").prop("checked",true);
+		}else if(menu[i]=='기타'){
+			$("#_menu").prop("checked",true);
+		}
+	}
+
+	var format = $("#_formatStr").val();
+	if(format=='분리'){
+		$("option[value='분리']").prop("selected",true);
+	}else if(format=='동시'){
+		$("option[value='동시']").prop("selected",true);
+	}
+
+
+	var opentime = $("#_opentimeStr").val();
+	opentime = parseInt(opentime);
+	var closetime = $("#_closetimeStr").val();
+	closetime = parseInt(closetime);
+
+	for(var i=1;i<=23;i++){
+		if(opentime==i){
+			$("#_opentime option[value='"+i+"']").prop("selected",true);	
+		}
+		if(closetime==i){
+			$("#_closetime option[value='"+i+"']").prop("selected",true);	
+		}
+	}
+
+	var drink = $("#_drinkStr").val();
+	if(drink=='포함'){
+		$("#_drink option[value='포함']").prop("selected",true);
+	}else if(drink=='미포함'){
+		$("#_drink option[value='미포함']").prop("selected",true);
+	}
+
+	var wstep = $("#_wstepStr").val().split('분');
+	for(var i=40;i<=200;i=i+10){
+		if(i==wstep[0]){
+			$("#_wstep option[value='"+i+"분']").prop("selected",true);
+		}
+	}
+}
+
+function selectHall(hallnum){
+	var hallorname = $("#_hallsel"+hallnum).text().split('홀');
+	//alert(hallorname[0]);
+	data = {
+		hallname:hallorname[0],
+		whseq:$("#_whseq").val()		
+	}	
+	
+	$.ajax({
+		url:"Hallmodselect.do",
+        data:data,      // parameter 타입으로 이동
+        success:function(msg){        	
+        	// 초기화
+        	$("input[type=checkbox]:checked").each(function () {
+   				$(this).prop('checked', false);
+   			});
+        	for(var i=0;i<15;i++){
+        		fileNameArray[i]="";
+        	}
+        	drawFileNameDiv();
+        	
+        	changeHallInfo(hallnum,msg.hall,msg.hallpicArr);
+        },
+        error:function(reqest, status, error){
+            alert("실패");
+        }
+	});
+	
+}
+</script>
 
 
 
@@ -460,7 +613,7 @@ $(function () {
 		}else{
 			$("#_floor").val(floor);
 			$("#_pay").val(pay);
-			$("#_frmForm").attr({"target":"_self", "action":"hallwriteAf.do"}).submit();
+			$("#_frmForm").attr({"target":"_self", "action":"hallmodAf.do"}).submit();
 		}
 	});	
 });
@@ -475,6 +628,14 @@ function isNum(num){
 	}
 	return true;
 }
+
+/* 홀 삭제 */
+function delhall(){
+	var pdseq = $("#_pdseq").val();
+	var whseq = $("#_whseq").val();
+	var hallname = $("#_hallname").val();
+	alert(pdseq);
+	location.href="Halldel.do?pdseq="+pdseq+"&whseq="+whseq+"&hallname="+hallname;
+}
 </script>
-    
 

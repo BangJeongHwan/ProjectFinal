@@ -82,7 +82,7 @@ td:nth-child(even) {
 	</table>
 	<br><br>
 	<h4>상담정보</h4>
-	<form action="#" method="post" name="resv" id="_resv" onsubmit="return checkSubmit()">
+	<form action="#" method="post" name="resv" id="_resv">
 		<input type="hidden" value="${login.id }" name="mid">
 		<input type="hidden" value="${wd.whseq }" name="pdseq">
 		<table style="width:100%;">
@@ -99,7 +99,7 @@ td:nth-child(even) {
 				<th>희망홀</th>
 				<td>
 					
-					<select id="_hallname" name="content" style="width: 50%">
+					<select id="_hallname" name="content" style="width: 50%" onchange="hallchange()">
 						<c:if test="${not empty hallList}">
 							<c:forEach items="${hallList }" var="list">
 								<option value="${list.hallname}">${list.hallname}
@@ -211,8 +211,6 @@ td:nth-child(even) {
 		<c:if test="${login.auth eq 'member'}">
 			<img alt="전송" src="assets/images/others/order.jpg" onclick="ordersummit()" style="cursor:pointer;">&nbsp;&nbsp;
 		</c:if>
-		<!-- <input type="reset" value="취소"> -->
-		<img alt="취소" src="assets/images/others/cancel1.jpg">
 		<button onclick="closer()">닫기</button>
 	</div>
 </div>
@@ -279,6 +277,11 @@ var date = $("#_redate").val();
 //alert(date);
 hallinfo(date);
 
+// 홀 변경시
+function hallchange(){
+	hallinfo($("#_redate").val());
+}
+
 function hallinfo(date){
 	var hallname = $("#_hallname option:selected").val();
 	//alert(hallname);
@@ -310,7 +313,7 @@ var min = new Array();	// 분
 
 function schedule(hall, rdate){
 	//alert(hall.opentime);2018/08/06
-	alert(rdate.substring(2,10));
+	//alert(rdate.substring(2,10));
 	rdate = rdate.substring(2,10);
 	var data = {
 			redate:rdate,
@@ -328,7 +331,7 @@ function schedule(hall, rdate){
 			var close = Number(hall.closetime);
 			var stepArr = hall.wstep.split('분');
 			var step = Number(stepArr[0]);
-						 
+			 
 			timePro(open, close, step);	// 시간 처리			
 
 			// 기존 시간 출력
@@ -356,25 +359,30 @@ function schedule(hall, rdate){
 	});
 }
 
-function timePro(open,close,step){
-	
-	time[0] = open*60;
-	var count = 1;
+function calTime(count,open,close,step){
 	for (var i = open; i < close; i++) {
-		
-		time[count] = i*60 + step;	
+		time[count] = time[count-1] + step;	
 		
 		if(time[count]>(close*60)){
 			return;
 		}
 		count++;
-	}	
+	} 
+}
+function timePro(open,close,step){
+	
+	time[0] = open*60;
+	var count = 1;
+	calTime(count,open,close,step);
 	
 	for(var i=0;i<time.length;i++){
 		hour[i] = parseInt(time[i]/60);
 		min[i] = time[i]%60;
-		if(min[i]==0){
-			min[i]="00";
+		if((""+hour[i]).length==1){
+			hour[i] = "0"+hour[i];
+		}
+		if((""+min[i]).length==1){
+			min[i]="0"+min[i];
 		}
 	}
 }
@@ -383,24 +391,16 @@ function timePro(open,close,step){
 function ordersummit(){
 	
  	// form 값 보내주기
- 	document.resv.action = 'reservationWd.do';	// controller
- 	document.resv.target = 'parentview';	// 부모에 window.name 지정
- 	document.resv.submit();
- 	
-	$("#mask",opener.document).hide();	// 부모
-	self.close();	// 자식 처리
-}
-
-function checkSubmit() {
-	
-	if ($("#_redate").val().trim() == "") {
-		alert("날짜를 선택해주세요.");
-	}else if(!$("#_checkB").is(":checked")){
+	if(!$("#_checkB").is(":checked")){
 		alert("개인정보 수집에 동의에 체크해주세요!");
 	}else{
-		return true;
+	 	document.resv.action = 'reservationWd.do';	// controller
+	 	document.resv.target = 'parentview';	// 부모에 window.name 지정
+	 	document.resv.submit();
+	 	
+		$("#mask",opener.document).hide();	// 부모
+		self.close();	// 자식 처리
 	}
-	return false;
 }
 
 // 닫기 동작

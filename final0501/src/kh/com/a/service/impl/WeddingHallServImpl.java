@@ -44,6 +44,31 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.getHallList(whseq);
 	}
 	
+	// 기업 삭제
+	@Override
+	public void Weddingdel(int whseq) {
+		List<WeddingHallDto> hallList = weddingHallDao.getHallList(whseq);
+		if(hallList !=null) {
+			for(int i=0;i<hallList.size();i++) {
+				WeddingHallDto dto = hallList.get(i);
+				String hallname = dto.getHallname();
+				int pdseq = dto.getPdseq();
+				
+				weddingHallDao.Hallpicdel(whseq, hallname);
+				weddingHallDao.Halldel(pdseq);
+			}
+		}		
+		weddingHallDao.Weddingdel(whseq);		
+	}
+	
+	// 체크된 list
+	@Override
+	public List<WeddingDto> selWeddingList(String type, String data) {
+		return weddingHallDao.selWeddingList(type, data);
+	}
+	
+	//////////////////////////////////////////////////////////
+	
 	// 홀 이름 체크
 	@Override
 	public boolean checkHallName(String hallname) {
@@ -62,6 +87,16 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		weddingHallDao.addHallPicture(whseq, hallname, FileNameList);
 	}
 	
+	// hall 수정
+	@Override
+	public boolean modHall(WeddingHallDto wdPd) {
+		return weddingHallDao.modHall(wdPd);
+	}
+	// 홋 사진 수정
+	@Override
+	public void modHallPicture(int whseq, String hallname, List<WHallPictureDto> orpicList) {
+		weddingHallDao.modHallPicture(whseq, hallname, orpicList);
+	}
 	// 홀이름과 사진수
 	@Override
 	public List<WHallPicSumVO> getHallSumList(int whseq) {
@@ -92,5 +127,32 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public WeddingHallDto hallInfo(String hallname, int whseq) {
 		return weddingHallDao.hallInfo(hallname, whseq);
 	}
+
+	// 홀 삭제
+	@Override
+	public void Halldel(int pdseq) {
+		weddingHallDao.Halldel(pdseq);
+	}
+
+	// 홀 사진 삭제
+	@Override
+	public void Hallpicdel(int whseq, String hallname) {
+		weddingHallDao.Hallpicdel(whseq, hallname);
+	}
+
+	// 조회수 up
+	@Override
+	public void upReadCount(int whseq) {
+		weddingHallDao.upReadCount(whseq);
+	}
+
+	// 댓글 수up
+	@Override
+	public void upCommentCount(int whseq) {
+		weddingHallDao.upCommentCount(whseq);
+	}
+
+	
+
 	
 }

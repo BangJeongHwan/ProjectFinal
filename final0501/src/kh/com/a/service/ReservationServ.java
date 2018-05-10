@@ -6,6 +6,7 @@ import kh.com.a.model.ReservationDto;
 import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
+import kh.com.a.model2.ReservationVO;
 
 public interface ReservationServ {
 
@@ -31,7 +32,8 @@ public interface ReservationServ {
 	//정환
 	public void wdHallResv(ReservationDto rDto);
 	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception;
-	public List<ReservationDto> getWdRegList(ReservationDto fcal);
+	public List<ReservationVO> getWdRegList(ReservationDto fcal);
+	
 //	혜영
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception;
 	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception;

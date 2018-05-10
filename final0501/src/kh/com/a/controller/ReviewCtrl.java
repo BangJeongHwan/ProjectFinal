@@ -30,6 +30,7 @@ import kh.com.a.model2.ReviewVO;
 import kh.com.a.model2.ReviewVO2;
 import kh.com.a.service.CardService;
 import kh.com.a.service.ReviewServ;
+import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -39,6 +40,8 @@ public class ReviewCtrl implements Serializable {
 
 	@Autowired
 	private ReviewServ reviewServ;
+	@Autowired
+	WeddingHallServ weddingHallServ;
 
 	@RequestMapping(value="rwrite.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String rwrite(int rpdseq,HttpServletRequest req,Model model) throws Exception{
@@ -52,6 +55,17 @@ public class ReviewCtrl implements Serializable {
 		model.addAttribute("rpdseq", rpdseq);
 
 		return "rwrite.tiles";
+	}
+	
+	// 정환
+	@RequestMapping(value="whreview.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String whreview(Model model, ReviewDto dto) throws Exception{
+		logger.info("ReviewCtrl whreview " + new Date());
+		boolean b = reviewServ.writeWdlist(dto);
+		if(b) {
+			weddingHallServ.upCommentCount(dto.getRpdseq());
+		}
+		return "redirect:/hallView.do?whseq="+dto.getRpdseq()+"&jcal=''";
 	}
 	
 	//0430 소현
