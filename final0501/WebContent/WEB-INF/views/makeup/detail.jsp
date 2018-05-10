@@ -330,6 +330,82 @@ var picArr = new Array("", "", "", "", "", "", "", "", "", "");
   
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="_regiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:600px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <div align="center">
+      	  <h4 class="modal-title" id="myModalLabel">예약하기</h4>
+        </div>
+      </div>
+      <div class="modal-body">
+      	<!-- <input type="text" id="_index" value="0"> -->
+      	<div id="_modalContent" class="modalContent">
+      		<form action="muBasket.do" method="post" id="_frmPayModal" onsubmit="return checkSubmit('Modal')">
+			 	<input type="hidden" name="cmd" id="_cmdModal" value="bsk">
+				<input type="hidden" name="pdseq" value="${ muDto.museq }">
+				<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
+				<input type="hidden" name="option1" id="_option1Modal" value="${mupdList[0].title}">
+	      	  
+				<table class="type05" >
+					<colgroup>
+						<col width="20%"><col width="80%">
+					</colgroup>
+					<tr>
+						<td>상품</td>
+						<td>
+							<select id="_optionSelectModal" onchange="setOptionPrice('Modal')">
+								<c:forEach items="${ mupdList }" var="mupd" varStatus="i">
+									<option value="${ mupd.price }">${ mupd.title }</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>예약날짜</td>
+						<td>
+							<input type="text" id="_redateModal" name="redate" size="10" style="border: none; cursor:default" value="" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>예약시간</td>
+						<td>
+							<select name="retime" id="_retimeModal">
+								<c:forEach var="i" begin="${openHour}" end="${closeHour - 1}">
+									<option value="${i}:${openMin}~${i + 1}:${openMin}">${i}:${openMin}~${i + 1}:${openMin}</option>
+								</c:forEach>
+							</select>
+						</td>
+					</tr>
+					<tr >
+						<td>상품 가격</td>
+						<td>
+							<input type="text" name="total_price" id="_total_priceModal" value="${mupdList[0].price}"
+											 style="border: 0"  readonly="readonly">원
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+							<button type="button" onclick="muPaymentView('Modal')"  class="w3-btn w3-white w3-border w3-border-red w3-round-large">결제</button>
+							&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+							<button type="button" onclick="muBasket('Modal')" class="w3-btn w3-white w3-border w3-border-red w3-round-large">장바구니</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+      	
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ★fullcalendar에 대한 스크립트 -->
 <!-- https://fullcalendar.io/ -->

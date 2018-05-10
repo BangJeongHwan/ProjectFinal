@@ -24,6 +24,29 @@
         font-size: 18px;
         color: black;
       }
+      
+.payTbl table {
+/* 	width: 1000px; */
+	border: 1px solid #EBEBEB;
+	align-content: center;
+	cursor: default;
+}
+.payTbl tr{
+	padding:  20px 20px;
+	height: 60px;
+}
+.payTbl td{
+	align-content: center;
+	text-align: center;
+	background-color: #fff;
+}
+.th td{
+	background-color:#F8F8F8;
+	align-content: center;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}
 </style>
 
 <!-- Modal -->
@@ -51,15 +74,67 @@
 <body>
 <br><br>
 <h3>결제 내역</h3>
+<button onclick="tabChange('tbl')" id="_tabBtnTbl">표</button>
+<button onclick="tabChange('cal')" id="_tabBtnCal">달력</button>
+<br><br>
 <div align="center">
-	<div align="center">
+	<div align="center" id="_cal">
 		<div id='calendar' style="width:90%; height: 895px; margin-top:20px;" ></div>
 	</div>
+	<div align="center" id="_tbl">
+	<!-- 년 월 / 월단위로 보기, 전체보기, 페이징 -->
+		<table class="payTbl" style="width:90%">
+		<colgroup>
+			<col width="5%"><col width="12%"><col width="12%"><col width="12%">
+			<col width="12%"><col width="20%"><col width="15%"><col width="12%">
+		</colgroup>
+		<tr class="th">
+			<td>번호</td>
+			<td>날짜</td>
+			<td>시간</td>
+			<td>옵션</td>
+			<td>이름</td>
+			<td>연락처</td>
+			<td>결제일</td>
+			<td>금액</td>
+		</tr>
+		<c:forEach items="${payList}" var="pay" varStatus="i">
+			<tr>
+				<td>${i.count}</td>
+				<td>${pay.reservDto.redate}</td>
+				<td>${pay.reservDto.retime}</td>
+				<td>${pay.option1}</td>
+				<td>${pay.memDto.mname}</td>
+				<td>${pay.memDto.phone}</td>
+				<td>${pay.buydate}</td>
+				<td>${pay.total_price}</td>
+			</tr>
+		</c:forEach>
+		</table>
+	</div>
 </div>
+	
 
 <!-- <button type="button" id="_regiModalBtn" data-toggle="modal" data-target="#_regiModal" style="display: none">none</button>
  -->
-
+ 
+<script type="text/javascript">
+function tabChange(state) {
+	if (state == 'tbl') {
+		$("#_cal").hide();
+		$("#_tbl").show();
+		$("#_tabBtnTbl").hide();
+		$("#_tabBtnCal").show();
+	} else {
+		$("#_cal").show();
+		$("#_tbl").hide();
+		$("#_tabBtnTbl").show();
+		$("#_tabBtnCal").hide();
+	}
+}
+$("#_tbl").hide();
+$("#_tabBtnCal").hide();
+</script>
 <!-- fullcalendar에 대한 스크립트 -->
 <script type="text/javascript">
 function SET_MODAL_CENTER(){
@@ -131,14 +206,5 @@ function func(str, redate) {
 
 
 </body>
-
-
-
-
-
-
-
-
-
 
 

@@ -223,6 +223,7 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 			
 			String redate = pay.getReservDto().getRedate();	// yyyy-mm-dd
 			String timeSplit[] = pay.getReservDto().getRetime().split("~");
+			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
 			String start = redate + "T" + timeSplit[0];
 			String end = redate + "T" + timeSplit[1];
 			

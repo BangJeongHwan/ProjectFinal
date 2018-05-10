@@ -50,7 +50,7 @@ function index() {
 	location.href = "index.do";
 }
 function sdm() {
-	location.href = "company.do";
+	location.href = "studiomain.do";
 }
 function basketListView() {
 	location.href = "basketListView.do";

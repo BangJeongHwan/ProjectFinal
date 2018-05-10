@@ -125,7 +125,6 @@ public class MakeupCtrl {
 			if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
 			String start = redate + "T" + timeSplit[0];
 			String end = redate + "T" + timeSplit[1];
-			System.out.println("   " + start);
 			
 			JSONObject jo = new JSONObject();
 			jo.put("title", title);
