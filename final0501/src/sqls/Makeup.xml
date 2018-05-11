@@ -104,6 +104,12 @@
 	UPDATE WD_MAKEUP SET READCNT=READCNT+1 WHERE MUSEQ=#{museq}
 </update>
 
+<select id="getRecentProduct" parameterType="java.lang.Integer" resultType="kh.com.a.model.RecentDto">
+	SELECT CID, CNAME, MUSEQ AS SEQ, PIC1 AS PIC
+	FROM WD_MAKEUP
+	WHERE MUSEQ=#{rp}
+</select>
+
 </mapper>
 
 

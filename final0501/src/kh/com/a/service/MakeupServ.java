@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.com.a.model.MakeupDto;
 import kh.com.a.model.MuProductDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.MuPagingParam;
 
 public interface MakeupServ {
@@ -20,5 +21,6 @@ public interface MakeupServ {
 	public int getMakeupAllCnt(MuPagingParam param) throws Exception;
 	public List<MakeupDto> getMakeupMainList(MuPagingParam param) throws Exception;
 	public boolean upReadcnt(int museq) throws Exception;
+	public RecentDto getRecentProduct(int rp) throws Exception;
 
 }

@@ -42,6 +42,7 @@ import kh.com.a.model2.DressVO;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.ReservCalParam;
 import kh.com.a.service.DressServ;
+import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
@@ -61,6 +62,8 @@ public class DressCtrl {
 	ReservationServ reservServ;
 	@Autowired
 	private StudioServ studioserv;
+	@Autowired
+	MakeupServ muServ;
 	
 	private static final Logger logger = LoggerFactory.getLogger(DressCtrl.class);
 	
@@ -121,6 +124,7 @@ public class DressCtrl {
 						recentDto = dressServ.getRecentProduct(rp);
 					}else if(rp>=5000 && rp<6000) {
 					//메이크업
+						recentDto = muServ.getRecentProduct(rp);
 					}
 					
 					System.out.println("!!! cookie rp0 !!!");
@@ -151,6 +155,7 @@ public class DressCtrl {
 							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
 						}
 					
 					System.out.println("!!! cookie rp1 !!!");
@@ -182,6 +187,7 @@ public class DressCtrl {
 							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
 						}
 					
 					System.out.println("!!! cookie rp2 !!!");
@@ -213,6 +219,7 @@ public class DressCtrl {
 							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
 						}
 					
 					System.out.println("!!! cookie rp3 !!!");
@@ -244,6 +251,7 @@ public class DressCtrl {
 							recentDto = dressServ.getRecentProduct(rp);
 						}else if(rp>=5000 && rp<6000) {
 						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
 						}
 					
 					System.out.println("!!! cookie rp4 !!!");
