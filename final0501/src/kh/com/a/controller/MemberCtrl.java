@@ -123,8 +123,9 @@ public class MemberCtrl {
 		logger.info("KhBbsController commypage" + new Date());
 		
 		String id = ((LoginDto)req.getSession().getAttribute("login")).getId();
-		
+		String auth = ((LoginDto)req.getSession().getAttribute("login")).getAuth();
 		model.addAttribute("id", id);
+		model.addAttribute("auth", auth);
 		return "commypage.tiles";
 	}
 		
