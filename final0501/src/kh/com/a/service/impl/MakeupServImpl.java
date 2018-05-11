@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.com.a.dao.MakeupDao;
 import kh.com.a.model.MakeupDto;
 import kh.com.a.model.MuProductDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.MuPagingParam;
 import kh.com.a.service.MakeupServ;
 
@@ -90,6 +91,11 @@ public class MakeupServImpl implements MakeupServ {
 	@Override
 	public boolean upReadcnt(int museq) throws Exception {
 		return muDao.upReadcnt(museq);
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return muDao.getRecentProduct(rp);
 	}
 
 }

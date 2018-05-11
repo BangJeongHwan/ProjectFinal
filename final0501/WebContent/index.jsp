@@ -89,7 +89,7 @@ if(mem==null){
 								    <span onclick="location.href='memmypage.do'">정보수정</span>
 								    <span onclick="location.href='memReservList.do'">예약/결제내역</span>
 								    <span onclick="location.href='jjimList.do'">찜한 목록</span>
-								    <span onclick="location.href='myrlist.do'">나의 리뷰</span>
+								    <span onclick="mrlist()">나의 리뷰</span>
 								    <span onclick="location.href='mecp.do'">내 쿠폰보기</span>
 								    <span onclick="location.href='logout.do'">로그아웃</span>
 								  </div>
@@ -703,7 +703,7 @@ if(mem==null){
 
 		
 		$("#_login").click(function () {
-			location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=450,scrollbars=no,resizable=no' ))";
+			location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=350,scrollbars=no,resizable=no' ))";
 			
 		});
 		
@@ -751,7 +751,13 @@ if(mem==null){
 			}else if(auth="admin"){
 				location.href="adminpage.do";
 			}
-		}	
+		}
+		function mrlist() {
+			$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
+		}
+		function basketList() {
+			location.href = "basketListView.do";
+		}
 	</script>
 	    
 

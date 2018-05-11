@@ -2,11 +2,15 @@ package kh.com.a.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -19,19 +23,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.CookieGenerator;
 
+import kh.com.a.model.CookieDto;
 import kh.com.a.model.JjimDto;
 import kh.com.a.model.MakeupDto;
 import kh.com.a.model.MuProductDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReviewDto;
+import kh.com.a.model.StudioDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.MuPagingParam;
 import kh.com.a.model2.MuParam;
 import kh.com.a.model2.ReservCalParam;
+import kh.com.a.service.DressServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
+import kh.com.a.service.StudioServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -47,9 +57,13 @@ public class MakeupCtrl {
 	ReservationServ reservServ;
 	@Autowired
 	ReviewServ reviewServ;
+	@Autowired
+	StudioServ studioserv;
+	@Autowired
+	DressServ dressServ;
 	
 	@RequestMapping(value="muMainView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String muMainView(Model model, MuPagingParam param) throws Exception {
+	public String muMainView(Model model, MuPagingParam param, HttpServletRequest req) throws Exception {
 		logger.info("[MakeupCtrl] muMainView " + new Date());
 		
 		if (param.getOrderCondition() == null) {
@@ -64,6 +78,202 @@ public class MakeupCtrl {
 		
 		param.setStart(start);
 		param.setEnd(end);
+		
+		//////////////////
+		Cookie[] cookies = req.getCookies();
+		
+		CookieDto cdto = new CookieDto();
+		int check = cdto.getCheck();
+		
+		if(cookies!=null && cookies.length > 0){
+			
+			System.out.println("쿠키 크기 & 길이가 null 과 0 이 아니다!");
+			
+			List<RecentDto> recentlist = new ArrayList<>();
+			RecentDto recentDto = null;
+			for(int i=0;i<cookies.length;i++)
+			{
+				
+				System.out.println("----------------------");
+				System.out.println("i의 값은? : " + i);
+				System.out.println("쿠키의 이름은? : " +cookies[i].getName());
+				System.out.println("쿠키의 값은? : " +cookies[i].getValue());
+				System.out.println("----------------------");
+				
+				if(cookies[i].getName().equals("rp0"))
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp1(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("첫번째 rp : " +rp);
+					
+					//이 부분을 if문을 사용 -> 넘어온 seq를 비교하여 각각 다른 db테이블에 접근하여 데이터를 가져와 recentDto에 넣어주어야 한다.
+					//rp는 seq 값이며 rp 값을 비교하여 각 해당하는 업체의 테이블에 접근! cid, cname, seq, pic1을 가지고 와서 recentDto에 넣어준다.
+					//sql에서 각 기업에 해당하는 seq를 as를 통해 seq로 변경시켜주어야 한다.
+					if(rp>=1000 && rp<2000) {
+					//웨딩홀
+					}else if(rp>=2000 && rp<3000) {
+					//청첩장
+					}else if(rp>=3000 && rp<4000) {
+					//스튜디오
+						recentDto = studioserv.getRecentProduct(rp);
+					}else if(rp>=4000 && rp<5000) {
+					//드레스
+						recentDto = dressServ.getRecentProduct(rp);
+					}else if(rp>=5000 && rp<6000) {
+					//메이크업
+						recentDto = muServ.getRecentProduct(rp);
+					}
+					
+					System.out.println("!!! cookie rp0 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+				}
+				else if(cookies[i].getName().equals("rp1")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp2(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("두번째 rp  : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp1 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp2")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp3(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("세번쨰 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp2 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp3")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp4(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("네번째 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp3 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp4")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp5(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("다섯번째 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp4 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("JSESSIONID"))
+				{
+					System.out.println("JSESSIONID 통과");
+				}
+			}
+			model.addAttribute("recentlist",recentlist);
+		}
+
+		check++;
+		cdto.setCheck(check);
+	
+		//////////////////
 		
 		int totalRecordCount = muServ.getMakeupAllCnt(param);
 		List<MakeupDto> muList = muServ.getMakeupMainList(param);
@@ -83,7 +293,7 @@ public class MakeupCtrl {
 
 //	TODO 0508
 	@RequestMapping(value="muDetailView.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String muDetailView(Model model, int museq, String flag, HttpServletRequest req) throws Exception {
+	public String muDetailView(Model model, int museq, String flag, HttpServletRequest req, HttpServletResponse res) throws Exception {
 		logger.info("[MakeupCtrl] muDetailView " + new Date());
 		
 		String usid = ((LoginDto)req.getSession().getAttribute("login")).getId();
@@ -92,6 +302,216 @@ public class MakeupCtrl {
 		muServ.upReadcnt(museq);
 		MakeupDto muDto = muServ.getMakeupByMuseq(museq);
 		List<MuProductDto> mupdList = muServ.getMuProductListByMuseq(museq);
+		//////////////////////
+		
+		LoginDto mem = (LoginDto)req.getSession().getAttribute("login");
+		
+		CookieDto cdto = new CookieDto();		
+		int  bcheck = cdto.getB();
+		
+		String Crp1 = cdto.getCrp1();
+		
+		System.out.println("********************* Crp1 : " + Crp1);
+		
+		String Crp2 = cdto.getCrp2();
+		
+		System.out.println("********************* Crp1 : " + Crp2);
+		
+		String Crp3 = cdto.getCrp3();
+		
+		System.out.println("********************* Crp1 : " + Crp3);
+		
+		String Crp4 = cdto.getCrp4();
+		
+		System.out.println("********************* Crp1 : " + Crp4);
+		
+		String Crp5 = cdto.getCrp5();
+		
+		System.out.println("********************* Crp1 : " + Crp5);
+		
+		String Crp6 = cdto.getCrp6();
+		
+		System.out.println("********************* Crp1 : " + Crp6);
+		
+		if(mem != null && mem.getId() != "guest" && mem.getAuth() != "admin")
+		{
+			Cookie[] cookies = req.getCookies();
+			
+			for(int i = 0; i < cookies.length; i++){
+				if(cookies[i].getName().equals("rp0")){
+					bcheck++;
+					cdto.setB(bcheck);
+				}
+			}
+			
+			if(bcheck == 1){
+				CookieGenerator cookie = new CookieGenerator();
+				cookie.setCookieName("rp0");
+				cookie.setCookieMaxAge(24*60*60);
+				//cookie.addCookie(res, URLEncoder.encode(sttDto.getCid(), "UTF-8"));
+				cookie.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+				Crp1 = Integer.toString(muDto.getMuseq());
+				cdto.setCrp1(Integer.toString(muDto.getMuseq()));
+				System.out.println("쿠키 rp0 생성 완료!");
+			}else{
+				for(int i = 0; i < cookies.length; i++)
+				{
+					if(cookies[i].getName().equals("rp0") && Crp2 == null)
+					{
+						System.out.println("Crp1 = " +Crp1);
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp1");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp0");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+						Crp2 = Integer.toString(muDto.getMuseq());
+						cdto.setCrp2(Integer.toString(muDto.getMuseq()));
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp1") && Crp3 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2);
+						System.out.println("*****************");
+						
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp2");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp1");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp0");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+						Crp3 = Integer.toString(muDto.getMuseq());
+						cdto.setCrp3(Integer.toString(muDto.getMuseq()));
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp2") && Crp4 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2+"  "+"Crp3 = "+Crp3);
+						System.out.println("*****************");
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp3");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp2");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp1");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp0");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+						Crp4 = Integer.toString(muDto.getMuseq());
+						cdto.setCrp4(Integer.toString(muDto.getMuseq()));
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp3") && Crp5 == null)
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("쿠키 rp4 생성 완료!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+						Crp5 = Integer.toString(muDto.getMuseq());
+						cdto.setCrp5(Integer.toString(muDto.getMuseq()));
+						System.out.println("쿠키 rp0 생성 완료!");
+					}
+					else if(cookies[i].getName().equals("rp4") && Crp1 != null && Crp2 != null&& Crp3 != null 
+							&& Crp4 != null && Crp5 != null)
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("쿠키 rp4 생성 완료!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("쿠키 rp3 생성 완료!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("쿠키 rp2 생성 완료!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp5, "UTF-8"));
+						System.out.println("쿠키 rp1 생성 완료!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(muDto.getMuseq()), "UTF-8"));
+						Crp6 = Integer.toString(muDto.getMuseq());
+						cdto.setCrp6(Integer.toString(muDto.getMuseq()));
+						
+						
+						cdto.setCrp2((cdto.getCrp3()));						
+						cdto.setCrp3((cdto.getCrp4()));						
+						cdto.setCrp4((cdto.getCrp5()));					
+						cdto.setCrp5((cdto.getCrp6()));
+						
+						System.out.println("쿠키 rp0 생성 완료!");
+					}else{
+						System.out.println("----------통과-----------  : "+ i);
+					}
+				}
+			}
+		}
+		/////////////////////////
 		
 		String splitOpen[] = muDto.getOpentime().split(":");
 		int openHour = Integer.parseInt(splitOpen[0]);

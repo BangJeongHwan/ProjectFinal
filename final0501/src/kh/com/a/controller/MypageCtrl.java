@@ -23,8 +23,10 @@ import kh.com.a.model.JjimlistDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.PaymentViewParam;
+import kh.com.a.model2.couponVO;
 import kh.com.a.service.AdminpageServ;
 import kh.com.a.service.CardService;
+import kh.com.a.service.CouponServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MemberServ;
 import kh.com.a.service.MypageServ;
@@ -53,6 +55,8 @@ MakeupServ muServ;
 StudioServ studioserv;
 @Autowired
 MemberServ memServ;
+@Autowired
+CouponServ couponServ; 
 	
 private static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	
@@ -250,6 +254,23 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 		return "regiPayList.tiles";			
 	}
 	
+}
+
+@RequestMapping(value="mecp.do", method={RequestMethod.GET,RequestMethod.POST})
+public String mecp(Model model, HttpServletRequest req) throws Exception {
+		logger.info("CouponCtrl mecp.do ");
+		
+		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		List<couponVO> list = couponServ.mecp(login.getId());//쿠폰 리스트
+		if(!list.isEmpty()) {
+			for (int i = 0; i < list.size(); i++) {
+				String remit = list.get(i).getRemit().substring(0, 10);
+				list.get(i).setRemit(remit);
+			}
+		}
+		model.addAttribute("list", list);
+		System.out.println("리스트반환");
+	return "mecp.tiles";
 }
 
 }

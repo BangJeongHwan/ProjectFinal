@@ -232,6 +232,7 @@ img:hover {
 <br><br><br><br><br><br>
 <br><br><br><br><br><br>
 <div class="container" align="center" style="width:100px">
+	<button onclick="list()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">목록</button>
 	<c:if test="${ not empty login && login.auth == 'admin'}">
 		<button onclick="mod()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">수정</button>
 		<button onclick="del()" class="w3-btn w3-white w3-border w3-border-red w3-round-large">삭제</button>
@@ -512,6 +513,10 @@ function del() {
 
 function mod() {
 	location.href = "dressUpdate.do?dsseq=" + ${Ddto.dsseq};
+}
+
+function list() {
+	location.href = "dressMain.do";
 }
 
 </script>

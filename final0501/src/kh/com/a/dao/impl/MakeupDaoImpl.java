@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kh.com.a.dao.MakeupDao;
 import kh.com.a.model.MakeupDto;
 import kh.com.a.model.MuProductDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model2.MuPagingParam;
 
 @Repository
@@ -79,6 +80,11 @@ public class MakeupDaoImpl implements MakeupDao {
 	@Override
 	public boolean upReadcnt(int museq) throws Exception {
 		return sqlSession.update(ns+"upReadcnt", museq)>0?true:false;
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return sqlSession.selectOne(ns+"getRecentProduct", rp);
 	}
 
 }
