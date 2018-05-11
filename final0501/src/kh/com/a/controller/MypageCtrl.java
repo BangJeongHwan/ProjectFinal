@@ -260,15 +260,35 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 public String mecp(Model model, HttpServletRequest req) throws Exception {
 		logger.info("CouponCtrl mecp.do ");
 		
+		
+		
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+		couponServ.rollbackCp(login.getId());
+		
 		List<couponVO> list = couponServ.mecp(login.getId());//쿠폰 리스트
+		List<couponVO> uselist = new ArrayList<>();
+		List<couponVO> unuselist = new ArrayList<>();
+		
+		
+		
 		if(!list.isEmpty()) {
 			for (int i = 0; i < list.size(); i++) {
 				String remit = list.get(i).getRemit().substring(0, 10);
 				list.get(i).setRemit(remit);
+				
+				if(list.get(i).getDel()==0) {
+					unuselist.add(list.get(i));
+				}else {
+					uselist.add(list.get(i));
+				}
 			}
 		}
 		model.addAttribute("list", list);
+		model.addAttribute("unuselist", unuselist);
+		model.addAttribute("uselist", uselist);
+		
+		
+		
 		System.out.println("리스트반환");
 	return "mecp.tiles";
 }
