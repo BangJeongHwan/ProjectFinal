@@ -31,7 +31,7 @@
 <select id="getJjimStudio" parameterType="java.lang.Integer" resultType="kh.com.a.model.JjimlistDto">
 	SELECT STSEQ AS SEQ, CNAME, PIC0 AS PIC
 	FROM WD_STUDIO
-	WEHRE STSEQ=#{SEQ}
+	WHERE STSEQ=#{seq}
 </select>
 
 </mapper>

@@ -303,7 +303,10 @@
 		<put-attribute name="main" value="/WEB-INF/views/coupon/mecp.jsp"/>
 	</definition>
 	
-	
+	<definition name="jjimlist.tiles" extends="memmypage.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/jjimList.jsp"/>
+	</definition>
+
 	<!-- 마이페이지 관리자 뷰  -->
 	
 	<definition name="adminpage.tiles" template="/WEB-INF/views/adminpage-tiles.jsp">

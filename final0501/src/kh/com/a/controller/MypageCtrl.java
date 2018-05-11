@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -150,31 +152,42 @@ public String adminpage(Model model, RproductDto rdto) throws Exception{
 }*/
 
 //0509 수빈
-@RequestMapping(value="jjimlist.do", method={RequestMethod.GET,RequestMethod.POST})
-public String jjimlist(Model model) throws Exception{
+@RequestMapping(value="jjimList.do", method={RequestMethod.GET,RequestMethod.POST})
+public String jjimlist(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession session) throws Exception{
 	logger.info("MypageController rproduct" + new Date());
 	
 	List<JjimlistDto> jjimlist = new ArrayList<>(); // jjim 테이블참조한 리스트를 seq따라 구별하여 다시  담을 리스트
 	List<JjimDto> jjim = mypageserv.getJjimlist(); //jjim테이블을 참조
+	
+	String Id = ((LoginDto)session.getAttribute("login")).getId();
+	
+	
+	System.out.println("Id : " + Id);
 	
 	JjimlistDto jdto = null;
 	
 	
 	for(int i = 0; i < jjim.size(); i++)
 	{
+		String jid = jjim.get(i).getUsid();
 		int seq = jjim.get(i).getPdseq();
-			
-		if(seq >= 1000 && seq < 2000) {
-			//웨딩홀 (seq, pic, cname 가져와야함 *** sql에서 as 사용하여 상품 seq를 seq로 바꿔주어야 하고 as사용하여 사진컬럼 하나를 pic으로 변경해서 가져와야함)
-		}else if(seq >= 2000 && seq < 3000) {
-			//청첩장
-		}else if(seq >= 3000 && seq < 4000) {
-			jdto = mypageserv.getJjimStudio(seq);
-			jjimlist.add(jdto);
-		}else if(seq >= 4000 && seq < 5000) {
-			//드레스
-		}else if(seq >= 5000 && seq < 6000) {
-			//메이크업
+		
+		if(Id.equals(jid)) {
+			if(seq >= 1000 && seq < 2000) {
+				//웨딩홀 (seq, pic, cname 가져와야함 *** sql에서 as 사용하여 상품 seq를 seq로 바꿔주어야 하고 as사용하여 사진컬럼 하나를 pic으로 변경해서 가져와야함)
+			}else if(seq >= 2000 && seq < 3000) {
+				//청첩장
+			}else if(seq >= 3000 && seq < 4000) {
+				jdto = mypageserv.getJjimStudio(seq);
+				
+				System.out.println("jdto.getCname() : " + jdto.getCname());
+				
+				jjimlist.add(jdto);
+			}else if(seq >= 4000 && seq < 5000) {
+				//드레스
+			}else if(seq >= 5000 && seq < 6000) {
+				//메이크업
+			}
 		}
 	}
 	

@@ -37,6 +37,7 @@
    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
    <link rel="stylesheet" href="assets/css/main.css" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
 
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
    <!-- 만든 css -->
@@ -46,23 +47,20 @@
 
 <!-- header -->
 <!-- header 완료 -->
-<header id="nino-header">
+<header id="nino-header" style="margin-bottom: 0px;">
    <div id="nino-headerInner" >         
       <tiles:insertAttribute name="header"/>
    </div>
 </header>
-<br><br><br>
 <br><br>
-
-<br>
 
 <!-- leftmain -->
 <!--  -->
-<div style="width: 1700px">
-   <div class="w3-bar-block w3-light-white w3-card" style="width:10%; height: 300px; padding-left: 10px; float: left;">
+<div style="width: 1700px;">
+   <div class="w3-bar-block w3-light-white w3-card" style="width:10%; height: 300px;  margin-top:1px; padding-left: 10px; float: left;">
       <tiles:insertAttribute name="left_main"/>
    </div>
-   
+    
    <div style="width:5%;float:left;">&nbsp;</div>
    
    <!-- main -->
@@ -122,8 +120,6 @@ function w3_close() {
   document.getElementById("openNav").style.display = "inline-block";
 }
 </script>
-
-
 
 <!-- 기타 -->
 <!-- Search Form - Display when click magnify icon in menu

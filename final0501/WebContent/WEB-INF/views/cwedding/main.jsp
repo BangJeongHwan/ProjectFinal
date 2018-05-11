@@ -17,6 +17,12 @@ String category = (String)request.getAttribute("s_category");
 if(category == null) category = "";
 %>
 
+<style>
+.w3-allerta {
+  font-family: "Allerta Stencil", Sans-serif;
+}
+</style>
+
 <script type="text/javascript">
 var str='<%=category %>';
 $(document).ready(function(){	
@@ -32,22 +38,26 @@ $(document).ready(function(){
 
 
 <!-- Main -->
-<div id="main">
-	<div class="inner">
+<div id="main" >
+	<div class="inner" >
 	
-		<c:if test="${not empty recentlist }">
-			<div style="border:1px solid pink;width:750px; height: 120px; border: 1px; padding-left:200px;">
-				<h3>최근 본 상품 목록</h3>
-					<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
-						<div style="float: left">
-							<img style="padding-left:10px; width:100px; hight: 100px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq });">  
-							<p style="size: 10px">${recentDto.cname }</p>
-						</div>
-					</c:forEach>
+		<c:if test="${not empty recentlist }"> 
+			<div class="w3-allerta" style="border: 10px solid transparent; border-image: url(images/border.png) 30% round; 
+			 margin-left: 380px; padding-left:30px; width:750px; height: 222px;">
+				<div style="margin-left: 230px; margin-top:20px">     
+					<h3>- 최근 본 상품 목록 -</h3> 
+				</div>
+				 
+				<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
+					<div style="float: left; margin-left: 30px; margin-top: 10px; width:100px">
+						<img style="width:100%; height: 80px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq });">  
+						<p style="padding-top: 5px; text-align: center; color: black"><font size="3px">${recentDto.cname }</font></p>  
+					</div>   
+				</c:forEach>         
 			</div>
 		</c:if>
 	
-		<section class="tiles">
+		<section class="tiles" style="margin-top: 5px">
 		<c:forEach var="sdDto" items="${sdDtolist}" varStatus="sdDtoS">
 			<article class="style1">
 				<span class="image">

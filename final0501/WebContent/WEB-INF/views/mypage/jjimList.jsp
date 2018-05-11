@@ -29,6 +29,10 @@ tr{
 td{
 	 align-content: center;
 }
+th{
+	text-algin: center;
+	align-content: center;
+}
 td:nth-child(even) {
     background-color:white;
 }
@@ -36,27 +40,28 @@ td:nth-child(even) {
 
 <div>
 	<h3>내가 찜한 상품 목록</h3>
-	<table class="list_table" style="width:85%;">
+	<table class="list_table" style="width:60%;">
 		<colgroup>
 			<col width="15%"/><col width="25%"/><col width="60%"/>
 		</colgroup>
 		
 		<thead>
 			<tr>
-				<th>번호</th><th>사진</th><th>업체명</th>
+				<th style="text-align: center;">번호</th><th style="text-align: center;">사진</th><th style="text-align: center;">업체명</th>
 			</tr>
 		</thead>
 		
 		<tbody>	
 			<c:if test="${empty jjimlist}">
+				alert("hello");
 				<tr>
-					<td colspan="5">찜한 상품이 존재하지 않습니다.</td>
+					<td colspan="3">찜한 상품이 존재하지 않습니다.</td>
 				</tr>	
 			</c:if>
-		
-			<c:forEach items="${JjimlistDto}" var="jjimlist" varStatus="i">
+			
+			<c:forEach items="${jjimlist}" var="JjimlistDto" varStatus="i">
 				<tr class="_hover_tr">
-					<td>${i.count}</td> 
+					<td style="text-algin: center">${i.count}</td> 
 					
 					<td><img src="upload/${JjimlistDto.pic}"/></td>
 					

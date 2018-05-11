@@ -38,7 +38,7 @@ public class MypageDaoImpl implements MypageDao {
 
 	@Override
 	public List<JjimDto> getJjimlist() throws Exception {
-		return sqlSession.selectList(ns+"getJjimlist");
+		return sqlSession.selectList(ns+"getjjimlist");
 	}
 
 	@Override
