@@ -8,6 +8,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
+  <!-- jquery cookie -->
+  <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.cookie.js"></script>
+  
   <style type="text/css">
   	.input-group .form-control {
     position: relative;
@@ -104,6 +107,7 @@ $("#_pwd").keypress(function() {
 //id저장
 var user_id = $.cookie("user_id");
 if(user_id != null){
+	alert("yes");
 	$("#_id").val(user_id);
 	$("#_chk_save_id").attr("checked", "checked");
 }
