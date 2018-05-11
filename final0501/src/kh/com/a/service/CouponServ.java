@@ -24,4 +24,5 @@ public interface CouponServ {
 	public void cpBkseq(couponVO memcp) throws Exception;
 	void cpBkseqDel(couponVO memcp) throws Exception;
 	couponVO getpaycp(couponVO memcp) throws Exception;
+	public List<couponVO> mecp(String mid) throws Exception;
 }

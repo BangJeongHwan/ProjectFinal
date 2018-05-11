@@ -125,7 +125,11 @@ public class CouponDaoImpl implements CouponDao {
 		return sqlSession.selectOne(ns+"getPaycp", memcp);
 	}
 
+	@Override
+	public List<couponVO> mecp(String mid) throws Exception {
+		System.out.println(mid);
+		return  sqlSession.selectList(ns+"mecp", mid);
+	}
 
-	
 
 }

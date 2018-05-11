@@ -1,43 +1,69 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+  
 
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  <style type="text/css">
+  	.input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    height: 50px;
+}
+  </style>
+  
+<!--   <label for="email">Email:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter email" name="email"> -->
+      <br>
 <div class="container">
-	<div align="center">
+	<div align="center" >
 	<form name="frmForm" id="_frmForm" method="post">
-		<table border="1">
+		<table style="height: 60%; width: 80%">
 		<colgroup>
 			<col style="width:30%">
 			<col style="width:70%">
 		</colgroup>
 		<tr>
-			<th style="background: #eeeeee; color: #3e5fba;">아이디</th>
-			<td>&nbsp;<input type="text" id="_id" name="id" value="" data-msg="ID를" size="15" title="아이디" style="border: 1px solid #dddddd;">
-				<input type="checkbox" id="_chk_save_id">ID 저장
+			
+			<td class="input-group">
+				   <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				   <input type="text" class="form-control" id="_id" name="id" value="" data-msg="ID를" placeholder="아이디"  title="아이디">
+			<!-- &nbsp;<input type="text" id="_id" name="id" value="" data-msg="ID를" size="15" title="아이디" style="border: 1px solid #dddddd;"> -->
+				
 			</td>
 		</tr>
 		
 		<tr>
-			<th style="background: #eeeeee; color: #3e5fba;">패스워드</th>
-			<td>&nbsp;<input type="text" id="_pwd" name="pwd" value="" data-msg="패스워드를" size="15" title="패스워드" style="border: 1px solid #dddddd;">
+			<td class="input-group">
+			<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+			<input type="password" class="form-control" id="_pwd" name="pwd" value="" placeholder="패스워드"  title="패스워드" value="" data-msg="패스워드를">
+			<!-- &nbsp;<input type="text" id="_pwd" name="pwd" value="" data-msg="패스워드를" size="15" title="패스워드" style="border: 1px solid #dddddd;"> -->
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" style="height: 50px; text-align: center;">
-				<span>
-					<a href="#none" id="_btnLogin" title="로그인">
-						<img alt="로그인" src="assets/images/others/login_btn.jpg">
+			<td class="checkbox" >
+				<label><input type="checkbox" id="_chk_save_id">ID 저장</label>
+			</td>
+		</tr>
+		<tr>
+			<td style="height: 50px; text-align: center;">
+					<a href="#none" id="_btnLogin" title="로그인" class="btn btn-default">
+						<!-- <img alt="로그인" src="assets/images/others/login_btn.jpg"> -->로그인
 					</a>
-					<a href="#none" id="_btnRegi" title="회원가입">
-						<img alt="회원가입" src="assets/images/others/regi.jpg">
+					<a href="#none" id="_btnRegi" title="회원가입" class="btn btn-default">
+						<!-- <img alt="회원가입" src="assets/images/others/regi.jpg"> -->회원가입
 					</a>
-				</span>
 			</td>
 		</tr>
 		</table>
 	</form>
-	<br>
 	<a id="kakao-login-btn"></a>
 	</div>
 </div>
