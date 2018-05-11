@@ -84,7 +84,7 @@
 			<c:if test="${!empty list}">	
 				<c:forEach items="${list}" var="cp" varStatus="i">
 					
-					<tr id="1" onclick="trclick(${cp.seq})">
+					<tr onclick="trclick(${cp.seq})">
 						<td> ${cp.remit}</td>
 						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cptitle" value="${cp.title}"></td>
 						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpdiscount" value="${cp.discount}"></td>
