@@ -65,37 +65,53 @@ if(mem==null){
 								<li hidden><a href="#nino-latestBlog" id="liservice"></a><li>
 							</ul>
 						</div><!-- /.navbar-collapse -->
+						<%
+							if (!mem.getAuth().equals("guest")) {
+						%>
 						<ul class="nino-iconsGroup nav navbar-nav">
-							<li><a href=""><i class="mdi mdi-cart-outline nino-icon" id="cart"></i></a></li>				<!--  장바구니 아이콘 -->
-							<li>
-							<div class="dropdown" id="guestdrop">
-							  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-							   <div class="dropdown-content">
-							    <span>로그인 해주세요</span>
-							  </div>
-							</div>
-							<div class="dropdown" id="memdrop">
-							  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-							  <div class="dropdown-content">
-							    <span onclick="mypage()">나의 정보</span>
-							    <span>나의 결제내역</span>
-							    <span>나의 찜내역</span>
-							    <span onclick="location.href='logout.do'">로그아웃</span>
-							  </div>
-							</div>
-							<div class="dropdown" id="comdrop">
-							  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-							  <div class="dropdown-content">
-							    <span onclick="location.href='commypage.do'">나의 정보</span>
-							    <span>내가올린글</span>
-							    <span onclick="location.href='logout.do'">로그아웃</span>
-							  </div>
-							</div>
-							
+							<%
+								if (mem.getAuth().equals("member")) {
+							%>
+							<li><a href="#" onclick="basketList()"><i class="mdi mdi-cart-outline nino-icon"></i></a></li>
+							<%}%>
+							<!-- <li><a href="#" class="nino-search"><i class="mdi mdi-magnify nino-icon"></i></a></li> -->
+							<li>			
+								<div class="dropdown" id="admindrop">
+								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+								   <div class="dropdown-content">
+								    <span onclick="location.href='adminpage.do'">업체관리</span>
+								    <span onclick="location.href='logout.do'">로그아웃</span>
+								  </div>
+								</div>
+								<div class="dropdown" id="memdrop">
+								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+								  <div class="dropdown-content">
+								    <span onclick="location.href='memmypage.do'">정보수정</span>
+								    <span onclick="location.href='memReservList.do'">예약/결제내역</span>
+								    <span onclick="location.href='jjimList.do'">찜한 목록</span>
+								    <span onclick="location.href='myrlist.do'">나의 리뷰</span>
+								    <span onclick="location.href='mecp.do'">내 쿠폰보기</span>
+								    <span onclick="location.href='logout.do'">로그아웃</span>
+								  </div>
+								</div>
+								<div class="dropdown" id="comdrop">
+								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+								  <div class="dropdown-content">
+								    <span onclick="location.href='commypage.do'">정보수정</span>
+								   <%if(mem.getAuth().equals("WH")){ %>
+										<span onclick="location.href='reservationWhList.do'">예약승인</span>
+									<%}else if(mem.getAuth().equals("DS")){ %>
+										<span onclick="location.href='reservationDressList.do'">예약승인</span>
+									<%} %>
+								    <span onclick="location.href='comPayView.do'">판매목록</span>
+								    <span onclick="location.href='logout.do'">로그아웃</span>
+								  </div>
+								</div>
+										
 							</li>
-																<!--  마이페이지  -->
 						</ul>
 						<font style="color: white;"><b style="font-size: 20px"><%=mem.getId()%></b>님 환영합니다.</font>
+						<%} %>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="bbtn" id="_login"><span>로그인 </span></button>
 						<button class="bbtn" onclick="location.href='SelectRegi.do'"><span>회원가입 </span></button>
@@ -658,23 +674,23 @@ if(mem==null){
 		/* 로그인 회원가입 버튼 없애기 */
 		if(auth=="guest") $(".bbtn").show();
 		else $(".bbtn").hide();
-		
-		if(auth=="guest"){
-			$("#guestdrop").show();
+
+		if(auth=="admin"){
+			$("#admindrop").show();
 			$("#memdrop").hide();
 			$("#comdrop").hide();
 		}else if(auth=="member"){
 			$("#memdrop").show();
-			$("#guestdrop").hide();
+			$("#admindrop").hide();
 			$("#comdrop").hide();
 		} else if (auth=="admin") {
 			$("#memdrop").show();
-			$("#guestdrop").hide();
+			$("#admindrop").hide();
 			$("#comdrop").hide();
 		} else {
 			$("#comdrop").show();
 			$("#memdrop").hide();
-			$("#guestdrop").hide();
+			$("#admindrop").hide();
 		}
 		
 		$("#cart").click(function () {				//장바구니 클릭시

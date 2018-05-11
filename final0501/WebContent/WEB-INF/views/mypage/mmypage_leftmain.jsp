@@ -17,11 +17,11 @@ if(mem==null){
  </form>
 
 <h5 class="w3-bar-item">member mypage</h5>
-<button class="w3-bar-item w3-button tablink" onclick="memmypage()">정보수정</button>
-<button class="w3-bar-item w3-button tablink" onclick="memReservList()">예약/결제내역</button>
-<button class="w3-bar-item w3-button tablink" onclick="mrlist()">내 글 목록</button>
-<button class="w3-bar-item w3-button tablink" onclick="">찜한 목록</button>
-<button class="w3-bar-item w3-button tablink" onclick="">내 쿠폰 보기</button>
+<button class="w3-bar-item w3-button tablink" onclick="location.href='memmypage.do'">정보수정</button>
+<button class="w3-bar-item w3-button tablink" onclick="location.href='memReservList.do'">예약/결제내역</button>
+<button class="w3-bar-item w3-button tablink" onclick="location.href='jjimList.do'">찜한 목록</button>
+<button class="w3-bar-item w3-button tablink" onclick="location.href='myrlist.do'">나의 리뷰</button>
+<button class="w3-bar-item w3-button tablink" onclick="location.href='mecp.do'">내 쿠폰보기</button>
 
 <script>
 function memmypage() {

@@ -9,6 +9,7 @@
 
 <!-- datepicker -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+
 <%
 LoginDto mem = (LoginDto)session.getAttribute("login");
 if(mem==null){
@@ -16,7 +17,7 @@ if(mem==null){
 	session.setAttribute("login", mem);
 }
 %>
-				
+			
 <nav id="nino-navbar" class="navbar navbar-default" role="navigation">
 	<div class="container">
 
@@ -31,55 +32,70 @@ if(mem==null){
 			<a class="navbar-brand" href="index.do">For You, With Us</a>
 		</div>
 
-
-		
-<!-- Collect the nav links, forms, and other content for toggling -->
-<div class="nino-menuItem pull-right">
-	<div class="collapse navbar-collapse pull-left" id="nino-navbar-collapse">
-		<ul class="nav navbar-nav">
-			<li class="active"><a href="#" onclick="location.href='index.do'"><i class="fa fa-home" style="font-size:23px"></i> <span class="sr-only">(current)</span></a></li>
-			<li><a href="#" onclick="wdh()">웨딩홀</a></li>
-			<li><a href="#nino-story" onclick="sdm()">스드메</a></li>
-			<li><a href="#" onclick="location.href='findhoney.do'">신혼여행</a></li>
-			<li><a href="#" onclick="location.href='pagingclist.do'">청첩장</a></li>
-			<li><a href="#" onclick="location.href='couponmain.do'">이벤트</a></li>
-		</ul>
-	</div><!-- /.navbar-collapse -->
-	<ul class="nino-iconsGroup nav navbar-nav">
-		<li><a href="#" onclick="basketListView()"><i class="mdi mdi-cart-outline nino-icon"></i></a></li>
-			<li>			
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="nino-menuItem pull-right">
+			<div class="collapse navbar-collapse pull-left" id="nino-navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#" onclick="location.href='index.do'"><i class="fa fa-home" style="font-size:23px"></i></a></li>
+					<li><a href="#" onclick="location.href='weddingHallView.do'">웨딩홀</a></li>
+					<li class="active"><a href="#nino-services" onclick="sdm()">스드메 <span class="sr-only">(current)</span></a></li>
+					<li><a href="#" onclick="location.href='findhoney.do'">신혼여행</a></li>
+					<li><a href="#" onclick="location.href='pagingclist.do'">청첩장</a></li>
+					<li><a href="#" onclick="location.href='couponmain.do'">이벤트</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+			<%
+				if (!mem.getAuth().equals("guest")) {
+			%>
+			<ul class="nino-iconsGroup nav navbar-nav">
+				<%
+					if (mem.getAuth().equals("member")) {
+				%>
+				<li><a href="#" onclick="basketList()"><i class="mdi mdi-cart-outline nino-icon"></i></a></li>
+				<%}%>
+				<!-- <li><a href="#" class="nino-search"><i class="mdi mdi-magnify nino-icon"></i></a></li> -->
+				<li>			
+					<div class="dropdown" id="admindrop">
+					  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+					   <div class="dropdown-content">
+					    <span onclick="location.href='adminpage.do'">업체관리</span>
+					  </div>
+					</div>
+					<div class="dropdown" id="memdrop">
+					  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+					  <div class="dropdown-content">
+					    <span onclick="location.href='memmypage.do'">정보수정</span>
+					    <span onclick="location.href='memReservList.do'">예약/결제내역</span>
+					    <span onclick="location.href='jjimList.do'">찜한 목록</span>
+					    <span onclick="location.href='myrlist.do'">나의 리뷰</span>
+					    <span onclick="location.href='mecp.do'">내 쿠폰보기</span>
+					    <span onclick="location.href='logout.do'">로그아웃</span>
+					  </div>
+					</div>
+					<div class="dropdown" id="comdrop">
+					  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
+					  <div class="dropdown-content">
+					    <span onclick="location.href='commypage.do'">정보수정</span>
+					   <%if(mem.getAuth().equals("WH")){ %>
+							<span onclick="location.href='reservationWhList.do'">예약승인</span>
+						<%}else if(mem.getAuth().equals("DS")){ %>
+							<span onclick="location.href='reservationDressList.do'">예약승인</span>
+						<%} %>
+					    <span onclick="location.href='comPayView.do'">판매목록</span>
+					    <span onclick="location.href='logout.do'">로그아웃</span>
+					  </div>
+					</div>
 							
-								<div class="dropdown" id="guestdrop">
-								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-								   <div class="dropdown-content">
-								    <span>로그인 해주세요</span>
-								  </div>
-								</div>
-								<div class="dropdown" id="memdrop">
-								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-								  <div class="dropdown-content">
-								    <span>나의 정보</span>
-								    <span>나의 결재내역</span>
-								    <span>나의 찜내역</span>
-								    <span onclick="location.href='logout.do'">로그아웃</span>
-								  </div>
-								</div>
-								<div class="dropdown" id="comdrop">
-								  <button class="dropbtn"><i class="fa fa-user nino-icon"></i></button>
-								  <div class="dropdown-content">
-								    <span>나의 정보</span>
-								    <span>내가올린글</span>
-								    <span onclick="location.href='logout.do'">로그아웃</span>
-								  </div>
-								</div>
-							
-			</li>
-	</ul>
-	<font style="color: white;"><b style="font-size: 20px"><%=mem.getId()%></b>님 환영합니다.</font>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="bbtn" id="_login"><span>로그인 </span></button>
-						<button class="bbtn" onclick="location.href='SelectRegi.do'"><span>회원가입 </span></button>
-</div>
+				</li>
+			</ul>
+			<font style="color: white;"><b style="font-size: 20px"><%=mem.getId()%></b>님 환영합니다.</font>
+			<%
+				}
+			%>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button class="bbtn" id="_login"><span>로그인 </span></button>
+			<button class="bbtn" onclick="location.href='SelectRegi.do'"><span>회원가입 </span></button>
+		</div>
 	</div><!-- /.container-fluid -->
 </nav>
 
@@ -89,31 +105,31 @@ if(mem==null){
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
 			<h2 class="nino-sectionHeading">
-				<span class="nino-subHeading">Weather Of Wedding</span>
-				Welcome <br>to Spring
+				<span class="nino-subHeading">Studio</span>
+				Weather <br>Of Wedding
 			</h2>
-			<a href="#" class="nino-btn">Learn more</a>
+			<a href="#" class="nino-btn" onclick="location.href='studiomain.do'">more</a>
 		</div>
 		<div class="item">
 			<h2 class="nino-sectionHeading">
-				<span class="nino-subHeading">Congraturation</span>
-				Happy <br>Weeding
+				<span class="nino-subHeading">Dress</span>
+				Happy <br>Wedding
 			</h2>
-			<a href="#" class="nino-btn">Learn more</a>
+			<a href="#" class="nino-btn" onclick="location.href='dressMain.do'">more</a>
+		</div>
+		<div class="item">
+			<h2 class="nino-sectionHeading">
+				<span class="nino-subHeading">Makeup</span>
+				Full Of <br>Happiness
+			</h2>
+			<a href="#" class="nino-btn" onclick="location.href='muMainView.do'">more</a>
 		</div>
 		<div class="item">
 			<h2 class="nino-sectionHeading">
 				<span class="nino-subHeading">Wedding Event</span>
 				Compound <br>Discount
 			</h2>
-			<a href="#" class="nino-btn">Learn more</a>
-		</div>
-		<div class="item">
-			<h2 class="nino-sectionHeading">
-				<span class="nino-subHeading">For you, With Us</span>
-				Full Of <br>Happines
-			</h2>
-			<a href="#" class="nino-btn">Learn more</a>
+			<a href="#" class="nino-btn" onclick="location.href='couponmain.do'">more</a>
 		</div>
 	</div>
 
@@ -121,22 +137,22 @@ if(mem==null){
 	<ol class="carousel-indicators clearfix">
 		<li data-target="#nino-slider" data-slide-to="0" class="active">
 			<div class="inner">
-				<span class="number">01</span> intro	
+				<span class="number">01</span> 스튜디오	
 			</div>
 		</li>
 		<li data-target="#nino-slider" data-slide-to="1">
 			<div class="inner">
-				<span class="number">02</span> work
+				<span class="number">02</span> 드레스
 			</div>
 		</li>
 		<li data-target="#nino-slider" data-slide-to="2">
 			<div class="inner">
-				<span class="number">03</span> about
+				<span class="number">03</span> 메이크업
 			</div>
 		</li>
 		<li data-target="#nino-slider" data-slide-to="3">
 			<div class="inner">
-				<span class="number">04</span> contacts
+				<span class="number">04</span> 이벤트
 			</div>
 		</li>
 	</ol>
@@ -151,34 +167,40 @@ function index() {
 function sdm() {
 	location.href = "studiomain.do";
 }
-function basketListView() {
+function basketList() {
 	location.href = "basketListView.do";
 }
-function wdh(){
-	location.href = "weddingHallView.do";
-}
+function mypage(){
+	if(auth=="member"){
+		location.href="memmypage.do";
+	}else if(auth="admin"){
+		location.href="adminpage.do";
+	}
+}	
+
 
 /* 로그인 회원가입 버튼 없애기 */
 if(auth=="guest") $(".bbtn").show();
 else $(".bbtn").hide();
 
-if(auth=="guest"){
-	$("#guestdrop").show();
+if(auth=="admin"){
+	$("#admindrop").show();
 	$("#memdrop").hide();
 	$("#comdrop").hide();
 }else if(auth=="member"){
 	$("#memdrop").show();
-	$("#guestdrop").hide();
+	$("#admindrop").hide();
 	$("#comdrop").hide();
 } else if (auth=="admin") {
 	$("#memdrop").show();
-	$("#guestdrop").hide();
+	$("#admindrop").hide();
 	$("#comdrop").hide();
 } else {
 	$("#comdrop").show();
 	$("#memdrop").hide();
-	$("#guestdrop").hide();
+	$("#admindrop").hide();
 }
+
 $("#_login").click(function () {
 	location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=450,scrollbars=no,resizable=no' ))";
 	

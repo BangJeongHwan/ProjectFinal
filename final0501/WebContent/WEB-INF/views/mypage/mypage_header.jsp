@@ -28,12 +28,12 @@
 		<div class="nino-menuItem pull-right">
 			<div class="collapse navbar-collapse pull-left" id="nino-navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#nino-header"><i class="fa fa-home" style="font-size:23px"></i> <span class="sr-only">(current)</span></a></li>
-					<li><a href="#" onclick="wdh()">웨딩홀</a></li>
-					<li><a href="#nino-story" onclick="sdm()">스드메</a></li>
-					<li><a href="#nino-ourTeam">신혼여행</a></li>
+					<li class="active"><a href="#" onclick="location.href='index.do'"><i class="fa fa-home" style="font-size:23px"></i> <span class="sr-only">(current)</span></a></li>
+					<li><a href="#" onclick="location.href='weddingHallView.do'">웨딩홀</a></li>
+					<li><a href="#nino-services" onclick="sdm()">스드메</a></li>
+					<li><a href="#" onclick="location.href='findhoney.do'">신혼여행</a></li>
 					<li><a href="#" onclick="location.href='pagingclist.do'">청첩장</a></li>
-					<li><a href="#nino-latestBlog">이벤트</a></li>
+					<li><a href="#" onclick="location.href='couponmain.do'">이벤트</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 			<ul class="nino-iconsGroup nav navbar-nav">
