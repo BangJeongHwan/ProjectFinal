@@ -67,7 +67,7 @@
 	</definition>
 	
 	<definition name="basketList.tiles" extends="SelectRegi.tiles">
-		<put-attribute name="main" value="/WEB-INF/views/mypage/basketList.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/mypage/basketList2.jsp"/>
 	</definition>
 	
 	 <!-- 신혼여행 -->
@@ -114,10 +114,6 @@
 		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioWrite.jsp"/>
 	</definition>
 	
-	<definition name="studioDetail.tiles" extends="SelectRegi.tiles">
-		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioDetail.jsp"/>
-	</definition>
-	
 	<definition name="sdMod.tiles" extends="company.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioMod.jsp"/>
 	</definition>
@@ -128,8 +124,8 @@
 	<!-- 웨딩홀 -->
 	
 	<!-- main -->
-	<definition name="weddinghall.tiles" template="/WEB-INF/views/wh-tiles.jsp">
-		<put-attribute name="header" value="/WEB-INF/views/common/wh_header.jsp"/>
+	<definition name="weddinghall.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
 		<put-attribute name="main" value="/WEB-INF/views/wedding/weddinghall.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
 	</definition>
@@ -144,15 +140,24 @@
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallview.jsp"/>
 	</definition>
 	
+	
 	<!-- 홀 추가 -->
 	<definition name="hallwrite.tiles" extends="weddinghall.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/wedding/hallwrite.jsp"/>
 	</definition>
-	<!-- 테스트 
-	<definition name="NewFile.tiles" template="/WEB-INF/views/Test.jsp">
-		<put-attribute name="main" value="/WEB-INF/views/wedding/NewFile.jsp"/>
+	
+	<!-- 예약하기 창 -->
+	<definition name="resv.tiles" extends="weddinghall.tiles">
+		<put-attribute name="header" value="/WEB-INF/views/common/resv_header.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/wedding/resv.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/wedding/empty.jsp"/>
 	</definition>
-	 -->
+	
+	<!-- 홀 수정 -->
+	<definition name="hallmod.tiles" extends="weddinghall.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/wedding/hallmod.jsp"/>
+	</definition>
+	
 	<!-- /웨딩홀 -->
 	
 	
@@ -219,9 +224,6 @@
 		<put-attribute name="main" value="/WEB-INF/views/review/rdetail.jsp"/>
 	</definition>
 	
-	<definition name="rupdate.tiles" extends="SelectRegi.tiles">
-		<put-attribute name="main" value="/WEB-INF/views/review/rupdate.jsp"/>
-	</definition>
 	
 		
 	<!-- 0419 혜영 -->
@@ -235,9 +237,29 @@
 	</definition>
 	
 		 <!-- 쿠폰 -->
-<definition name="makecoupon.tiles" template="/WEB-INF/views/coupon/makeCoupon.jsp">
-	</definition> 
+<definition name="makecoupon.tiles" template="/WEB-INF/views/honeymoon/hm-tiles.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+		<put-attribute name="left_main" value="/WEB-INF/views/coupon/cp_leftmain.jsp"/>
+		<put-attribute name="main" value="/WEB-INF/views/coupon/makeCoupon.jsp"/>
+	</definition>
+	
 	<definition name="couponmain.tiles" template="/WEB-INF/views/coupon/couponMain.jsp">
+	</definition>
+	
+	<definition name="sharecp.tiles" extends="makecoupon.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/coupon/shareCp.jsp"/>
+	</definition>
+	<definition name="challengeCp.tiles" extends="makecoupon.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/coupon/challengeCp.jsp"/>
+	</definition>
+	<definition name="randomCp.tiles" extends="makecoupon.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/coupon/randomCp.jsp"/>
+	</definition>
+	<definition name="timeCp.tiles" extends="makecoupon.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/coupon/timeCp.jsp"/>
+	</definition>
+	
+	<definition name="myCp.tiles" template="/WEB-INF/views/coupon/myCp.jsp">
 	</definition>
 	<!-- /쿠폰 -->
 	
@@ -256,7 +278,9 @@
 	<definition name="reservationDressList.tiles" extends="commypage.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDressList.jsp"/>
 	</definition>
-	
+	<definition name="reservationWhList.tiles" extends="commypage.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDressList.jsp"/>
+	</definition>
 	<!-- 개인 마이페이지 -->
 	<definition name="memmypage.tiles" extends="commypage.tiles">
 		<put-attribute name="left_main" value="/WEB-INF/views/mypage/mmypage_leftmain.jsp"/>
@@ -291,8 +315,7 @@
 	
 	<!-- /마이페이지 관리자 뷰 -->
 	
-		
-	<!-- 0425  -->
+	<!-- 혜영  -->
 	<definition name="wiPayList.tiles" extends="commypage.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/mypage/wiPayList.jsp"/>
 	</definition>
@@ -314,6 +337,15 @@
 	<definition name="muDetail.tiles" extends="detail.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/makeup/detail.jsp"/>
 	</definition>
+	
+	<definition name="dressDetail.tiles" extends="detail.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/dress/dressDetail.jsp"/>
+	</definition>
+	
+	<definition name="studioDetail.tiles" extends="detail.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/cwedding/StudioDetail.jsp"/>
+	</definition>
+	
 </tiles-definitions>
 
 
