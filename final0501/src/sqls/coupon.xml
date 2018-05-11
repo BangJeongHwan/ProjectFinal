@@ -76,7 +76,7 @@
 	</update>
 	
 	<update id="rollbackCp" parameterType="String">
-		UPDATE WD_USECOUPON SET DEL=0, BKSEQ = null WHERE  DEL=2 AND MID = #{mid}
+		UPDATE WD_USECOUPON SET DEL=0, BKSEQ = null WHERE  DEL=2 AND MID = #{mid} AND BKSEQ != null
 	</update>
 	
 	<update id="cpBkseq" parameterType="kh.com.a.model2.couponVO">
