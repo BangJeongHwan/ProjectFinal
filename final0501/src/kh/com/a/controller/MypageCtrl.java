@@ -78,12 +78,12 @@ public String companyenrollment(Model model, String cid) throws Exception{
 	boolean boo = adminserv.getupdategrade(cid);
 	String flag = null;
 	if(boo) {
-		System.out.println("정상적으로 등급 수정이 완료되었습니다.");
+		System.out.println("�젙�긽�쟻�쑝濡� �벑湲� �닔�젙�씠 �셿猷뚮릺�뿀�뒿�땲�떎.");
 		model.addAttribute("flag", "Gsuccess");
 		return "redirect:/adminpage.do";
 	}
 	else {
-		System.out.println("기업 등급 수정에 실패하였습니다. 다시 시도해주십시오.");
+		System.out.println("湲곗뾽 �벑湲� �닔�젙�뿉 �떎�뙣�븯���뒿�땲�떎. �떎�떆 �떆�룄�빐二쇱떗�떆�삤.");
 		model.addAttribute("flag", "Gfail");
 		return "redirect:/adminpage.do";
 	}
@@ -101,12 +101,12 @@ public String companydelete(Model model, String cid) throws Exception{
 	
 	String delflag = null;
 	if(boo) {
-		System.out.println("정상적으로 업체 탈퇴 처리가 완료되었습니다.");
+		System.out.println("�젙�긽�쟻�쑝濡� �뾽泥� �깉�눜 泥섎━媛� �셿猷뚮릺�뿀�뒿�땲�떎.");
 		model.addAttribute("delflag", "Delsuccess");
 		return "redirect:/adminpage.do";
 	}
 	else {
-		System.out.println("업체 탈퇴 처리에 실패하였습니다. 다시 시도해주십시오.");
+		System.out.println("�뾽泥� �깉�눜 泥섎━�뿉 �떎�뙣�븯���뒿�땲�떎. �떎�떆 �떆�룄�빐二쇱떗�떆�삤.");
 		model.addAttribute("delflag", "Delfail");
 		return "redirect:/adminpage.do";
 	}
@@ -122,13 +122,13 @@ public boolean like(Model model, JjimDto jdto) throws Exception{
 	if(jjj != null) {
 		boolean boo = mypageserv.delJjim(jdto);
 		if(boo) {
-			System.out.println("정상적으로 찜목록에서 삭제되었습니다.");
+			System.out.println("�젙�긽�쟻�쑝濡� 李쒕ぉ濡앹뿉�꽌 �궘�젣�릺�뿀�뒿�땲�떎.");
 			return false;
 		}
 	}else {
 		boolean boo = mypageserv.addJjim(jdto);
 		if(boo) {
-			System.out.println("정상적으로 찜목록에 추가되었습니다.");
+			System.out.println("�젙�긽�쟻�쑝濡� 李쒕ぉ濡앹뿉 異붽��릺�뿀�뒿�땲�떎.");
 			return true;
 		}
 	}
@@ -140,18 +140,18 @@ public boolean like(Model model, JjimDto jdto) throws Exception{
 public String adminpage(Model model, RproductDto rdto) throws Exception{
 	logger.info("MypageController rproduct" + new Date());
 	
-	//rdto에 set 되어있는 rpdseq의 값에 따라 이동되는 상품뷰로 return .
+	//rdto�뿉 set �릺�뼱�엳�뒗 rpdseq�쓽 媛믪뿉 �뵲�씪 �씠�룞�릺�뒗 �긽�뭹酉곕줈 return .
 
 	return "rproduct.tiles";
 }*/
 
-//0509 수빈
+//0509 �닔鍮�
 @RequestMapping(value="jjimlist.do", method={RequestMethod.GET,RequestMethod.POST})
 public String jjimlist(Model model) throws Exception{
 	logger.info("MypageController rproduct" + new Date());
 	
-	List<JjimlistDto> jjimlist = new ArrayList<>(); // jjim 테이블참조한 리스트를 seq따라 구별하여 다시  담을 리스트
-	List<JjimDto> jjim = mypageserv.getJjimlist(); //jjim테이블을 참조
+	List<JjimlistDto> jjimlist = new ArrayList<>(); // jjim �뀒�씠釉붿갭議고븳 由ъ뒪�듃瑜� seq�뵲�씪 援щ퀎�븯�뿬 �떎�떆  �떞�쓣 由ъ뒪�듃
+	List<JjimDto> jjim = mypageserv.getJjimlist(); //jjim�뀒�씠釉붿쓣 李몄“
 	
 	JjimlistDto jdto = null;
 	
@@ -161,16 +161,16 @@ public String jjimlist(Model model) throws Exception{
 		int seq = jjim.get(i).getPdseq();
 			
 		if(seq >= 1000 && seq < 2000) {
-			//웨딩홀 (seq, pic, cname 가져와야함 *** sql에서 as 사용하여 상품 seq를 seq로 바꿔주어야 하고 as사용하여 사진컬럼 하나를 pic으로 변경해서 가져와야함)
+			//�썾�뵫�� (seq, pic, cname 媛��졇���빞�븿 *** sql�뿉�꽌 as �궗�슜�븯�뿬 �긽�뭹 seq瑜� seq濡� 諛붽퓭二쇱뼱�빞 �븯怨� as�궗�슜�븯�뿬 �궗吏꾩뺄�읆 �븯�굹瑜� pic�쑝濡� 蹂�寃쏀빐�꽌 媛��졇���빞�븿)
 		}else if(seq >= 2000 && seq < 3000) {
-			//청첩장
+			//泥�泥⑹옣
 		}else if(seq >= 3000 && seq < 4000) {
 			jdto = mypageserv.getJjimStudio(seq);
 			jjimlist.add(jdto);
 		}else if(seq >= 4000 && seq < 5000) {
-			//드레스
+			//�뱶�젅�뒪
 		}else if(seq >= 5000 && seq < 6000) {
-			//메이크업
+			//硫붿씠�겕�뾽
 		}
 	}
 	
@@ -180,11 +180,11 @@ public String jjimlist(Model model) throws Exception{
 	
 }
 	
-//혜영
+//�삙�쁺
 @RequestMapping(value="comPayView.do", method={RequestMethod.GET,RequestMethod.POST})
 public String comPayView(Model model, HttpServletRequest req) throws Exception {
 	logger.info("[PayCtrl] comPayView " + new Date());
-	// WH, DS??? 여기서는 필요없나?? 결제에서만??
+	// WH, DS??? �뿬湲곗꽌�뒗 �븘�슂�뾾�굹?? 寃곗젣�뿉�꽌留�??
 	
 	String cid = ((LoginDto)req.getSession().getAttribute("login")).getId();
 	String auth = ((LoginDto)req.getSession().getAttribute("login")).getAuth();
@@ -201,7 +201,7 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 		model.addAttribute("payList", payList);
 		return "wiPayList.tiles";
 	} else {		// MU, ST
-		//String regiData = "[{title:'이벤트001', start:'2018-04-01T20:00:00'}, {title:'이벤트2', start:'2018-04-15T22:00:00'}]";
+		//String regiData = "[{title:'�씠踰ㅽ듃001', start:'2018-04-01T20:00:00'}, {title:'�씠踰ㅽ듃2', start:'2018-04-15T22:00:00'}]";
 		//System.out.println("regiData : " + regiData);
 		for (int i = 0; i < payList.size(); i++) {
 			int pdseq = payList.get(i).getPdseq();
@@ -228,11 +228,11 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 			String end = redate + "T" + timeSplit[1];
 			
 			String redateSplit[] = redate.split("-");
-			String redateStr = redateSplit[0] + "년 " + redateSplit[1] + "월 " + redateSplit[2] + "일";
-			// modal 내부 출력될 내용
+			String redateStr = redateSplit[0] + "�뀈 " + redateSplit[1] + "�썡 " + redateSplit[2] + "�씪";
+			// modal �궡遺� 異쒕젰�맆 �궡�슜
 			String str = "";
 			str += pay.getReservDto().getRetime() + "<br>";
-			str += payList.get(i).getMemDto().getMname() + " 고객님<br>";
+			str += payList.get(i).getMemDto().getMname() + " 怨좉컼�떂<br>";
 			str += payList.get(i).getOption1() + "<br>";
 			str += payList.get(i).getMemDto().getPhone();
 			

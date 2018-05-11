@@ -17,6 +17,9 @@ if(cbag == 0) cbag = 0;
 
 String cardsize = (String)request.getAttribute("cardsize");
 if(cardsize == null) cardsize = "";
+
+String order = (String)request.getAttribute("order");
+if(order == null) order = "";
 %>
 
 <script type="text/javascript">
@@ -43,6 +46,12 @@ var str4 = '<%=cardsize%>';
 $(document).ready(function() {
 	document.frmForm1.cardsize.value = str4;
 });
+
+var str5 = '<%=order%>';
+$(document).ready(function() {
+	document.frmForm1.order.value = str5;
+});
+
 
 </script> 
 
@@ -221,23 +230,19 @@ font-size: 5px;
 </div>
 
 
-	<div class="search_bar" style="border-top:1px solid lightgray; width: 60%">
+	<div class="search_bar" style="border-top:1px solid lightgray; width: 68%;">
 	<form name="frmForm1" id="_frmFormSearch" method="post" action="">
 <table>
 <tr>
 	<th colspan="2">검색</th>
 </tr>
-<tr>
-	<td>
-		<select id="order" name="order">
-			<option value="cdseq desc">판매인기순</option>
-			<option value="sysdate desc">신상품순</option>	
-			<option value="sysdate desc">후기많은순</option>	
-			<option value="price asc">높은가격순</option>	
-			<option value="price desc">낮은가격순</option>							
-		</select>
-	</td>
-</tr>
+<!-- <tr> -->
+<!-- 	<td> -->
+<!-- 		<select id="order" name="order"> -->
+<!-- 			<option value="cdseq desc">신상품순</option>						 -->
+<!-- 		</select> -->
+<!-- 	</td> -->
+<!-- </tr> -->
 <tr>
 	<th style="padding-left:5px;">
 		종류

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Rlike">
+
+<insert id="addrlike" parameterType="kh.com.a.model.RlikeDto">
+	INSERT INTO RLIKE(RSEQ, MID)
+	VALUES(#{rseq}, #{mid})
+</insert>
+
+<delete id="delrlike" parameterType="kh.com.a.model.RlikeDto">
+	DELETE FROM RLIKE
+	WHERE RSEQ=#{rseq} AND MID=#{mid}
+</delete>
+
+<select id="getrlike" parameterType="kh.com.a.model.RlikeDto" resultType="kh.com.a.model.RlikeDto">
+	SELECT *
+	FROM RLIKE
+	WHERE RSEQ=#{rseq} AND MID=#{mid}
+</select>
+</mapper>

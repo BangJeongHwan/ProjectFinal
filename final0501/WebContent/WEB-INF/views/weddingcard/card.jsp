@@ -40,7 +40,7 @@ height: 400px;
 #detail_tab{
 text-align: center;
 width: 80%;
-margin : 0 auto;
+margin-left: 100px;
 }
 
 .detail_detail{
@@ -83,8 +83,10 @@ margin-left: 50px;
 
 }
 
-
-.pro_detail2{}
+#detail_04{
+margin: 0 auto;
+width: 70%;
+}
 
 </style>
 <div id = "product">
@@ -174,7 +176,7 @@ margin-left: 50px;
 <br><br>
 <div id="detail_tab">
 <table id ="detail_menu" border="1" text-align="center" style="font-size: 15px; border: 1px solid lightgray" >
-<col width="250"><col width="250"><col width="250"><col width="250"><col width="250"><col width="250">
+<col width="320"><col width="320"><col width="320"><col width="320">
 	<tr>
 		<td><a href ="#detail_01">상품 상세정보</a></td>
 		<td><a href = "#detail_02">제작 일정</a>
@@ -216,6 +218,7 @@ margin-left: 50px;
 <br>
 <!-- 이용후기 리스트  -->
 <div id ="detail_04">
+<form name="frmForm1" id="_frmForm1" action="" method="post" >
 <h4>이용후기</h4><!-- style border-bottm:  -->
 	<div class = "review_tab" id ="reviewbtn">
 		<ul>
@@ -225,21 +228,38 @@ margin-left: 50px;
 		</ul>
 	</div>
 	<div class = "review_table" id="review_table">
-		<table border="1">
-			<tr>
+
+		<table border="1" class="table">	
+
+
+			<tr class="tr">
 				<th>No</th>
 				<th>제목</th>
-				<th>추천수</th>
 				<th>작성자</th>
+				<th>추천수</th>
 				<th>등록일</th>
 			</tr>
+			<c:if test="${empty rlist}">
 			<tr>
-			<!-- 리스트 뿌려주기 -->
+		<td colspan="5" class="td">등록된 리뷰가 없습니다.</td>
 			</tr>
+			</c:if>
+			<c:forEach var="rlist" items="${rlist}" varStatus="rlistS">
+			<tr class="tr">
+				<td>${rlistS.count}</td>
+				<td><a href = 'rdetail.do?rseq=${rlist.rseq}'>${rlist.title}</a></td>
+				<td>${rlist.mid}</td>
+				<td>${rlist.rlike}</td>
+				<td>${rlist.rdate}</td>
+			</tr>
+			</c:forEach>
 		</table>
+		
+		<input type="hidden" name="rpdseq" value="${dto.cdseq}">
+		<input type="hidden" name="pname" value="${dto.title}">
 		<button id="review_btn">이용후기 쓰기</button>
 	</div>
-	
+	</form>
 </div>
 </div>
 </div>
@@ -253,6 +273,11 @@ var c_option2 = parseInt($("select[name=card_bag] option:selected").val());
 $("#total_price").text((ori_price * c_option1 + c_option2));
 });
 
+$("#review_btn").click(function() {
+	alert('후기');
+	$("#_frmForm1").attr({ "target":"_self", "action":"rwrite.do?rpdseq=${dto.cdseq}"}).submit();
+});
+
 $("#orderbtn").click(function() {
 	/* ★내부 수정 */
 	//$("#_frmForm").attr({ "target":"_self", "action":"cardorder.do" }).submit();
@@ -262,7 +287,7 @@ $("#orderbtn").click(function() {
 
 $("#review_btn").click(function() {
 	alert('review');						
-	$("#_frmForm").attr({ "target":"_self", "action":"rwrite.do?rpdseq=${dto.cdseq}" }).submit();
+	$("#_frmForm1").attr({ "target":"_self", "action":"rwrite.do" }).submit();
 	
 });
 

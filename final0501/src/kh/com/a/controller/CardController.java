@@ -22,14 +22,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.ReviewDto;
+import kh.com.a.model.ReviewParam;
 import kh.com.a.model2.CardVO;
 import kh.com.a.model2.CardVO2;
 import kh.com.a.service.CardService;
+import kh.com.a.service.ReviewServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -39,6 +43,9 @@ public class CardController {
 	
 	@Autowired
 	private CardService cardService;
+	
+	@Autowired
+	private ReviewServ reviewServ;
 	
 	@RequestMapping(value="cardlist.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String cardlist(Model model) throws Exception{
@@ -187,69 +194,115 @@ public class CardController {
 	}
 	
 	@RequestMapping(value="cdupdateAf.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String cdupdateAf(Model model, CardVO2 vo, HttpServletRequest req) throws Exception{
+	public String cdupdateAf(HttpServletRequest req, @RequestParam(value="filenames") List<String> filenames,
+			MultipartHttpServletRequest mreq, Model model, CardDetailDto dto) throws Exception{
 		logger.info("CardController cdupdateAf " + new Date());
-		int seq = vo.getDto().getCdseq();
 		
-		List<MultipartFile> upFileList = new ArrayList<>();
-		List<String> upFileNameList = new ArrayList<>();
-		for (int i = 0; i < vo.getFiles().size(); i++) {
-			if (vo.getFiles().get(i).getSize() != 0) {
-				upFileList.add(vo.getFiles().get(i));
-			}
-		}
-		for (int i = 0; i < vo.getFileNameList().size(); i++) {
-			String tmpFileName = vo.getFileNameList().get(i);
-			if (tmpFileName != null && !tmpFileName.equals("")) {
-				upFileNameList.add(tmpFileName);
-			}
-		}
-		System.out.println("upFileList size : " + upFileList.size());
-		System.out.println("upFileNameList : " + upFileNameList.toString());
-		
-		// 파일 업로드
-		for (int i = 0; i < upFileList.size(); i++) {
-			MultipartFile fileload = upFileList.get(i);
-			String oriFileName = fileload.getOriginalFilename();
-			if (oriFileName != null && !oriFileName.trim().equals("")) {
-				String fupload = req.getServletContext().getRealPath("/upload");	// tomcat
-				String newFileName = FUpUtil.getNewFile(oriFileName);
+		int cdseq = Integer.parseInt(req.getParameter("cdseq"));
 
-				System.out.println("oriFileName : " + oriFileName);
-				System.out.println("newFileName : " + newFileName);
-				// TODO
-				int getIndex = 0;
-				for (int j = 0; j < upFileNameList.size(); j++) {
-					if (oriFileName.equals(upFileNameList.get(j))) {
-						getIndex = j;
-						break;
+		
+		List<MultipartFile> mf = mreq.getFiles("files");
+		List<String> mflist = new ArrayList<>();
+
+		System.out.println("mf = " + mf);//ok
+		System.out.println("size--------" + mf.size());//4
+		
+		List<String> list = new ArrayList<>();//dto에 저장해주기 위해 
+		
+		List<String> fnlist = new ArrayList<>();
+		int getIndex = 0;
+		
+		System.out.println("filenames---------------" + filenames);
+
+		if(mf.size()<4){
+			int i=0;
+			
+			for(i=0;i<filenames.size();i++) {
+				String filename = filenames.get(i);
+				System.out.println("filename-------------" + filename);
+				if(!filename.equals("") && filename!=null) {
+				list.add(filename);
+				}
+			}
+			
+			getIndex = i-1;
+		}
+	
+
+		System.out.println("getIndex---------" + getIndex);
+		System.out.println("list---------" + list);
+		
+		for(int i=0; i<mf.size(); i++) {
+		if(!mf.get(i).getOriginalFilename().equals("")&&mf.get(i).getOriginalFilename()!=null) {
+			
+				String oriname = mf.get(i).getOriginalFilename();
+				
+				System.out.println("oriname----------------" + oriname);//ok
+				
+				String fupload = req.getServletContext().getRealPath("/upload");
+				logger.info("업로드경로:" + fupload);
+				
+				String newFile = FUpUtil.getNewFile(oriname);
+				
+				System.out.println("newFile----------------" + newFile + "---i---" + i);//ok
+
+//				 else if(list.size()>0)
+				if(list.size()==0) {
+					list.add(getIndex, newFile);
+				}else{
+				for(int h=getIndex;h<4;h++) {
+						list.add(h, newFile);
+						if(list.get(h).equals(newFile)) {
+							break;
+						}
 					}
 				}
-//						System.out.println("getIndex : " + getIndex);
-				upFileNameList.set(getIndex, newFileName);
 				
-				// 파일 업로드
-				try {
-					File file = new File(fupload + "/" + newFileName);
-					FileUtils.writeByteArrayToFile(file, fileload.getBytes());
-				} catch (IOException e) {
-					e.printStackTrace();
+				System.out.println("list-------------" + list);
+				
+					try {
+						File file = new File(fupload + "/" + newFile);
+						
+						FileUtils.writeByteArrayToFile(file, mf.get(i).getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						}	
+					
+						dto.setPicture0(list.get(0));
+						dto.setPicture1(list.get(1));
+								
+							if(list.size()==2) {
+								dto.setPicture2("null");
+								dto.setPicture3("null");
+							}else if(list.size()==3) {
+								dto.setPicture2(list.get(2));
+								dto.setPicture3("null");
+							}else if(list.size()==4) {
+								dto.setPicture2(list.get(2));
+								dto.setPicture3(list.get(3));
+							}
+							cardService.cdupdate(dto);
+				
+		}else {
+		
+			dto.setPicture0(list.get(0));
+			dto.setPicture1(list.get(1));
+					
+				if(list.size()==2) {
+					dto.setPicture2("null");
+					dto.setPicture3("null");
+				}else if(list.size()==3) {
+					dto.setPicture3(list.get(2));
+					dto.setPicture0("null");
+				}else if(list.size()==4) {
+					dto.setPicture2(list.get(2));
+					dto.setPicture3(list.get(3));
 				}
+				cardService.cdupdate(dto);
 			}
 		}
-
-		System.out.println("-> upFileNameList : " + vo.getDto().getPic().toString());
-		for (int i = 0; i < upFileNameList.size(); i++) {
-			vo.getDto().getPic().set(i, upFileNameList.get(i));
-		}
-		System.out.println("-> mu.getMuDto().getPic() : " + vo.getDto().getPic().toString());
-		
-		// Ddto 수정
-		cardService.cdupdate(vo.getDto());
-		
-		model.addAttribute("seq", seq);
-		
-		return "redirect:/cadmin.do";
+				return  "redirect:/cccdetail.do?cdseq=" + cdseq;
 	}
 	
 	@RequestMapping(value="cdetaillist.do", method={RequestMethod.GET,RequestMethod.POST})
@@ -266,9 +319,32 @@ public class CardController {
 	}
 	
 	@RequestMapping(value="carddetail.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String carddetail(int cdseq,Model model) throws Exception{
+	public String carddetail(int cdseq,Model model, ReviewParam param) throws Exception{
 		
 		logger.info("CardController carddetail " + new Date());
+		
+		logger.info("CardController pagingrlist " + new Date());
+		
+		int s = param.getPageNumber();
+		int start = (s) * param.getRecordCountPerPage() + 1;
+		int end = (s+1) * param.getRecordCountPerPage();
+		
+		param.setStart(start);
+		param.setEnd(end);
+		param.setRpdseq(cdseq);
+	
+		int totalRecordCount = reviewServ.rlistcount(param);
+		List<ReviewDto> rlist = reviewServ.pagingrlist(param);
+		model.addAttribute("rlist", rlist);
+		
+		model.addAttribute("pageNumber", s);
+		model.addAttribute("pageCountPerScreen", 10);
+		model.addAttribute("recordCountPerPage", param.getRecordCountPerPage());
+		model.addAttribute("totalRecordCount", totalRecordCount);
+		
+		model.addAttribute("rpdseq", param.getRpdseq());
+		model.addAttribute("s_category", param.getS_category());
+		model.addAttribute("s_keyword", param.getS_keyword());
 		
 		CardDetailDto dto = cardService.carddetail(cdseq);
 		System.out.println("carddetail = " + dto);
@@ -394,6 +470,7 @@ public class CardController {
 		String order = req.getParameter("order");
 		System.out.println("wiseq=" + wiseq);
 		
+		System.out.println("order----------" + order );
 		//paging
 		int s = dto.getPageNumber();
 		int start = (s) * dto.getRecordCountPerPage() + 1;
@@ -429,15 +506,6 @@ public class CardController {
 		
 	}
 
-	
-	@RequestMapping(value="cardorder.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String cardorder(HttpServletRequest req,Model model) throws Exception{
-		
-		logger.info("CardController cardorder " + new Date());
-		
-		return "cardorder.tiles";
-		
-	}
 	
 	
 	@ResponseBody

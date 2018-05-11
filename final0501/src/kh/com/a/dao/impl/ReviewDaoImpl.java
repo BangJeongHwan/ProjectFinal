@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kh.com.a.dao.ReviewDao;
 import kh.com.a.model.ReviewDto;
 import kh.com.a.model.ReviewParam;
+import kh.com.a.model.RlikeDto;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
@@ -17,7 +18,7 @@ public class ReviewDaoImpl implements ReviewDao {
 	SqlSessionTemplate sqlSession;
 	
 	private String ns = "Review.";
-
+	private String ns2 = "Rlike.";
 
 	@Override
 	public boolean rwrite(ReviewDto dto) throws Exception {
@@ -77,6 +78,50 @@ public class ReviewDaoImpl implements ReviewDao {
 	public boolean writeWdlist(ReviewDto dto) throws Exception {
 		return sqlSession.insert(ns+"writeWdlist", dto)>0?true:false;
 	}
+	
+
+	@Override
+	public boolean rupdate(ReviewDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.update(ns + "rupdate", dto)>0?true:false;
+	}
+
+
+	@Override
+	public boolean rlike(int rseq) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.update(ns + "rlike", rseq)>0?true:false;
+	}
+
+
+	@Override
+	public RlikeDto getrlike(RlikeDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns2 + "getrlike", dto);
+	}
+
+
+	@Override
+	public boolean addrlike(RlikeDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(ns2 + "addrlike", dto)>0?true:false;
+	}
+
+
+	@Override
+	public boolean delrlike(RlikeDto dto) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.delete(ns2 + "delrlike", dto)>0?true:false;
+	}
+
+
+	@Override
+	public boolean drlike(int rseq) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.update(ns + "drlike", rseq)>0?true:false;
+	}
+	
+	
 	
 	
 }

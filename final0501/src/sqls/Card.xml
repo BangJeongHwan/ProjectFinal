@@ -76,7 +76,7 @@ ORDER BY WISEQ DESC
 
 <update id="cdupdate" parameterType="kh.com.a.model.CardDetailDto">
 	UPDATE CARDDETAIL
-	SET CNAME=#{cname},TITLE=#{title},PRICE=#{price},CONTENT=#{content},PICTURE0=#{pic[0]},PICTURE1=#{pic[1]},PICTURE2=#{pic[2]},PICTURE3=#{pic[3]}
+	SET TITLE=#{title},PRICE=#{price},CONTENT=#{content},PICTURE0=#{picture0},PICTURE1=#{picture1},PICTURE2=#{picture2},PICTURE3=#{picture3}
 	WHERE CDSEQ=#{cdseq}
 </update>
 

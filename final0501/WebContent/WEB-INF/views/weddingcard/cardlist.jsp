@@ -60,8 +60,7 @@ height:170px;
 <c:if test="${login.id eq 'admin'}">
 	<button id="card_admin">관리자</button>
 	</c:if>
-	
-	<button id="review">후기게시판</button>
+
 		<div class="container">
 			<h2 class="nino-sectionHeading">
 				<span class="nino-subHeading">What we do</span>

@@ -11,7 +11,7 @@
 
 <insert id="rwrite" parameterType="kh.com.a.model.ReviewDto">
 	INSERT INTO WREVIEW(RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE )
-	VALUES(SEQ_RSEQ.NEXTVAL, #{rpdseq}, #{mid}, #{pname}, SYSDATE, #{title}, #{content}, #{pic[0]}, #{pic[1]}, #{pic[2]}, #{pic[3]}, 0)
+	VALUES(SEQ_RSEQ.NEXTVAL, #{rpdseq}, #{mid}, #{pname}, SYSDATE, #{title}, #{content}, #{pic0}, #{pic1}, #{pic2}, #{pic3}, 0)
 </insert>
 
 	<select id="rlistcount" parameterType="kh.com.a.model.ReviewParam" resultType="java.lang.Integer">
@@ -79,6 +79,24 @@
 	FROM WREVIEW
 	WHERE RSEQ=#{rseq}
 </select>
+
+<update id="rupdate" parameterType="kh.com.a.model.ReviewDto" >
+	UPDATE WREVIEW
+	SET TITLE = #{title}, CONTENT = #{content}, PIC0=#{pic0}, PIC1=#{pic1}, PIC2=#{pic2}, PIC3=#{pic3}
+	WHERE RSEQ=#{rseq}
+</update>
+
+<update id="rlike" parameterType="java.lang.Integer">
+	UPDATE WREVIEW
+	SET RLIKE = RLIKE + 1
+	WHERE RSEQ=#{rseq}
+</update>
+
+<update id="drlike" parameterType="java.lang.Integer">
+	UPDATE WREVIEW
+	SET RLIKE = RLIKE - 1
+	WHERE RSEQ=#{rseq}
+</update>
 
 <!-- 0430 소현 -->
 <select id="wdlist" parameterType="java.lang.Integer" resultType="kh.com.a.model.ReviewDto">

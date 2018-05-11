@@ -38,7 +38,7 @@ td:nth-child(even) {
 </style>
 
 <div class="main">
-<form name="frmForm" id="_frmForm" modelAttribute = "CardVO" action="cdwriteAf.do?wiseq=${ccd.wiseq}" method="post" 
+<form name="frmForm" id="_frmForm" modelAttribute = "CardVO" onsubmit="return checkSubmit()" action="cdwriteAf.do?wiseq=${ccd.wiseq}" method="post" 
 enctype="multipart/form-data">
 <%
 //다운로드할 경로
@@ -104,8 +104,12 @@ String fupload = request.getServletContext().getRealPath("/upload");
 		<td>소개글</td>
 		<td><textarea rows="10" cols="50" name="content" id="_content"></textarea></td>
 	</tr>
+	<tr>
+		<td colspan="2" style="text-align: center">
+			<input type="submit" value="둥록">
+		</td>
+	</tr>
 </table>
-<button id = "card_write">글쓰기</button>
 </form>
 </div>
 <script>
@@ -113,6 +117,21 @@ $("#card_write").click(function () {
 	alert("글쓰기");
 	$("#_frmForm").submit();
 });
+
+var cidFlag = false;
+var fileSize = 0;
+var fileNameArray = new Array("", "", "", "", "", "", "", "", "", "");
+var pdSize = 1;
+
+function checkSubmit() {
+	var flag = true;
+
+	if ($("#_content").val().trim() == "") {
+		alert("상세 내용을 입력해주세요.");
+		flag=false;
+	}
+	return flag;
+}
 
 var fileUploadCount=0;
 function addFile(){       

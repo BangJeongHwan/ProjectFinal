@@ -41,7 +41,7 @@ td:nth-child(even) {
 
 </style>
 <div class="main">
-<form name="frmForm" id="_frmForm" action="cardwriteAf.do" method="post" 
+<form name="frmForm" id="_frmForm" onsubmit = "return checkSubmit()" action="cardwriteAf.do" method="post" 
 enctype="multipart/form-data">
 <table>
 <colgroup>
@@ -50,7 +50,8 @@ enctype="multipart/form-data">
 </colgroup>
 	<tr>
 		<td>업체아이디</td>
-		<td><input type="text" name = "cid"></td>
+		<td><input type="text" name = "cid">
+		<font id="_cidCheckFld"></td>
 	</tr>
 	<tr>
 		<td>업체사진</td>
@@ -62,7 +63,9 @@ enctype="multipart/form-data">
 	</tr>
 	<tr>
 	<td colspan="2">
-	<span><a href="#none" id="card_write" title="확인">확인</a></span>
+	<td colspan="2" style="text-align: center">
+		<input type="submit" value="확인">
+	</td>
 	</td>
 	</tr>
 </table>
@@ -74,6 +77,20 @@ $("#card_write").click(function() {
 	alert("글쓰기");
 	$("#_frmForm").submit();
 });
+
+var cidFlag = false;
+var fileSize = 0;
+var pdSize = 1;
+
+function checkSubmit() {
+	var flag = true;
+
+	if ($("#_content").val().trim() == "") {
+		alert("상세 내용을 입력해주세요.");
+		flag=false;
+	}
+	return flag;
+}
 
 $(document).ready(function () {
 	

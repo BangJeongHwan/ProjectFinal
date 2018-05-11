@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -26,6 +27,7 @@ import kh.com.a.model.CardDto;
 import kh.com.a.model.MuProductDto;
 import kh.com.a.model.ReviewDto;
 import kh.com.a.model.ReviewParam;
+import kh.com.a.model.RlikeDto;
 import kh.com.a.model2.ReviewVO;
 import kh.com.a.model2.ReviewVO2;
 import kh.com.a.service.CardService;
@@ -237,6 +239,212 @@ public class ReviewCtrl implements Serializable {
 		model.addAttribute("dto", dto);
 		
 		return "rdetail.tiles";
+	}
+	
+	
+	@RequestMapping(value="rupdate.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String rupdate(int rseq,Model model) throws Exception{
+		logger.info("ReviewCtrl rupdate " + new Date());
+		
+		ReviewDto dto = reviewServ.rdetail(rseq);
+		
+		System.out.println("rseq-----------" + rseq);
+		
+		model.addAttribute("dto", dto);
+		
+		return "rupdate.tiles";
+		
+		}
+	
+	@RequestMapping(value="rupdateAf.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String rupdateAf(int rseq,HttpServletRequest req, @RequestParam(value="filenames") List<String> filenames,
+			MultipartHttpServletRequest mreq, Model model,
+			ReviewDto dto) throws Exception{
+		logger.info("ReviewCtrl rupdateAf " + new Date());
+		
+		List<MultipartFile> mf = mreq.getFiles("files");
+		List<String> mflist = new ArrayList<>();
+
+		System.out.println("mf = " + mf);//ok
+		System.out.println("size--------" + mf.size());//4
+		
+		List<String> list = new ArrayList<>();//dto에 저장해주기 위해 
+		
+		List<String> fnlist = new ArrayList<>();
+		int getIndex = 0;
+//		{
+//			int i;
+//			for(i=0;i<filenames.size();i++) {
+//				String filename = filenames.get(i);
+//				list.add(i, filename);
+//			}
+//			getIndex = i;
+//		}
+
+		System.out.println("filenames---------------" + filenames);
+
+		if(mf.size()<4){
+			int i=0;
+			
+			for(i=0;i<filenames.size();i++) {
+				String filename = filenames.get(i);
+				System.out.println("filename-------------" + filename);
+				if(!filename.equals("") && filename!=null) {
+				list.add(filename);
+				}
+			}
+			
+			getIndex = i-1;
+		}
+		
+		System.out.println("getIndex---------" + getIndex);
+		System.out.println("list---------" + list);
+		 
+		for(int i=0; i<mf.size(); i++) {
+		if(!mf.get(i).getOriginalFilename().equals("")&&mf.get(i).getOriginalFilename()!=null) {
+			
+
+				String oriname = mf.get(i).getOriginalFilename();
+				
+				System.out.println("oriname----------------" + oriname);//ok
+				
+				String fupload = req.getServletContext().getRealPath("/upload");
+				logger.info("업로드경로:" + fupload);
+				
+				String newFile = FUpUtil.getNewFile(oriname);
+				
+				System.out.println("newFile----------------" + newFile + "---i---" + i);//ok
+
+				mflist.add(i, newFile);
+				
+				
+//				for(int h=getIndex;h<4;h++) {
+//						list.add(h, newFile);		
+//						if(list.get(h).equals(newFile)) {
+//							break;
+//						}
+//				}
+//				
+				if(list.size()==0) {
+					list.add(getIndex, newFile);
+				}else{
+				for(int h=getIndex;h<4;h++) {
+						list.add(h, newFile);
+						if(list.get(h).equals(newFile)) {
+							break;
+						}
+					}
+				}
+				
+				System.out.println("list-------------" + list);
+				
+					try {
+						File file = new File(fupload + "/" + newFile);
+						
+						FileUtils.writeByteArrayToFile(file, mf.get(i).getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						}	
+						
+					if(list.size()==0) {
+						dto.setPic0("null");
+						dto.setPic1("null");
+						dto.setPic2("null");
+						dto.setPic3("null");
+					}else if(list.size()==1) {
+						dto.setPic0(list.get(0));
+						dto.setPic1("null");
+						dto.setPic2("null");
+						dto.setPic3("null");	
+					}else if(list.size()==2) {
+						dto.setPic0(list.get(0));
+						dto.setPic1(list.get(1));
+						dto.setPic2("null");
+						dto.setPic3("null");
+					}else if(list.size()==3) {
+						dto.setPic0(list.get(0));
+						dto.setPic1(list.get(1));
+						dto.setPic2(list.get(2));
+						dto.setPic3("null");
+					}else if(list.size()==4) {
+						dto.setPic0(list.get(0));
+						dto.setPic1(list.get(1));
+						dto.setPic2(list.get(2));
+						dto.setPic3(list.get(3));
+					}
+							reviewServ.rupdate(dto);
+				
+		}else {
+		
+			if(list.size()==0) {
+				dto.setPic0("null");
+				dto.setPic1("null");
+				dto.setPic2("null");
+				dto.setPic3("null");
+			}else if(list.size()==1) {
+				dto.setPic0(list.get(0));
+				dto.setPic1("null");
+				dto.setPic2("null");
+				dto.setPic3("null");	
+			}else if(list.size()==2) {
+				dto.setPic0(list.get(0));
+				dto.setPic1(list.get(1));
+				dto.setPic2("null");
+				dto.setPic3("null");
+			}else if(list.size()==3) {
+				dto.setPic0(list.get(0));
+				dto.setPic1(list.get(1));
+				dto.setPic2(list.get(2));
+				dto.setPic3("null");
+			}else if(list.size()==4) {
+				dto.setPic0(list.get(0));
+				dto.setPic1(list.get(1));
+				dto.setPic2(list.get(2));
+				dto.setPic3(list.get(3));
+			}
+				reviewServ.rupdate(dto);
+			}
+		}
+				return "redirect:/rdetail.do?rseq=" + rseq;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="rlike.do", method={RequestMethod.GET,RequestMethod.POST})
+	public boolean rlike(Model model,int rseq, HttpServletRequest req, RlikeDto dto) throws Exception{
+		logger.info("ReviewCtrl rlike " + new Date());
+		
+		String mid= req.getParameter("mid");
+		 System.out.println("mid------------" + mid);
+		dto.setMid(mid);
+		dto.setRseq(rseq);
+		
+		RlikeDto rdto = reviewServ.getrlike(dto);
+		
+		if(rdto != null) {
+			boolean isS = reviewServ.delrlike(dto);
+			if(isS) {
+				System.out.println("추천관계삭제");
+				reviewServ.drlike(rseq);
+				 if(isS) {
+					 System.out.println("추천삭제");
+				 }
+				 return false;
+			}
+		}else {
+			boolean isS = reviewServ.addrlike(dto);
+			if(isS) {
+				System.out.println("추천관계 성립");
+				reviewServ.rlike(rseq);
+				if(isS) {
+					System.out.println("추천성공");
+				}
+				return true;
+			}
+	
+		}
+		return true;
+
 	}
 	
 	

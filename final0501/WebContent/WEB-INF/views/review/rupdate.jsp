@@ -4,8 +4,20 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib  prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="UTF-8"/>
-    
 <style>
+#ccdetail_main{
+margin-left:100px;
+margin-right:20px;
+}
+table th,td{
+border: 1px solid black;
+text-align: center;
+}
+button{
+text-align: center;
+align: center;
+}
+
 .main{
 	width: 90%;
 	height: 100%;
@@ -43,64 +55,36 @@ img{
 height:170px;
 }
 
-</style>    
-    
-<form name="frmForm" id="_frmForm" action="cdupdateAf.do?cdseq=${cdd.cdseq}" method="post" 
+
+
+</style>
+
+<form name="frmForm" id="_frmForm" action="rupdateAf.do?rseq=${dto.rseq }" method="post" 
 enctype="multipart/form-data">
-<input type="hidden" name="cdseq" value="${cdd.cdseq}">
-<div class="main">
+<input type="hidden" name="rseq" value="${dto.rseq }">
+<div id = "ccdetail_main">
+<h2>후기 상세보기</h2>
+
 <table id="list_table">
 <colgroup>
-		<col width="100"/><col width="300"/>
-	</colgroup>
+<col style="width:200px;" />
+<col style="width:auto;" />
+</colgroup>
 	<tr>
-		<td>업체ID</td>
-		<td>${cdd.cid}</td>
+		<td>아이디</td>
+		<td>${dto.mid}</td>
 	</tr>
 	<tr>
-		<td>청첩장이름</td>
-		<td><input type="text" name="title" value="${cdd.title}"></td>
+		<td>상품이름</td>
+		<td>${dto.pname}</td>
 	</tr>
 	<tr>
-		<td>청첩장종류</td>
-		<td>
-		<c:if test="${cdd.category eq 'mobile'}">
-			모바일
-		</c:if>
-		<c:if test="${cdd.category eq 'analog'}">	
-			아날로그
-		</c:if>
-		</td>
-		
+		<td>등록일자</td>
+		<td>${dto.rdate}</td>
 	</tr>
 	<tr>
-		<td>봉투</td>
-		<td>
-		<c:if test="${cdd.cbag eq 2}">
-			봉투있음
-		</c:if>
-		<c:if test="${cdd.cbag eq 1}">
-			봉투없음
-		</c:if>
-		</td>
-	</tr>
-	<tr>
-		<td>가격</td>
-		<td><input type="text" name="price" value="${cdd.price}"></td>
-	</tr>
-	<tr>
-		<td>청첩장크기</td>
-		<td>
-		<c:if test="${cdd.cardsize eq 'recwidth' }">
-		직사각형(가로)(171*116mm)
-		</c:if>
-		<c:if test="${cdd.cardsize eq 'recheight' }">
-		직사각형(세로)(116*171mm)
-		</c:if>
-		<c:if test="${cdd.cardsize eq 'square' }">
-		정사각형(141*141mm)
-		</c:if>
-		</td>
+		<td>제목</td>
+		<td><input type="text" name="title" value="${dto.title}"></td>
 	</tr>
 	<input type="hidden" name="filenames" value="">
 	<tr>
@@ -113,48 +97,46 @@ enctype="multipart/form-data">
 	   </table>
 	</td>
 	</tr>
+	<c:if test="${dto.pic0 ne 'null'}">
 	<tr>
-		<td>사진1</td>
-		<td><input type="text" name="filenames" value="${cdd.picture0 }"><img src = "upload/${dto.picture0}"/>
+		<td>사진</td>
+		<td><input type="text" name="filenames" value="${dto.pic0}"><img src = "upload/${dto.pic0}"/>
 		<input type="button" onclick="fdelete(this)" value="삭제"></td>
+	</tr>
+	</c:if>
+	<c:if test="${dto.pic1 ne 'null'}">
 	<tr>
-	    <td>사진2</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture1 }"><img src = "upload/${dto.picture1}"/>
+	    <td>사진</td>
+	    <td><input type="text" name="filenames" value="${dto.pic1 }"><img src = "upload/${dto.pic1}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
+	</c:if>
+	<c:if test="${dto.pic2 ne 'null'}">
 	<tr>
-	    <td>사진3</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture2 }"><img src = "upload/${dto.picture2}"/>
+	    <td>사진</td>
+	    <td><input type="text" name="filenames" value="${dto.pic2 }"><img src = "upload/${dto.pic2}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
+	</c:if>
+	<c:if test="${dto.pic3 ne 'null'}">
 	<tr>
-	    <td>사진4</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture3 }"><img src = "upload/${dto.picture3}"/>
+	    <td>사진</td>
+	    <td><input type="text" name="filenames" value="${dto.pic3 }"><img src = "upload/${dto.pic3}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
-	
+	</c:if>
 	<tr>
-		<td>소개글</td>
-		<td><textarea rows="10" cols="50" name="content" id="_content">${cdd.content}</textarea></td>
+		<td>내용</td>
+		<td><textarea rows="10" cols="50" name="content" id="_content">${dto.content}</textarea></td>
 	</tr>
+</table><br>
+<span><button onclick="location.href='rupdateAf.do?rseq=${dto.rseq}'">수정하기</button></span>
+<br>
 
-	   </table>
-
-<button id = "card_update">확인</button>
-<button id="ccdelete">삭제</button>
 </div>
+
 </form>
-
 <script>
-$("#card_update").click(function() {
-	alert('수정하기');
-	$("#_frmForm").attr({ "target":"_self", "action":"cdupdateAf.do?cdseq=${cdd.cdseq}"}).submit();
-});
-
-$("#ccdelete").click(function() {
-	alert('삭제하기');
-	$("#_frmForm").attr({ "target":"_self", "action":"ccdelete.do?cdseq=${cdd.cdseq}"}).submit();
-});
 
 var fileUploadCount=0;
 function addFile(){       
@@ -180,5 +162,7 @@ function fdelete(a) {
 	var i = a.parentNode.parentNode.rowIndex;
 	table.deleteRow(i);
 }
+
+
 
 </script>
