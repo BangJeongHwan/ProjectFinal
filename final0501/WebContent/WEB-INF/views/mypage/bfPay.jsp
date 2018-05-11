@@ -209,7 +209,7 @@
 			</div>
 			<h6>인사말 선택</h6>
 			<div class="cpo_content">
-				<button id="o_msgbtn" onclick="msgSmp()">인사말 샘플보기</button>
+			<!-- 	<button id="o_msgbtn" onclick="msgSmp()">인사말 샘플보기</button> -->
 				<textarea rows="10" cols="50" name="cpoList[${i.index}].content" id="_content" style="resize:none">
 같은 생각, 같은 마음으로 지혜롭게 살겠습니다. 
 저희 두 사람이 소중한 분들을 모시고
@@ -331,7 +331,7 @@
 									<!--//세례명/아명 표기체크시 보여지면됩니다.-->
 									</td>
 									<td class="al_c">
-										<p class="mgt13"><input type="checkbox" name="isgroom_tail_tmp" value="1"  onClick="OnChk_Tail(0,'groom')"/> 세례명/아명 표기</p>
+										<!-- <p class="mgt13"><input type="checkbox" name="isgroom_tail_tmp" value="1"  onClick="OnChk_Tail(0,'groom')"/> 세례명/아명 표기</p> -->
 									</td>
 								</tr>
 							</table>
@@ -432,7 +432,7 @@
 									<!--//세례명/아명 표기체크시 보여지면됩니다.-->
 									</td>
 									<td class="al_c">
-										<p class="mgt13"><input type="checkbox" name="isbride_tail_tmp" value="1"  onClick="OnChk_Tail(0,'bride')"/> 세례명/아명 표기</p>
+										<!-- <p class="mgt13"><input type="checkbox" name="isbride_tail_tmp" value="1"  onClick="OnChk_Tail(0,'bride')"/> 세례명/아명 표기</p> -->
 									</td>
 								</tr>
 							</table>

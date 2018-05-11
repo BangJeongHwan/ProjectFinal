@@ -122,7 +122,7 @@ function index() {
 function sdm() {
 	location.href = "company.do";
 }
-function basketListView() {
+function basketList() {
 	location.href = "basketListView.do";
 }
 function wdh(){

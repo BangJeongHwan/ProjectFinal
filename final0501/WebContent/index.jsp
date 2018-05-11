@@ -755,6 +755,9 @@ if(mem==null){
 		function mrlist() {
 			$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
 		}
+		function basketList() {
+			location.href = "basketListView.do";
+		}
 	</script>
 	    
 
