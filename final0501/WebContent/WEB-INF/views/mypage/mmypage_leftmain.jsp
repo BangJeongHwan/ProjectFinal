@@ -21,7 +21,6 @@ if(mem==null){
 <button class="w3-bar-item w3-button tablink" onclick="memReservList()">예약/결제내역</button>
 <button class="w3-bar-item w3-button tablink" onclick="mrlist()">내 글 목록</button>
 <button class="w3-bar-item w3-button tablink" onclick="">찜한 목록</button>
-<button class="w3-bar-item w3-button tablink" onclick="">최근 본 상품</button>
 <button class="w3-bar-item w3-button tablink" onclick="">내 쿠폰 보기</button>
 
 <script>

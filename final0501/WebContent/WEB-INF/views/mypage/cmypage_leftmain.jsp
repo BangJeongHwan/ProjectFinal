@@ -9,7 +9,7 @@
 
 <script>
 function commypage() {
-	location.href = "memmypage.do";
+	location.href = "commypage.do";
 }
 function reserView() {
 	location.href = "reservationDressList.do";
