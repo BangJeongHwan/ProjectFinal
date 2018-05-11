@@ -27,6 +27,7 @@ import kh.com.a.model2.PaymentViewParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 import kh.com.a.model2.ReservationVO;
+import kh.com.a.model2.WhParam;
 import kh.com.a.service.BasketServ;
 import kh.com.a.service.CardService;
 import kh.com.a.service.CouponServ;
@@ -535,7 +536,39 @@ public class PayCtrl {
 			
 			return "memReservList.tiles";
 		}
+		// 정환
+		@RequestMapping(value="reservationWhList.do", method= {RequestMethod.GET, RequestMethod.POST})
+		public String reservationWhList(Model model, WhParam param, HttpServletRequest req) throws Exception{
+			logger.info("PayCtrl reservationWhList " + new Date());
+			
+			// paging 처리
+			int sn = param.getPageNumber();
+			System.out.println(sn);
+			int start = (sn) * param.getRecordCountPerPage()+1;
+			System.out.println(start);
+			int end = (sn+1) * param.getRecordCountPerPage();
+			System.out.println(end);
+			
+			param.setStart(start);
+			param.setEnd(end);
+			
+			//데이터의 갯수
+			String cid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+			param.setCid(cid);
+			
+			int totalRecordCount = reservServ.getReservDressCount(cid);
+			List<ReservationDto> rlist = reservServ.weddingReservPagingComList(param);
+			
+			model.addAttribute("rDtoList", rlist);
+			model.addAttribute("pageNumber", sn);
+			model.addAttribute("pageCountPerScreen", 10);
+			model.addAttribute("recordCountPerPage", param.getRecordCountPerPage());
+			model.addAttribute("totalRecordCount", totalRecordCount);
+			
+			return "reservationWhList.tiles";
+		}
 		
+		// 소현
 		@RequestMapping(value="reservationDressList.do", method= {RequestMethod.GET, RequestMethod.POST})
 		public String dressResrvList(Model model, ReservDressParam param, HttpServletRequest req) throws Exception{
 			logger.info("PayCtrl dressResrvList " + new Date());

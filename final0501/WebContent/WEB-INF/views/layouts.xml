@@ -278,7 +278,9 @@
 	<definition name="reservationDressList.tiles" extends="commypage.tiles">
 		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDressList.jsp"/>
 	</definition>
-	
+	<definition name="reservationWhList.tiles" extends="commypage.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/mypage/reservationDressList.jsp"/>
+	</definition>
 	<!-- 개인 마이페이지 -->
 	<definition name="memmypage.tiles" extends="commypage.tiles">
 		<put-attribute name="left_main" value="/WEB-INF/views/mypage/mmypage_leftmain.jsp"/>

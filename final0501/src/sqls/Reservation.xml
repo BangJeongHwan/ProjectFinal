@@ -124,7 +124,18 @@
 	  WHERE 1=1 AND PDSEQ=(SELECT DSSEQ FROM DRESS WHERE CID=#{cid})
 	 </select>
 	 
-	<!-- 정환 -->
+	 
+	<!-- 정환 -->	 
+	<select id="weddingReservPagingComList" parameterType="kh.com.a.model2.WhParam" resultType="kh.com.a.model.ReservationDto">
+	SELECT RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+	FROM (
+  		SELECT ROW_NUMBER() OVER(ORDER BY RVSEQ DESC) AS RNUM,
+  		RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
+  		FROM WD_RESERVATION
+  		WHERE 1=1 AND WHSEQ=(SELECT WHSEQ FROM WD_WEDDING WHERE CID=#{cid}) ) A
+  	WHERE RNUM BETWEEN ${start} AND ${end}
+	</select>
+	
 	<insert id="wdHallResv" parameterType="kh.com.a.model.ReservationDto">
 		INSERT INTO WD_RESERVATION(RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT)
 		VALUES(RV_SEQ.NEXTVAL, #{mid}, #{redate}, #{retime}, #{pdseq}, '승인중', #{content})

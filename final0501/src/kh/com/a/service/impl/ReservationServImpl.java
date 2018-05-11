@@ -11,6 +11,7 @@ import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 import kh.com.a.model2.ReservationVO;
+import kh.com.a.model2.WhParam;
 import kh.com.a.service.ReservationServ;
 
 @Service
@@ -126,8 +127,13 @@ public class ReservationServImpl implements ReservationServ {
 	public List<ReservationVO> getWdRegList(ReservationDto fcal) {
 		return reservDao.getWdRegList(fcal);
 	}
-	
-
+	// 예약된 목록
+	@Override
+	public List<ReservationDto> weddingReservPagingComList(WhParam param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	///////
 	@Override
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception {
 		
@@ -150,6 +156,7 @@ public class ReservationServImpl implements ReservationServ {
 		
 		return reservList;
 	}
+
 	
 	
 	

@@ -13,6 +13,7 @@ import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.ReservDressParam;
 import kh.com.a.model2.ReservParam;
 import kh.com.a.model2.ReservationVO;
+import kh.com.a.model2.WhParam;
 
 @Repository
 public class ReservationDaoImpl implements ReservationDao {
@@ -136,6 +137,12 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservationVO> getWdRegList(ReservationDto fcal) {
 		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
+	
+	// 예약 리스트(업체)
+	@Override
+	public List<ReservationDto> weddingReservPagingComList(WhParam param) {
+		return sqlSession.selectList(ns+"weddingReservPagingComList", param);
+	}
 	////////////////////////////////////////////////
 
 	@Override
@@ -147,5 +154,7 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception {
 		return sqlSession.selectList(ns+"DgetReservCalListByPdseq", pdseq);
 	}
+
+	
 	
 }
