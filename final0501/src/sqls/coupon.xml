@@ -92,4 +92,8 @@
 		  WHERE MID = #{mid} AND BKSEQ = #{bkseq} AND W.CP_SEQ = C.SEQ
 	</select>
 	
+	<select id="mecp" parameterType="String" resultType="kh.com.a.model2.couponVO">
+		SELECT W.SEQ SEQ, CP_SEQ, MID, REMIT, W.DEL DEL, TITLE, DISCOUNT, BKSEQ FROM WD_USECOUPON W, WD_COUPON C 
+		WHERE MID = #{mid} AND CP_SEQ = C.SEQ ORDER BY W.DEL , REMIT
+	</select>
 </mapper>

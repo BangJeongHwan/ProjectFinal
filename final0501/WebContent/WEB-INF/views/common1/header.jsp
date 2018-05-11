@@ -206,7 +206,7 @@ if(auth=="admin"){
 }
 
 $("#_login").click(function () {
-	location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=450,scrollbars=no,resizable=no' ))";
+	location.href = "javascript:void(window.open('login.do', '로그인','top=200px, left=500px, width=450, height=350,scrollbars=no,resizable=no' ))";
 	
 });
 
