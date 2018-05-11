@@ -203,6 +203,19 @@ public class CouponCtrl {
 		return "Success";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="getpaycp.do", method={RequestMethod.GET,RequestMethod.POST})
+	public couponVO getpaycp(Model model, couponVO memcp, HttpServletRequest req) throws Exception {
+			logger.info("CouponCtrl getpaycp.do ");
+			
+			
+			LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+			String mid = login.getId();
+			memcp.setMid(mid);
+			couponVO cpdto = couponServ.getpaycp(memcp);
+		return cpdto;
+	}
+	
 	@RequestMapping(value="test.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String test(Model model, int seq) throws Exception {
 			logger.info("CouponCtrl test.do ");

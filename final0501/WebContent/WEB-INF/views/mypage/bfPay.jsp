@@ -3,29 +3,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- 결제 api를 위해 라이브러리 추가 -->
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/assets/css/bootstrap.min.css" />
+<script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/assets/js/bootstrap.min.js"></script>
 
 <style type="text/css">
-table {
+.backet table {
 	width: 1000px;
 	border: 1px solid #EBEBEB;
 	align-content: center;
 	cursor: default;
 }
-tr{
+.backet tr{
 	padding:  20px 20px;
 	height: 60px;
 }
-th{
+.backet th{
 	background-color:#F8F8F8;
 	align-content: center;
 	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
 }
-td{
+.backet td{
 	align-content: center;
 	text-align: center;
 }
@@ -40,19 +43,65 @@ td{
 	border-radius: 10px;
 	border: 2px solid #50627a;
 }
+.cpbtn{
+    border: 5px solid inherit;
+    background: none;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+.delbtn{
+	background: #ff5555;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-weight: bold;
+    margin-left: 7px;
+}
 </style>
 
 <body>
 
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+       
+       	<div class="modal-footer">
+        	<button type="button" class="btn btn-default" id="modalbtn">적용</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 <div align="center">
-	<div align="center">
+	<div align="center" class="backet ">
 		<form id="_payFrm" action="afPayView.do" method="post">
 			<input type="hidden" name="totalPrice" id="_totalPrice" value="0">
+			<table>
+				<colgroup>
+					<col width="20%"><col width="15%"><col width="27%"><col width="23%"><col width="15%"></colgroup> 
+						<tr>
+							<th><!-- <input type="checkbox" id="_allck" onclick="allcheck(this.checked)"> --></th>
+							<th>상품정보</th>			
+							<th>옵션</th>
+							<th>할인</th>
+							<th>가격</th>
+						</tr>
+			</table>
+			<!-- 							thead 					 -->
+			
 			<table>
 				<colgroup>
 					<col width="5%"><col width="95%">
 				</colgroup>
 				<c:forEach items="${ bskList }" var="bsk" varStatus="i">
+				
 					<tr>
 						<td>
 							<input type="checkbox" name="selectedIndex" value="${i.index}" onclick="selectChange()" checked>
@@ -69,7 +118,7 @@ td{
 									<input type="hidden" name="payList[${i.index}].rvseq" value="${bsk.rvseq}">
 									<table style="width:100%">
 										<colgroup>
-											<col width="20%"><col width="20%"><col width="40%"><col width="20%">
+											<col width="20%"><col width="15%"><col width="27%"><col width="23%"><col width="15%"> 
 										</colgroup>
 										<tr>
 											<td>
@@ -80,7 +129,11 @@ td{
 											<td>
 												${bsk.option1}&nbsp;/&nbsp;${bsk.reservDto.redate}&nbsp;/&nbsp;${bsk.reservDto.retime}
 											</td>
-											<td>${bsk.total_price}</td>
+											<td id="td${i.index}"></td>
+											<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
+										</td>
 										</tr>
 									</table>								
 								</td>
@@ -92,7 +145,7 @@ td{
 									<input type="hidden" name="payList[${i.index}].rvseq" value="${bsk.rvseq}">
 									<table style="width:100%">
 										<colgroup>
-											<col width="20%"><col width="20%"><col width="40%"><col width="20%">
+											<col width="20%"><col width="15%"><col width="27%"><col width="23%"><col width="15%"> 
 										</colgroup>
 										<tr>
 											<td>
@@ -103,7 +156,11 @@ td{
 											<td>
 												${bsk.option1}&nbsp;/&nbsp;${bsk.reservDto.redate}&nbsp;/&nbsp;${bsk.reservDto.retime}
 											</td>
-											<td>${bsk.total_price}</td>
+											<td id="td${i.index}"></td>
+										<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
+										</td>
 										</tr>
 									</table>								
 								</td>
@@ -115,7 +172,7 @@ td{
 									<input type="hidden" name="payList[${i.index}].option2" value="${bsk.option2}">
 									<table style="width:100%">
 										<colgroup>
-											<col width="20%"><col width="20%"><col width="40%"><col width="20%">
+											<col width="20%"><col width="15%"><col width="27%"><col width="23%"><col width="15%"></colgroup> 
 										</colgroup>
 										<tr onclick="clickCdTd(${i.index})" style="cursor:pointer;">
 											<td>
@@ -126,7 +183,11 @@ td{
 											<td>
 												${bsk.option1}&nbsp;/&nbsp;${bsk.option2}
 											</td>
-											<td>${bsk.total_price}</td>
+											<td id="td${i.index}"></td>
+											<td>
+											<input type="text" value="${bsk.total_price}" style="border: none; 
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
+										</td>
 										</tr>
 										<tr style="padding: 0px 0px;height:0px">
 											<td id="_cpoTd${i.index}" colspan="4" style="align-content: left;text-align: left;padding: 15px">
@@ -468,19 +529,31 @@ td{
 			
 			<table>
 				<colgroup>
-					<col width="70%"><col width="30%">
+					<col width="40%"><col width="20%"><col width="20%"><col width="20%">
 				</colgroup>
 				<tr>
 					<td>
 						<b>합계</b><br>
 						고객님의 총 주문 합계 금액입니다.
+					</td>
+					<td>
+						<b style="float: left;">총금액:</b>
+						<p id="_nodcP" style="float: left; "></p>
+						<b style="float: left;">원</b>
 					</td>				
 					<td>
-						<p id="_priceP"></p>
+						<b style="float: left;">할인금액:</b>&nbsp;&nbsp;&nbsp;
+						<p id="_dcP" style="float: left;"></p>
+						<b style="float: left;">원</b>
+					</td>				
+					<td>
+						<b style="float: left;">결제금액:</b>&nbsp;&nbsp;&nbsp;
+						<p id="_priceP" style="float: left;"></p>
+						<b style="float: left;">원</b>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="align-content: right"><input type="button" value="결제" onclick="payCheck()"></td>
+					<td colspan="4" style="align-content: right"><input type="button" value="결제" onclick="payCheck()"></td>
 				</tr>
 			</table>
 			
@@ -490,20 +563,39 @@ td{
 
 <script type="text/javascript">
 var totalPrice = 0;
+var allnoDc = 0;
+var allDc = 0;
 
 function selectChange() {
 	var selectedIndex = document.getElementsByName("selectedIndex");
 
 	totalPrice = 0;
+	allnoDc = 0;
+	allDc = 0;
+	
 	for (var i = 0; i < selectedIndex.length; i++) {
 		if (selectedIndex[i].checked) {
 			//_price${i.index}
 			var priceFldId = "#_price" + i;
-			totalPrice += parseInt($(priceFldId).val());
+			var nodcPrice = parseInt($(priceFldId).val());
+			allnoDc += nodcPrice;
+			
+			var dcPrice = $("#dcp"+i).val();
+			
+			if(dcPrice != "NaN" && dcPrice != null && dcPrice != "undefined"){
+				dcPrice = Number(dcPrice);
+				nodcPrice = nodcPrice-dcPrice;
+				allDc += dcPrice;
+			   }
+				
+			totalPrice += nodcPrice;
 		}
 	}
 	$("#_priceP").text(totalPrice);
 	$("#_totalPrice").val(totalPrice);
+	
+	$("#_dcP").text(allDc);
+	$("#_nodcP").text(allnoDc);
 }
 selectChange();
 
@@ -694,9 +786,107 @@ function pay() {
 	});
 } */
 
+
+
+
+function cpfunc(command,num,bks) {
+	console.log(command);
+	console.log("num"+num);
+	
+	
+	if(command =="del"){
+		var CdivId = "#_cdiv"+num;
+		var ChiddenDcp = "#dcp"+num;
+		var ChuddenCpseq = "#cpseq"+num;
+		var Cdelbtn = "#_delbtn"+num;
+		var Ccpbtn = "_cpbtn"+num;
+		
+		var upseq = $(ChuddenCpseq).val();
+		
+		$(CdivId).parent().append("<button type='button' class='cpbtn' value='"+bks+"' id='_cpbtn"+num+"'>사용가능 쿠폰</button>");
+		$("#_cpbtn"+num).attr("onclick","cpfunc('add',"+num+","+bks+")");
+		
+		$(CdivId).remove();
+		$(ChiddenDcp).remove();
+		$(Cdelbtn).remove();
+		$(ChuddenCpseq).remove();
+		
+		$.ajax({
+			url:"cpbkseqdel.do",
+			type:"get",
+			data:"seq="+upseq,
+			 async : true,
+			 success : function(msg){
+				 console.log(msg);
+			 }
+		}); 
+		
+	}else if(command =="add"){
+		var param = new Object();
+		
+		param.command=command;
+		param.num=num;
+		param.bkseq=bks;
+		
+		$.ajax({
+			url:"myCp.do",
+			type:"post",
+			data:param,
+			 async : true,
+			 success : function(html){
+				 var page = html;
+				 $(".modal-content").html(page);
+				 $("#myModal").modal();
+			 }
+		});
+	}
+	
+	
+}
+
 </script>
 
+<c:forEach items="${ bskList }" var="bsk" varStatus="i">
+	<script type="text/javascript">
 
+	 var tdId;
+	 
+	$.ajax({
+		url:"getpaycp.do",
+		type:"post",
+		data:"bkseq=${bsk.bkseq}",
+		 async : true,
+		 success : function(cpdto){
+			 if(cpdto.bkseq != null && cpdto.bkseq != "undefined"){
+				 console.log("있음");
+				 tdId = "#td${i.index}";
+				
+				 var title = cpdto.title; 
+				 var discount =	cpdto.discount;
+				 var price = "${bsk.total_price}";
+				var dcprice = price*0.01*discount;
+				dcprice = Math.ceil(dcprice);
+				var seq = cpdto.seq;
+				
+				console.log("2"+tdId);
+				console.log(cpdto.seq);
+				console.log(cpdto.bkseq);
+				
+				 $(tdId).append("<div id='_cdiv${i.index}'>"+title+"(-"+discount+"%)"+dcprice+"원"+"</div>");
+				 $(tdId).append("<button type='button' class='delbtn' id='_delbtn${i.index}'>삭제</button>");
+				 $("#_delbtn${i.index}").attr("onclick","cpfunc('del',${i.index},${bsk.bkseq})");
+				 $(tdId).append("<input type='hidden' value='"+dcprice+"' id='dcp${i.index}'>");
+				 $(tdId).append("<input type='hidden' value='"+seq+"' id='cpseq${i.index}'>");
+			 }else{
+				 console.log("없음");
+				 tdId = "#td${i.index}";
+				 $(tdId).append("<button type='button' class='cpbtn' value='${bsk.bkseq}' id='_cpbtn${i.index}')>사용가능 쿠폰</button>");
+				 $("#_cpbtn${i.index}").attr("onclick","cpfunc('add',${i.index},${bsk.bkseq})");
+			 }
+		 }
+	}); 
+	</script>
+</c:forEach>
 
 
 </body>

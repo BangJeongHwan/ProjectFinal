@@ -120,6 +120,11 @@ public class CouponDaoImpl implements CouponDao {
 		
 	}
 
+	@Override
+	public couponVO getpaycp(couponVO memcp) throws Exception {
+		return sqlSession.selectOne(ns+"getPaycp", memcp);
+	}
+
 
 	
 

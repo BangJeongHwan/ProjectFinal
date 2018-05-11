@@ -29,5 +29,5 @@ public interface CouponDao {
 	void rollbackCp(String mid) throws Exception;
 	void cpBkseq(couponVO memcp) throws Exception;
 	void cpBkseqDel(couponVO memcp) throws Exception;
-	
+	couponVO getpaycp(couponVO memcp) throws Exception;
 }

@@ -110,4 +110,9 @@ public class CouponServImpl implements CouponServ {
 		
 	}
 
+	@Override
+	public couponVO getpaycp(couponVO memcp) throws Exception {
+		return couponDao.getpaycp(memcp);
+	}
+
 }

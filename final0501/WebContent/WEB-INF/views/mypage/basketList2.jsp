@@ -159,12 +159,12 @@
 										</td>
 							
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
 											<input type="text" value="${bsk.total_price}" style="border: none; 
-											background: none; text-align: right;" size="8" readonly="readonly">원
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
 										</td>
 											
 									  	<td>
@@ -239,12 +239,12 @@
 										</td>
 							
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}">사용가능 쿠폰</button>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
 											<input type="text" value="${bsk.total_price}" style="border: none; 
-											background: none; text-align: right;" size="8" readonly="readonly">원
+											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
 										</td>
 											
 									  	<td>
@@ -328,7 +328,6 @@
 										<td>
 											<input type="text" value="${bsk.total_price}" style="border: none; 
 											background: none; text-align: right;" size="8" readonly="readonly" id="totalprice${i.index}">원
-											
 										</td>
 											
 									  	<td>
