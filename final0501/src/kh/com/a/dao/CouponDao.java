@@ -31,4 +31,5 @@ public interface CouponDao {
 	void cpBkseqDel(couponVO memcp) throws Exception;
 	couponVO getpaycp(couponVO memcp) throws Exception;
 	List<couponVO> mecp(String mid) throws Exception;
+	void cppaysuc() throws Exception;
 }

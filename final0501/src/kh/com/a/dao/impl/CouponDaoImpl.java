@@ -131,5 +131,10 @@ public class CouponDaoImpl implements CouponDao {
 		return  sqlSession.selectList(ns+"mecp", mid);
 	}
 
+	@Override
+	public void cppaysuc() throws Exception {
+		sqlSession.update(ns+"cppaysuc");
+	}
+
 
 }

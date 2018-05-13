@@ -25,8 +25,15 @@
 	 padding: 15px;
 	 font-size: 25px;
 }
+.mbtn{
+    border: 5px solid inherit;
+    background: none;
+    border-radius: 20px;
+    font-size: 13px;
+    padding: 1px 25px;
+}
 </style>
-
+<%LoginDto login = (LoginDto)session.getAttribute("login"); %>
 	<div style="text-align: center;margin-left: 10%">
 	<div class="seldiv" style="background-color: gray; color: white;" onclick="sel(1)" id="seldiv1">사용 가능 쿠폰</div>
 	<div class="seldiv" style="color: gray;" onclick="sel(2)" id="seldiv2">마감된 쿠폰</div>
@@ -44,10 +51,10 @@
 		<tbody>	
 			<c:if test="${!empty unuselist}">	
 				<c:forEach items="${unuselist}" var="cp" varStatus="i">
-						<tr onclick="trclick(${cp.seq})">
+						<tr>
 							<td> ${cp.remit}</td>
 							<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cptitle" value="${cp.title}"></td>
-							<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpdiscount" value="${cp.discount}"></td>
+							<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpdiscount" value="${cp.discount}%"></td>
 						</tr>
 				</c:forEach>
 			</c:if> 
@@ -74,9 +81,10 @@
 					<tr>
 						<td> ${cp.remit}</td>
 						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cptitle" value="${cp.title}"></td>
-						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpdiscount" value="${cp.discount}"></td>
+						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpdiscount" value="${cp.discount}%"></td>
 					<c:if test="${cp.bkseq != 0}">	
-						<td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpbk${i.index}" value="${cp.bkseq}"></td>
+						<%-- <td><input type="text" readonly="readonly" style="background: none; border: none;" id="cpbk${i.index}" value="retutn cpbkseqename(${cp.bkseq})"></td> --%>
+						<td><button class="mbtn" onclick="cpbkseqename(${cp.bkseq})">상품정보</button> </td>
 					</c:if>
 					<c:if test="${cp.bkseq == 0}">	
 						<td>미사용 기간만료</td>
@@ -98,6 +106,7 @@
 		</tbody>								
 	</table>
 
+
 	<script type="text/javascript">
 	$("#tab2").hide();
 	function sel(num) {
@@ -115,4 +124,26 @@
 		
 	}
 	
+	function cpbkseqename(cpbkseq) {
+		$.ajax({
+			url:"bkseqdata.do",
+			type:"post",
+			data:"bkseq="+cpbkseq,
+			async : true,
+			success : function(pdseq){
+				
+				 if(pdseq>=1000 && pdseq<2000) {
+					 location.href="#"
+				 }else if(pdseq>=2000 && pdseq<3000){
+					 location.href="#"
+				 }else if(pdseq>=3000 && pdseq<4000){
+					 location.href="studioDetail.do?stseq="+pdseq;
+				 }else if(pdseq>=4000 && pdseq<5000){
+					 location.href="dressDetail.do?dsseq="+pdseq+"&pdseq="+pdseq+"&usid=<%=login.getId()%>";
+				 }else if(pdseq>=5000 && pdseq<6000){
+					 location.href="muDetailView.do?museq="+pdseq;
+				 }
+			 }
+		});
+	}
 	</script>

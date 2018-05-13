@@ -21,7 +21,7 @@ if(mem==null){
 <button class="w3-bar-item w3-button tablink" onclick="memReservList()">예약/결제내역</button>
 <button class="w3-bar-item w3-button tablink" onclick="mrlist()">내 글 목록</button>
 <button class="w3-bar-item w3-button tablink" onclick="jjimlist()">찜한 목록</button>
-<button class="w3-bar-item w3-button tablink" onclick="">내 쿠폰 보기</button>
+<button class="w3-bar-item w3-button tablink" onclick="mecp()">내 쿠폰 보기</button>
 
 <script>
 function memmypage() {
@@ -38,6 +38,9 @@ function jjimlist(){
 
 function mrlist() {
 	$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
+}
+function mecp() {
+	location.href = "mecp.do"
 }
 </script>
 

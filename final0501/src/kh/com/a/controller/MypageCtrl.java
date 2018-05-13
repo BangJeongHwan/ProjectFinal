@@ -269,20 +269,17 @@ public String comPayView(Model model, HttpServletRequest req) throws Exception {
 	
 }
 
+//동인
 @RequestMapping(value="mecp.do", method={RequestMethod.GET,RequestMethod.POST})
 public String mecp(Model model, HttpServletRequest req) throws Exception {
 		logger.info("CouponCtrl mecp.do ");
-		
-		
-		
+
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
 		couponServ.rollbackCp(login.getId());
 		
 		List<couponVO> list = couponServ.mecp(login.getId());//쿠폰 리스트
 		List<couponVO> uselist = new ArrayList<>();
 		List<couponVO> unuselist = new ArrayList<>();
-		
-		
 		
 		if(!list.isEmpty()) {
 			for (int i = 0; i < list.size(); i++) {
@@ -300,10 +297,18 @@ public String mecp(Model model, HttpServletRequest req) throws Exception {
 		model.addAttribute("unuselist", unuselist);
 		model.addAttribute("uselist", uselist);
 		
-		
-		
-		System.out.println("리스트반환");
 	return "mecp.tiles";
+}
+
+@ResponseBody
+@RequestMapping(value="bkseqdata.do", method={RequestMethod.GET,RequestMethod.POST})
+public int bkseqdata(Model model, HttpServletRequest req, int bkseq) throws Exception {
+		logger.info("CouponCtrl bkseqdata.do ");
+		
+		ReservationDto reservDto = reservServ.getReservByRvseq(bkseq);
+		
+		
+	return reservDto.getPdseq();
 }
 
 }

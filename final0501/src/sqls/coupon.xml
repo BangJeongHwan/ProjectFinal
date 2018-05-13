@@ -76,7 +76,7 @@
 	</update>
 	
 	<update id="rollbackCp" parameterType="String">
-		UPDATE WD_USECOUPON SET DEL=0, BKSEQ = null WHERE  DEL=2 AND MID = #{mid} AND BKSEQ != null
+		UPDATE WD_USECOUPON SET DEL=0, BKSEQ = null WHERE DEL=2 AND MID = #{mid}
 	</update>
 	
 	<update id="cpBkseq" parameterType="kh.com.a.model2.couponVO">
@@ -85,6 +85,10 @@
 	
 	<update id="cpBkseqDel" parameterType="kh.com.a.model2.couponVO">
 		UPDATE WD_USECOUPON SET DEL = 0, BKSEQ = null WHERE SEQ = #{seq} AND MID = #{mid}
+	</update>
+	
+	<update id="cppaysuc">
+		UPDATE WD_USECOUPON U SET DEL = 1,U.BKSEQ=(SELECT RVSEQ FROM WD_BASKET B WHERE B.BKSEQ = U.BKSEQ) WHERE BKSEQ IS NOT NULL AND DEL=2
 	</update>
 	
 	<select id="getPaycp" parameterType="kh.com.a.model2.couponVO" resultType="kh.com.a.model2.couponVO">

@@ -346,11 +346,13 @@ public class PayCtrl {
 	public String afPayView(Model model, PaymentParam payParam, HttpServletRequest req) throws Exception {
 		logger.info("[PayCtrl] afPayView" + new Date());
 		
+		
+		
 		if (payParam.getSelectedIndex().size() <= 0) {
 			return "redirect:/index.do";
 		}
 		int paySize = payParam.getSelectedIndex().size();
-
+		
 		// 테스트용 출력문
 		/*System.out.println("- totalPrice : " + payParam.getTotalPrice());
 		for (int i = 0; i < paySize; i++) {
@@ -381,7 +383,7 @@ public class PayCtrl {
 		if (rvseqList.size() != 0) {
 			reservServ.updateReservStatusPay(rvseqList);
 		}
-
+		couponServ.cppaysuc(); // 쿠폰 사용완료
 		// 결제된 항목을 장바구니에서 삭제
 		bskServ.delBskByBkseq(bkseq);
 				

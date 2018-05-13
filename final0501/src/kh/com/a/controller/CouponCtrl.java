@@ -216,6 +216,18 @@ public class CouponCtrl {
 		return cpdto;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="rollbackcp.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String rollbackcp(Model model, HttpServletRequest req) throws Exception {
+			logger.info("CouponCtrl rollbackcp.do ");
+			
+			LoginDto login = (LoginDto)req.getSession().getAttribute("login");
+			System.out.println("rollback " + login.getId()) ;
+			couponServ.rollbackCp(login.getId());
+			
+		return "rollback Success";
+	}
+	
 	@RequestMapping(value="test.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String test(Model model, int seq) throws Exception {
 			logger.info("CouponCtrl test.do ");

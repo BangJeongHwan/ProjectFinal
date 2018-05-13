@@ -877,6 +877,12 @@ function cpfunc(command,num,bks) {
 				 $("#_delbtn${i.index}").attr("onclick","cpfunc('del',${i.index},${bsk.bkseq})");
 				 $(tdId).append("<input type='hidden' value='"+dcprice+"' id='dcp${i.index}'>");
 				 $(tdId).append("<input type='hidden' value='"+seq+"' id='cpseq${i.index}'>");
+				 
+				 
+				 var preprice = $("#_totalPrice").val()-dcprice;
+				 
+				 $("#_totalPrice").val(preprice);
+				 $("#_priceP").text(preprice);
 			 }else{
 				 console.log("없음");
 				 tdId = "#td${i.index}";

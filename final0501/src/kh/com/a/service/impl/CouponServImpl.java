@@ -117,8 +117,12 @@ public class CouponServImpl implements CouponServ {
 
 	@Override
 	public List<couponVO> mecp(String mid) throws Exception {
-		System.out.println(mid);
 		return couponDao.mecp(mid);
+	}
+
+	@Override
+	public void cppaysuc() throws Exception {
+		couponDao.cppaysuc();
 	}
 	
 	

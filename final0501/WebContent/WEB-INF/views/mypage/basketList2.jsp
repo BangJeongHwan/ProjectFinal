@@ -33,7 +33,7 @@
 	text-align: center;
 }
 .cpbtn{
-    border: 5px solid inherit;
+    border: 2px solid inherit;
     background: none;
     border-radius: 15px;
     font-size: 13px;
@@ -60,15 +60,15 @@
     
 <!-----------------------------------------------------  결제예정 div ------------------------------------------------------------->
 
-<div style="position: fixed;margin-left: 82%;margin-top: auto;width: 15%;background-color: #555555;padding:  5px 5px;">
+<div style="position: fixed;margin-left: 82%;margin-top: auto;width: 16%;background-color: #555555;padding:  5px 5px;">
 <font style="color: white; font-size: 18px; font-weight: 900">결제금액 계산기</font>
 	<table style="width: 100%; background-color: white; margin-top: 10px;">
 		<tr style="background-color: #fcf4f4;color: #c03d3d;font-size: 12px;font-weight:  bold;height: 40px;">
-			<td>상품금액 합계</td>
+			<td style="text-align: center;">상품금액 합계</td>
 			<td style="text-align: left;"><input type="text" readonly="readonly" value="0" style="border: none;background: none; text-align: right;" size="7" id="_pdprice">원</td>
 		</tr>
 		<tr style="font-size: 11px; height: 40px;">
-			<td>최대할인 합계</td>
+			<td style="">최대할인 합계</td>
 			<td style="text-align: left;">
 				<input type="text" readonly="readonly" value="(-0)" style="border: none;background: none; text-align: right;" size="7" id="_dcprice">원
 			</td>
@@ -88,8 +88,8 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<button type="button" onclick="bskPay()" style="border: none; background: none; "><img src="<%=request.getContextPath() %>/assets/images/pay/btn_cart3.png"></button>
-				 <button type="button" onclick="bskDel()" style="padding: 10px 25px; font-size:  20px; font-weight:  bold; color:  white; border: none;">삭제</button> 
+				<button type="button" onclick="bskPay()" style="border: none; background: none; float: left;"><img src="<%=request.getContextPath() %>/assets/images/pay/btn_cart3.png"></button>
+				 <button type="button" onclick="bskDel()" style="padding: 10px 25px; font-size:  20px; font-weight:  bold; color:  white; border: none; float: left;">삭제</button> 
 		</tr>
 	</table>
 
@@ -153,13 +153,14 @@
 												</c:if>
 											</c:forEach>
 											<c:if test="${not empty bsk.reservDto}">
-												&nbsp;/&nbsp;${bsk.reservDto.redate}
-												&nbsp;/&nbsp;${bsk.reservDto.retime}
+												&nbsp;&nbsp;${bsk.reservDto.redate}
+												&nbsp;&nbsp;${bsk.reservDto.retime}
 											</c:if>
 										</td>
 							
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
+										<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}"
+											 onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
@@ -239,7 +240,8 @@
 										</td>
 							
 										<td>
-											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}" onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
+											<button type="button" class="cpbtn" value="${bsk.bkseq}" id="_cpbtn${i.index}"
+											onclick="cpfunc('add',${i.index},'${bsk.bkseq}')">사용가능 쿠폰</button>
 										</td>
 								
 										<td>
@@ -505,6 +507,14 @@ function cpfunc(command,num,bks) {
 	
 }
 
+$.ajax({
+	url:"rollbackcp.do",
+	type:"post",
+	 async : true,
+	 success : function(html){
+		 console.log(html);
+	 }
+});
 </script>
 
 
