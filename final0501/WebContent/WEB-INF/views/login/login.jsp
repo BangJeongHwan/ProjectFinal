@@ -24,7 +24,7 @@
       <br>
 <div class="container">
 	<div align="center" >
-	<form name="frmForm" id="_frmForm" method="post">
+	<form method="post">
 		<table style="height: 60%; width: 80%">
 		<colgroup>
 			<col style="width:30%">
@@ -86,7 +86,6 @@ $("#_btnLogin").click(function() {
 		alert($("#_pwd").attr("data-msg") + " 입력해 주십시오" );
 		$("#_pwd").focus();
 	} else{
-//		$("#_frmForm").attr("target", "_self").submit();
 		go();
 	}	
 });
