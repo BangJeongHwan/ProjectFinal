@@ -9,11 +9,32 @@
 <div id="main">
 <form name="frmForm1" id="_frmFormSearch" method="post" action="">
 	<input type="hidden" name="orderCondition" id="_orderCondition" value="${ orderCondition }">
-	<div align="right">
-		<button onclick="orderBy('museq')">최신순</button>
-		<button onclick="orderBy('readcnt')">조회순</button>
-		<!-- <a href="#" onclick="orderBy('museq')">최신순</a>
-		<a href="#" onclick="orderBy('readcnt')">조회순</a> -->
+	<div>
+	
+	<!-- 최근 본 목록 추가 부분 -->
+		<c:if test="${not empty recentlist }"> 
+			<div class="w3-allerta" style="border: 10px solid transparent; border-image: url(images/border.png) 30% round; 
+			 margin-left: 380px; padding-left:30px; width:750px; height: 222px;">
+				<div style="margin-left: 230px; margin-top:20px">     
+					<h3>- 최근 본 상품 목록 -</h3> 
+				</div>
+				 
+				<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
+					<div style="float: left; margin-left: 30px; margin-top: 10px; width:100px">
+						<img style="width:100%; height: 80px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq });">  
+						<p style="padding-top: 5px; text-align: center; color: black"><font size="3px">${recentDto.cname }</font></p>  
+					</div>   
+				</c:forEach>         
+			</div>
+		</c:if>
+	<!-- /최근 본 목록 추가 부분 -->
+	
+		<div align="right">
+			<button onclick="orderBy('museq')">최신순</button>
+			<button onclick="orderBy('readcnt')">조회순</button>
+			<!-- <a href="#" onclick="orderBy('museq')">최신순</a>
+			<a href="#" onclick="orderBy('readcnt')">조회순</a> -->
+		</div>
 	</div>
 	<div align="center">
 		<c:if test="${ not empty s_keyword && not empty s_category }">
