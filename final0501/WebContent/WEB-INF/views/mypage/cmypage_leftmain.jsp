@@ -11,9 +11,12 @@
 <button class="w3-bar-item w3-button tablink" onclick="whrecvView()">예약승인</button>
 <%}else if(login.getAuth().equals("DS")){ %>
 <button class="w3-bar-item w3-button tablink" onclick="reserView()">예약승인</button>
-<%} %>
+<button class="w3-bar-item w3-button tablink" onclick="reserListView()">예약목록</button>
+<%}else{ %>
 <button class="w3-bar-item w3-button tablink" onclick="comPayView()">판매목록</button>
-
+<%
+}
+%>
 
 <script>
 function commypage() {
@@ -31,6 +34,8 @@ function reserView() {
 function comPayView() {
 	location.href = "comPayView.do";
 }
+function reserListView() {
+	location.href = "cCalendar.do";
+}
+
 </script>
-
-

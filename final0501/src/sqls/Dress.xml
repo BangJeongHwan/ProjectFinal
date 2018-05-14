@@ -85,5 +85,10 @@
 	WHERE DSSEQ=#{rp}
 </select>
   
+  <select id="dsseqByCid" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	SELECT DSSEQ
+ 	FROM DRESS
+ 	WHERE CID=#{cid}
+  </select>
   
   </mapper>

@@ -25,10 +25,12 @@ import kh.com.a.model.JjimlistDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.PaymentViewParam;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.couponVO;
 import kh.com.a.service.AdminpageServ;
 import kh.com.a.service.CardService;
 import kh.com.a.service.CouponServ;
+import kh.com.a.service.DressServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MemberServ;
 import kh.com.a.service.MypageServ;
@@ -59,6 +61,8 @@ StudioServ studioserv;
 MemberServ memServ;
 @Autowired
 CouponServ couponServ; 
+@Autowired
+DressServ dressServ;
 	
 private static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	
@@ -309,6 +313,46 @@ public int bkseqdata(Model model, HttpServletRequest req, int bkseq) throws Exce
 		
 		
 	return reservDto.getPdseq();
+}
+
+@RequestMapping(value="cCalendar.do", method={RequestMethod.GET,RequestMethod.POST})
+public String cCalendar(Model model, HttpServletRequest req) throws Exception {
+	
+	String cid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+	
+	int dsseq = dressServ.dsseqByCid(cid);
+	System.out.println(dsseq);		
+	
+	List<ReservCalParam> reservCalList = reservServ.DgetReservCalListByPdseq(dsseq);
+	// json parsing
+	JSONArray regiData = new JSONArray();
+	for (int i = 0; i < reservCalList.size(); i++) {
+		ReservCalParam rcParm = reservCalList.get(i);
+		String title = rcParm.getMname();
+		
+		String redate = rcParm.getRedate();	// yyyy-mm-dd
+		String timeSplit[] = rcParm.getRetime().split("~");
+		if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
+		String start = redate + "T" + timeSplit[0];
+		String end = redate + "T" + timeSplit[1];
+		System.out.println("   " + start);
+		
+		JSONObject jo = new JSONObject();
+		jo.put("title", title);
+		jo.put("start", start);
+		jo.put("end", end);
+		jo.put("color", "#121212");
+		//jo.put("url", "javascript:func()");
+		regiData.put(jo);
+	}
+	
+	System.out.println("reservSize : " + reservCalList.size());
+	System.out.println("regiDataSize : " + regiData.length());
+	
+	model.addAttribute("regiData", regiData);
+	/////////////////
+	
+	return "cCalendar.tiles";
 }
 
 }

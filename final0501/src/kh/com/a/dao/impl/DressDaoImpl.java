@@ -69,6 +69,11 @@ public class DressDaoImpl implements DressDao {
 		return sqlSession.selectOne(ns+"getRecentProduct", rp);
 	}
 
+	@Override
+	public int dsseqByCid(String cid) throws Exception {
+		return sqlSession.selectOne(ns+"dsseqByCid", cid);
+	}
+
 	
 
 }

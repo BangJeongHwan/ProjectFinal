@@ -74,5 +74,10 @@ public class DressServImpl implements DressServ {
 		return dressDao.getRecentProduct(rp); 
 	}
 
+	@Override
+	public int dsseqByCid(String cid) throws Exception {
+		return dressDao.dsseqByCid(cid);
+	}
+
 	
 }

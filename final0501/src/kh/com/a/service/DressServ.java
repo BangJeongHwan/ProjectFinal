@@ -25,4 +25,6 @@ public interface DressServ {
 	public List<DressDto> getPagingDressList(DressParam param) throws Exception;
 
 	public RecentDto getRecentProduct(int rp) throws Exception;
+	
+	public int dsseqByCid(String cid) throws Exception;
 }
