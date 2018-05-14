@@ -78,6 +78,14 @@ public class ReviewCtrl implements Serializable {
 		return "redirect:/dressDetail.do?dsseq="+dto.getRpdseq()+"&pdseq="+dto.getRpdseq()+"&usid="+dto.getMid();
 	}
 	
+	//0514 수빈
+	@RequestMapping(value="wstudioview.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String wstudioview(Model model, ReviewDto dto) throws Exception{
+		logger.info("ReviewCtrl wdreview " + new Date());
+		boolean b = reviewServ.writeWdlist(dto);
+		return "redirect:/studioDetail.do?stseq="+dto.getRpdseq()+"&pdseq="+dto.getRpdseq()+"&usid="+dto.getMid();
+	}
+	
 //	0508 혜영
 	@RequestMapping(value="wmureview.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String wmureview(Model model, ReviewDto dto) throws Exception{

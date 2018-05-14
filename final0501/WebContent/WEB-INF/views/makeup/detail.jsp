@@ -593,13 +593,27 @@ function checkSubmit(tail) {
 }
 
 function muBasket(tail) {
-	$("#_cmd" + tail).val("bsk");
-	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	var id = "<%=mem.getId()%>";
+
+	if(id == "admin" || id == "guest" || id == null)
+	{
+		alert("개인회원으로 로그인하여 주십시요!");
+	}else{
+		$("#_cmd" + tail).val("bsk");
+		$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	}
 }
 
 function muPaymentView(tail) {
-	$("#_cmd" + tail).val("pay");
-	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	var id = "<%=mem.getId()%>";
+
+	if(id == "admin" || id == "guest" || id == null)
+	{
+		alert("개인회원으로 로그인하여 주십시요!");
+	}else{
+		$("#_cmd" + tail).val("pay");
+		$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	}
 }
 
 function del() {

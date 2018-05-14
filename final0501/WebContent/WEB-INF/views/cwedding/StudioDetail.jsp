@@ -172,7 +172,7 @@ img:hover {
 			<input type="hidden" name="pdseq" value="${ sdDto.stseq }">
 			<input type="hidden" name="usid" value="<%=mem.getId()%>">
 			<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
-			<input type="hidden" name="option1" id="_option1" value="${sdpdList[0].title}">
+			<input type="hidden" name="option1" id="_option1" value="${sdpdlist[0].title}">
 			<%-- <input type="hidden" name="total_price" id="_total_price" value="${mupdList[0].price}"> --%>
 			<table class="type05" >
 				<colgroup>
@@ -444,9 +444,9 @@ img:hover {
       	<div id="_modalContent" class="modalContent">
       		<form action="muBasket.do" method="post" id="_frmPayModal" onsubmit="return checkSubmit('Modal')">
 			 	<input type="hidden" name="cmd" id="_cmdModal" value="bsk">
-				<input type="hidden" name="pdseq" value="${ muDto.museq }">
+				<input type="hidden" name="pdseq" value="${ sdDto.stseq }">
 				<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
-				<input type="hidden" name="option1" id="_option1Modal" value="${mupdList[0].title}">
+				<input type="hidden" name="option1" id="_option1Modal" value="${sdpdlist[0].title}">
 	      	  
 				<table class="type05" >
 					<colgroup>
@@ -456,8 +456,8 @@ img:hover {
 						<td>상품</td>
 						<td>
 							<select id="_optionSelectModal" onchange="setOptionPrice('Modal')">
-								<c:forEach items="${ mupdList }" var="mupd" varStatus="i">
-									<option value="${ mupd.price }">${ mupd.title }</option>
+								<c:forEach items="${ sdpdlist }" var="sdpdDto" varStatus="i">
+									<option value="${ sdpdDto.price }">${ sdpdDto.title }</option>
 								</c:forEach>
 							</select>
 						</td>
@@ -481,7 +481,7 @@ img:hover {
 					<tr >
 						<td>상품 가격</td>
 						<td>
-							<input type="text" name="total_price" id="_total_priceModal" value="${mupdList[0].price}"
+							<input type="text" name="total_price" id="_total_priceModal" value="${sdpdlist[0].price}"
 											 style="border: 0"  readonly="readonly">원
 						</td>
 					</tr>
@@ -603,7 +603,7 @@ function list() {
 }
 
 //옵션 값이 바뀌었을 때
-function setOptionProduct(tail){
+function setOptionPrice(tail){
 	var sproduct = $("#_optionSelect"+ tail +"option:selected").text();
 	$("#_option1" + tail).val(sproduct);
 	$("#_total_price" + tail).val($("#_optionSelect" + tail +" option:selected").val());
