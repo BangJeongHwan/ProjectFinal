@@ -179,7 +179,7 @@ function mypage(){
 	}
 }	
 function mrlist() {
-	$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
+	location.href="myrlist.do?mid=<%=mem.getId()%>";
 }
 
 

@@ -37,7 +37,7 @@ td:nth-child(even) {
    </p>   
    
    <div align="center">
-   <form action="#none" method="post" id="_frmForm">                  
+   <form action="#none" method="post" id="_frForm">                  
       <table border="1" style="width: 100%">
          <colgroup>
             <col style="width:30%">
@@ -323,7 +323,7 @@ $(document).ready(function () {
       } else if (!$("#_check1").is(":checked") || !$("#_check2").is(":checked") || !$("#_check3").is(":checked")) {
          alert("약관에 동의해주세요.");
       }else{	// 성공
-         $("#_frmForm").attr({"target":"_self", "action":"companyJoin.do" }).submit();
+         $("#_frForm").attr({"target":"_self", "action":"companyJoin.do" }).submit();
       }
    });
 }); 

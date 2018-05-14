@@ -741,11 +741,12 @@ if(mem==null){
 				location.href="adminpage.do";
 			}
 		}
-		function mrlist() {
-			$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
-		}
+		
 		function basketList() {
 			location.href = "basketListView.do";
+		}
+		function mrlist() {
+			location.href="myrlist.do?mid=<%=mem.getId()%>";
 		}
 	</script>
 	    
