@@ -129,7 +129,7 @@ if(mem==null){
 	
 	
     <!-- 웨딩홀 1
-    ================================================== -->
+    ================================================== 
     <section id="nino-uniqueDesign">
     	<div class="container">
     		<h2 class="nino-sectionHeading" >
@@ -146,7 +146,7 @@ if(mem==null){
     </section><!--/#nino-uniqueDesign-->
 
  <!-- 웨딩홀2
-    ================================================== -->
+    ==================================================
     <section id="nino-latestBlog">
     	<div class="container">
     		<h2 class="nino-sectionHeading" onclick="location.href='views/hall/weddinghall.jsp'">
@@ -216,12 +216,12 @@ if(mem==null){
 				</div>
 			</div>
     	</div>
-    </section><!--/#nino-latestBlog-->
+    </section><!--/#nino-latestBlog
     <div align="right" style="align-content:flex-end;">
 					<a href="views/hall/weddinghall.jsp"><i class="fa fa-angle-double-right" style="font-size: 60px; color: white;"></i></a>
 					</div>
     <!-- Map
-    ================================================== -->
+    ================================================== 
     <section id="nino-map">
     	<div class="container">
     		<h2 class="nino-sectionHeading">
@@ -231,13 +231,13 @@ if(mem==null){
     		</h2>
     		<div class="mapWrap">
 	    		<div id="wedmap" style="width: 100%; height: 200px; border: 0;" ></div>
-	    		<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d79466.26604960626!2d-0.19779784176715043!3d51.50733004537892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C+UK!3m2!1d51.5073509!2d-0.1277583!5e0!3m2!1sen!2s!4v1469206441744" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe> --> 
+	    		<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d79466.26604960626!2d-0.19779784176715043!3d51.50733004537892!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C+UK!3m2!1d51.5073509!2d-0.1277583!5e0!3m2!1sen!2s!4v1469206441744" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe> 
 	    	</div>
     	</div>
-    </section><!--/#nino-map-->
+    </section>/#nino-map
 
 <!-- Story About Us
-    ================================================== -->
+    ================================================== 
 	<section id="nino-story">
 		<div class="container">
 			<h2 class="nino-sectionHeading">
@@ -283,10 +283,10 @@ if(mem==null){
 				</div>
 			</div>
 		</div>		
-	</section><!--/#nino-story-->
+	</section><!--/#nino-story
 
 	<!-- Counting
-    ================================================== -->
+    ================================================== 
     <section id="nino-counting">
     	<div class="container">
     		<div layout="row" class="verticalStretch">
@@ -312,13 +312,13 @@ if(mem==null){
     			</div>
     		</div>
     	</div>
-    </section><!--/#nino-counting-->
+    </section><!--/#nino-counting
 
 
    
 
     <!-- Testimonial
-    ================================================== -->
+    ================================================== 
     <section class="nino-testimonial">
     	<div class="container">
     		<div class="nino-testimonialSlider">
@@ -359,7 +359,7 @@ if(mem==null){
 				</ul>
 			</div>
     	</div>
-    </section><!--/#nino-testimonial-->
+    </section><!--/#nino-testimonial
 
    <!-- Our Team
     ================================================== -->
@@ -378,10 +378,6 @@ if(mem==null){
 						<div class="item">
 							<div class="overlay" href="#">
 								<div class="content">
-									<a href="#" class="nino-icon"><i class="mdi mdi-facebook"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-twitter"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-pinterest"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-instagram"></i></a>
 								</div>
 								<img src="assets/images/honeymoon/img-1.jpg" alt="">
 							</div>
@@ -395,10 +391,6 @@ if(mem==null){
 						<div class="item">
 							<div class="overlay" href="#">
 								<div class="content">
-									<a href="#" class="nino-icon"><i class="mdi mdi-facebook"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-twitter"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-pinterest"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-instagram"></i></a>
 								</div>
 								<img src="assets/images/honeymoon/img-2.jpg" alt="">
 							</div>
@@ -412,10 +404,7 @@ if(mem==null){
 						<div class="item">
 							<div class="overlay" href="#">
 								<div class="content">
-									<a href="#" class="nino-icon"><i class="mdi mdi-facebook"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-twitter"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-pinterest"></i></a>
-									<a href="#" class="nino-icon"><i class="mdi mdi-instagram"></i></a>
+									<img src="assets/images/honeymoon/img-3.jpg" alt="">
 								</div>
 								<img src="assets/images/honeymoon/img-3.jpg" alt="">
 							</div>
@@ -431,7 +420,7 @@ if(mem==null){
 	</section><!--/#nino-ourTeam-->
 
 	<!-- Brand
-    ================================================== -->
+    ================================================== 
     <section id="nino-brand">
     	<div class="container">
     		<div class="verticalCenter fw" layout="row">
@@ -446,7 +435,7 @@ if(mem==null){
     </section><!--/#nino-brand-->
 
 	<!-- Portfolio
-    ================================================== -->
+    ================================================== 
 	<section id="nino-portfolio">
 		<div class="container">
 			<h2 class="nino-sectionHeading">
@@ -545,12 +534,12 @@ if(mem==null){
 				</li>
 			</ul>
 		</div>
-	</section><!--/#nino-portfolio-->
+	</section><!--/#nino-portfolio
 
 	
 
     <!-- Footer
-    ================================================== -->
+    ==================================================-->
     <footer id="footer">
         <div class="container">
         	<div class="row">
@@ -637,12 +626,12 @@ if(mem==null){
         	</div>
 			<div class="nino-copyright">Copyright &copy; 2016 <a target="_blank" href="http://www.ninodezign.com/" title="Ninodezign.com - Top quality open source resources for web developer and web designer">Ninodezign.com</a>. All Rights Reserved. <br/> MoGo free PSD template by <a href="https://www.behance.net/laaqiq">Laaqiq</a></div>
         </div>
-    </footer><!--/#footer-->
+    </footer><!--/#footer
 
 	
     <!-- Scroll to top
-    ================================================== -->
-	<a href="#" id="nino-scrollToTop">Go to Top</a>
+    ==================================================
+	<a href="#" id="nino-scrollToTop">Go to Top</a>-->
 	
 	<!-- javascript -->
 	<script type="text/javascript" src="assets/js/jquery.min.js"></script>	
