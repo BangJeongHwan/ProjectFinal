@@ -40,4 +40,10 @@
 	WHERE DSSEQ=#{seq}
 </select>
 
+<select id="getJjimMakeup" parameterType="java.lang.Integer" resultType="kh.com.a.model.JjimlistDto">
+	SELECT MUSEQ AS SEQ, CNAME, PIC1 AS PIC
+	FROM WD_MAKEUP
+	WHERE MUSEQ=#{seq}
+</select>
+
 </mapper>

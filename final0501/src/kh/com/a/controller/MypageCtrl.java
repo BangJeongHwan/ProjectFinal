@@ -196,6 +196,8 @@ public String jjimlist(Model model, HttpServletRequest req, HttpServletResponse 
 				jjimlist.add(jdto);
 			}else if(seq >= 5000 && seq < 6000) {
 				//메이크업
+				jdto = mypageserv.getJjimMakeup(seq);
+				jjimlist.add(jdto);
 			}
 		}
 	}
