@@ -97,10 +97,12 @@
 				</jsp:include>
 			</div>
 			<!-- 업체 등록 버튼 -->
-			<div class="w3-container" style="align-content: center">
-			   <button class="w3-btn w3-white w3-border w3-border-red w3-round-large" 
-			      style="color: black; postion:" onclick="addMuView()">업체등록</button>
-			</div>
+			<c:if test="${login.auth eq 'admin'}">
+				<div class="w3-container" style="align-content: center">
+				   <button class="w3-btn w3-white w3-border w3-border-red w3-round-large" 
+				      style="color: black; postion:" onclick="addMuView()">업체등록</button>
+				</div>
+			</c:if>
 		</div>
 	</section>
 </form>
