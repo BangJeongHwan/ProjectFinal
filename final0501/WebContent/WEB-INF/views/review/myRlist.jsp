@@ -106,7 +106,6 @@ width: 100px;
 </jsp:include>
 </div>
 </div>
-
 </div>
 
 <script>
@@ -116,7 +115,6 @@ $("#review").click(function() {
 	$("#_frmForm").attr({ "target":"_self", "action":"pagingrlist.do"}).submit();
 });
 
-
 $("#_btnSearch").click(function() {
 	alert('search');						
 	$("#_frmFormSearch").attr({ "target":"_self", "action":"pagingclist.do" }).submit();
@@ -125,7 +123,7 @@ $("#_btnSearch").click(function() {
 
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
-	$("#_frmFormSearch").attr("target","_self").attr("action","myrlist.do").submit();
+	$("#_frmFormSearch").attr("target","_self").attr("action","pagingclist.do").submit();
 }
 
 </script>

@@ -89,7 +89,6 @@ width: 100px;
 </jsp:include>
 </div>
 </div>
-
 </div>
 
 <script>
