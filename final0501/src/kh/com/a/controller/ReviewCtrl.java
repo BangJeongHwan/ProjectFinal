@@ -49,7 +49,7 @@ public class ReviewCtrl implements Serializable {
 	public String rwrite(int rpdseq,HttpServletRequest req,Model model) throws Exception{
 		logger.info("ReviewCtrl rwrite " + new Date());
 		
-		String pname = req.getParameter("pname");
+		String pname = req.getParameter("title");
 		
 		model.addAttribute("pname", pname);
 		System.out.println("pname=" + pname);
@@ -89,12 +89,11 @@ public class ReviewCtrl implements Serializable {
 	}
 	
 	@RequestMapping(value="rwriteAf.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String rwriteAf(int rpdseq,HttpServletRequest req, 
+	public String rwriteAf(HttpServletRequest req, 
 			MultipartHttpServletRequest mreq, Model model, ReviewDto dto) throws Exception{
 	
 		logger.info("DmCtrl DmwriteAf " + new Date());
 	
-		
 		List<MultipartFile> mf = mreq.getFiles("files");
 		
 		System.out.println("mf = " + mf);//ok
@@ -102,7 +101,7 @@ public class ReviewCtrl implements Serializable {
 		
 		List<String> list = new ArrayList<>();//dto에 저장해주기 위해 
 		
-		if(mf.size()==0 ) {
+		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")) {
 			
 		}else {
 		for(int i=0; i<mf.size(); i++) {
@@ -130,7 +129,6 @@ public class ReviewCtrl implements Serializable {
 					}	
 				
 					System.out.println("list--------" + list);
-					System.out.println("listsize--------" + list.size());
 				}
 		
 					if(list.size()==0) {
@@ -140,7 +138,7 @@ public class ReviewCtrl implements Serializable {
 						dto.setPic3("null");
 					}else if(list.size()==1) {
 						dto.setPic0(list.get(0));
-						dto.setPic1("null");
+						dto.setPic0("null");
 						dto.setPic2("null");
 						dto.setPic3("null");	
 					}else if(list.size()==2) {
@@ -153,19 +151,11 @@ public class ReviewCtrl implements Serializable {
 						dto.setPic1(list.get(1));
 						dto.setPic2(list.get(2));
 						dto.setPic3("null");
-					}else if(list.size()==4) {
-						dto.setPic0(list.get(0));
-						dto.setPic1(list.get(1));
-						dto.setPic2(list.get(2));
-						dto.setPic3(list.get(3));
 					}
-					
-					System.out.println("dto======" + dto);
-					
 				reviewServ.rwrite(dto);
 			}
 		
-		return "redirect:/carddetail.do?cdseq=" + rpdseq;
+		return "DmBbs.tiles";
 	}
 	
 	
@@ -198,7 +188,9 @@ public class ReviewCtrl implements Serializable {
 		
 		model.addAttribute("s_category", dto.getS_category());
 		model.addAttribute("s_keyword", dto.getS_keyword());
-
+		model.addAttribute("rorder", dto.getRorder());
+		
+		System.out.println("rorder-----------" + dto.getRorder());
 		return "rlist.tiles";
 	}
 	
@@ -252,6 +244,7 @@ public class ReviewCtrl implements Serializable {
 	}
 	
 	
+	
 	@RequestMapping(value="rupdate.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String rupdate(int rseq,Model model) throws Exception{
 		logger.info("ReviewCtrl rupdate " + new Date());
@@ -266,7 +259,6 @@ public class ReviewCtrl implements Serializable {
 		
 		}
 	
-
 	@RequestMapping(value="rupdateAf.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String rupdateAf(int rseq,HttpServletRequest req, @RequestParam(value="filenames") List<String> filenames,
 			MultipartHttpServletRequest mreq, Model model,
@@ -422,9 +414,13 @@ public class ReviewCtrl implements Serializable {
 	
 	@ResponseBody
 	@RequestMapping(value="rlike.do", method={RequestMethod.GET,RequestMethod.POST})
-	public boolean rlike(Model model,int rseq, String mid, HttpServletRequest req, RlikeDto dto) throws Exception{
+	public boolean rlike(Model model,int rseq, HttpServletRequest req, RlikeDto dto) throws Exception{
 		logger.info("ReviewCtrl rlike " + new Date());
 		
+		String mid= req.getParameter("mid");
+		 System.out.println("mid------------" + mid);
+		dto.setMid(mid);
+		dto.setRseq(rseq);
 		
 		RlikeDto rdto = reviewServ.getrlike(dto);
 		
@@ -451,7 +447,8 @@ public class ReviewCtrl implements Serializable {
 	
 		}
 		return true;
-	
+
 	}
+	
 	
 }
