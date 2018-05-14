@@ -8,9 +8,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   
-  <!-- jquery cookie -->
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.cookie.js"></script>
-  
   <style type="text/css">
   	.input-group .form-control {
     position: relative;
@@ -70,8 +67,17 @@
 	<a id="kakao-login-btn"></a>
 	</div>
 </div>
-<!-- 쿠키에 저장되는 부분 -->
 <script type="text/javascript">
+// 쿠키에 저장된 id를 불러온다.
+var cookieUser_id = document.cookie.match('(^|;) ?' + 'user_id' + '=([^;]*)(;|$)');
+if (cookieUser_id != null) {
+	var cookieId = cookieUser_id[2];
+	if (cookieId != null && cookieId.trim() != "") {
+		$("#_id").val(cookieId);
+		$("#_chk_save_id").click();
+	}
+}
+
 $("#_btnLogin").click(function() {
 	if($("#_id").val() == ""){
 		alert($("#_id").attr("data-msg") + " 입력해 주십시오" );
@@ -104,27 +110,6 @@ $("#_pwd").keypress(function() {
 	}
 });
 
-//id저장
-var user_id = $.cookie("user_id");
-if(user_id != null){
-	alert("yes");
-	$("#_id").val(user_id);
-	$("#_chk_save_id").attr("checked", "checked");
-}
-
-$("#_chk_save_id").click(function() {		
-	if($('input:checkbox[id="_chk_save_id"]').is(":checked")){
-		if($("#_id").val() == ""){
-			$(this).prop("checked", false);
-			alert("아이디를 입력해 주십시오");
-		}else{
-			$.cookie("user_id", $("#_id").val(), { expires: 7, path: '/' });
-		}		
-	}else{
-		$.removeCookie("user_id", { path:'/' });
-	}
-});
-
 function go() {
 	var id = $("#_id").val();
 	var pwd = $("#_pwd").val();
@@ -137,9 +122,22 @@ function go() {
 		async:true,
 		success:function(data){
 			if(data=="true"){
-		           opener.document.location.reload();
+				//★
+				if($('input:checkbox[id="_chk_save_id"]').is(":checked")){
+					var date = new Date();
+					date.setTime(date.getTime() + 7 * 60 * 60* 24 * 1000);//7일
+					document.cookie = "user_id=" + id + ";expires=" + date.toUTCString() + ";path=/";
+				} else {
+					document.cookie = "user_id=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+				}
+				
+		        opener.document.location.reload();
 				self.close();
 			}else{
+				
+				//★
+				document.cookie = "user_id=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+				
 				$("#_id").val("");
 				$("#_pwd").val("");
 				alert("ID와 PWD가 맞지않습니다.");

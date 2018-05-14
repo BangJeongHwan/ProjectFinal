@@ -89,6 +89,10 @@ public class MemberCtrl {
 	     
 	    if(cookies != null){
 	        for(int i=0; i < cookies.length; i++){
+	        	String cookieName = cookies[i].getName();
+	        	if (cookieName.equals("user_id")) {
+	        		continue;
+	        	}
 	             
 	            // 쿠키의 유효시간을 0으로 설정하여 만료시킨다
 	            cookies[i].setMaxAge(0) ;
