@@ -115,21 +115,21 @@ enctype="multipart/form-data">
 	</tr>
 	<tr>
 		<td>사진1</td>
-		<td><input type="text" name="filenames" value="${cdd.picture0 }"><img src = "upload/${dto.picture0}"/>
+		<td><input type="text" name="filenames" value="${cdd.picture0 }"><img src = "upload/${cdd.picture0}"/>
 		<input type="button" onclick="fdelete(this)" value="삭제"></td>
 	<tr>
 	    <td>사진2</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture1 }"><img src = "upload/${dto.picture1}"/>
+	    <td><input type="text" name="filenames" value="${cdd.picture1 }"><img src = "upload/${cdd.picture1}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
 	<tr>
 	    <td>사진3</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture2 }"><img src = "upload/${dto.picture2}"/>
+	    <td><input type="text" name="filenames" value="${cdd.picture2 }"><img src = "upload/${cdd.picture2}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
 	<tr>
 	    <td>사진4</td>
-	    <td><input type="text" name="filenames" value="${cdd.picture3 }"><img src = "upload/${dto.picture3}"/>
+	    <td><input type="text" name="filenames" value="${cdd.picture3 }"><img src = "upload/${cdd.picture3}"/>
 	    <input type="button" onclick="fdelete(this)" value="삭제"></td>
 	</tr>
 	
