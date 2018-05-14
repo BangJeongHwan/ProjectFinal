@@ -253,7 +253,7 @@ public class PayCtrl {
 	
 //	mu : 장바구니 담기
 	@RequestMapping(value="muBasket.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String muBasket(Model model, ReservationDto reserv, BasketDto bsk, HttpServletRequest req, String cmd) throws Exception {
+	public String muBasket(Model model, ReservationDto reserv, BasketDto bsk, HttpServletRequest req, String cmd, JjimDto jdto) throws Exception {
 		logger.info("[PayCtrl] muBasket " + new Date());
 		
 		String mid = ((LoginDto)req.getSession().getAttribute("login")).getId();
@@ -290,7 +290,7 @@ public class PayCtrl {
 			if(bsk.getPdseq() >= 3000 && bsk.getPdseq() < 4000)
 			{
 				model.addAttribute("stseq", bsk.getPdseq());
-				return "redirect:/studioDetail.do";
+				return "redirect:/studioDetail.do?pdseq="+jdto.getPdseq()+"&usid="+jdto.getUsid();
 			}
 			else {
 				model.addAttribute("museq", bsk.getPdseq());

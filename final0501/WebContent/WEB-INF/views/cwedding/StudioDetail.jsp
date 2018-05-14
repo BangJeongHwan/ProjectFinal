@@ -170,6 +170,7 @@ img:hover {
 <form action="muBasket.do" method="post" id="_frmPay" onsubmit="return checkSubmit('')">
 		 	<input type="hidden" name="cmd" id="_cmd" value="bsk">
 			<input type="hidden" name="pdseq" value="${ sdDto.stseq }">
+			<input type="hidden" name="usid" value="<%=mem.getId()%>">
 			<%-- <input type="hidden" name="pdname" value="${ muDto.cname }"> --%>
 			<input type="hidden" name="option1" id="_option1" value="${sdpdList[0].title}">
 			<%-- <input type="hidden" name="total_price" id="_total_price" value="${mupdList[0].price}"> --%>
@@ -574,13 +575,27 @@ function checkSubmit(tail) {
 }
 
 function muBasket(tail) {
-	$("#_cmd" + tail).val("bsk");
-	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	var id = "<%=mem.getId()%>";
+
+	if(id == "admin" || id == "guest" || id == null)
+	{
+		alert("개인회원으로 로그인하여 주십시요!");
+	}else{
+		$("#_cmd" + tail).val("bsk");
+		$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	}
 }
 
 function muPaymentView(tail) {
-	$("#_cmd" + tail).val("pay");
-	$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();
+	var id = "<%=mem.getId()%>";
+	
+	if(id == "admin" || id == "guest" || id == null)
+	{
+		alert("개인회원으로 로그인하여 주십시요!");
+	}else{
+		$("#_cmd" + tail).val("pay");
+		$("#_frmPay" + tail).attr({ "target":"_self", "action":"muBasket.do" }).submit();	
+	}
 }
 
 function list() {
@@ -709,7 +724,7 @@ var day = "";
 $("#_redate").datepicker(   // inputbox 의 id 가 startDate 
 	{dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011/04/29' 로표시
 	, showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
-	, buttonImage: 'assets/images/selectCal.jpg' // 우측 달력 icon 의 이미지 패스 
+	, buttonImage: 'assets/images/calen.jpg' // 우측 달력 icon 의 이미지 패스 
 	, buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
 	, changeMonth: true // 월선택 select box 표시 (기본은 false)
 	, changeYear: true  // 년선택 selectbox 표시 (기본은 false)
