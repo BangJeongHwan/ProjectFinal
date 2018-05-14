@@ -1,8 +1,18 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>    
+
+<%
+LoginDto mem = (LoginDto)session.getAttribute("login");
+if(mem==null){
+	mem = new LoginDto("guest", "guest");
+	session.setAttribute("login", mem);
+}
+%>
+
 <style>
 
 #product{
@@ -39,8 +49,8 @@ height: 400px;
 
 #detail_tab{
 text-align: center;
-width: 80%;
-margin-left: 100px;
+width: 70%;
+margin : 0 auto;
 }
 
 .detail_detail{
@@ -88,10 +98,12 @@ margin: 0 auto;
 width: 70%;
 }
 
+
 </style>
 <div id = "product">
 <form name="frmForm" id="_frmForm" action="cdBasket.do" method="post">
 	<input type="hidden" name="pdseq" value="${ dto.cdseq }">
+	<input type="hidden" name="rpdseq" value="${ dto.cdseq }">
 	<input type="hidden" name="cmd" id="_cmd" value="bsk">
 <div class = "pro_detail" >
 
@@ -102,9 +114,23 @@ width: 70%;
 	<div class = "pro_detail2" >
 	<div class="orderdetail">
 		<div class="cardname">
-		<h2><input style="border: 0px;" type="text" name="title" value="${dto.title}" readonly="readonly"></h2>
-		</div>
-	
+		<table>
+		<colgroup>
+		<col width="50%"><col width="50%">
+		</colgroup>
+			<tr>
+			<td colspan="2" style="font-size:40px;border-bottom: 1px solid lightgray;">${dto.title }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>
+
+				<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+
+			<c:if test="${jjdto == 'true' }">
+				<img src="images/heart.gif" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+			</c:if>
+			</td>
+			</tr>
+		</table>
+	</div>
 	<table id="ordertable">
 		<tr >
 			<td>소비자가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -148,7 +174,7 @@ width: 70%;
 		
 			<td>구입총액   </td>
 				<td><input type="text" name="total_price" id="total_price"> 원</td><!-- function으로 값을 계산해서 뿌려줌 -->
-				<td><button id = "totbtn">총 금액</button></td>
+				<td><button onclick = "totbtn()">총 금액</button></td>
 		</tr>
 		<tr style="border-top: 1px solid lightgray">
 			<td>배송비   </td>
@@ -167,7 +193,6 @@ width: 70%;
 	<br>
 	<button onclick="bskBtn()">장바구니</button>
 	<button id = "orderbtn">주문하기</button>
-			<button id = "likebtn" onclick="function2()">찜하기</button>
 	</div>
 	</div>
 </form>
@@ -175,7 +200,7 @@ width: 70%;
 
 <br><br>
 <div id="detail_tab">
-<table id ="detail_menu" border="1" text-align="center" style="font-size: 15px; border: 1px solid lightgray" >
+<table id ="detail_menu" border="1" style="font-size: 15px; border: 1px solid lightgray; text-align: center; align: center;" >
 <col width="320"><col width="320"><col width="320"><col width="320">
 	<tr>
 		<td><a href ="#detail_01">상품 상세정보</a></td>
@@ -220,24 +245,15 @@ width: 70%;
 <div id ="detail_04">
 <form name="frmForm1" id="_frmForm1" action="" method="post" >
 <h4>이용후기</h4><!-- style border-bottm:  -->
-	<div class = "review_tab" id ="reviewbtn">
-		<ul>
-		<li name = "allcom" class = "on"><a href = "" title="전체보기" >전체보기</a></li>
-		<li name = "photocom"><a href = "" title="포토이용후기" >포토이용후기</a></li>
-		<li name = "bestcom"><a href = "" title="베스트이용후기" >베스트이용후기</a></li>
-		</ul>
-	</div>
+
 	<div class = "review_table" id="review_table">
-
 		<table border="1" class="table">	
-
-
 			<tr class="tr">
-				<th>No</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>추천수</th>
-				<th>등록일</th>
+				<th  width="50px">No</th>
+				<th width="400px">제목</th>
+				<th width="50px">작성자</th>
+				<th width="50px">추천수</th>
+				<th width="50px">등록일</th>
 			</tr>
 			<c:if test="${empty rlist}">
 			<tr>
@@ -265,22 +281,27 @@ width: 70%;
 </div>
 
 <script type="text/javascript">
-$("#totbtn").click(function(){
+function totbtn(){
 var ori_price = parseInt($("#ori_price").val());
 var c_option1 = parseInt($("select[name=card_amount] option:selected").val());
 var c_option2 = parseInt($("select[name=card_bag] option:selected").val());
 
-$("#total_price").text((ori_price * c_option1 + c_option2));
-});
+$("#total_price").val((ori_price * c_option1 + c_option2));
+};
 
 $("#review_btn").click(function() {
 	alert('후기');
 	$("#_frmForm1").attr({ "target":"_self", "action":"rwrite.do?rpdseq=${dto.cdseq}"}).submit();
 });
 
+$("#bskBtn()").click(function() {
+	$("#_frmForm").attr({ "target":"_self", "action":"cdBasket.do"}).submit();
+});
+
 $("#orderbtn").click(function() {
 	/* ★내부 수정 */
 	//$("#_frmForm").attr({ "target":"_self", "action":"cardorder.do" }).submit();
+	alert('장바구니');
 	$("#_cmd").val("pay");
 	$("#_frmForm").attr({ "target":"_self", "action":"cdBasket.do" }).submit();
 });
@@ -291,6 +312,27 @@ $("#review_btn").click(function() {
 	
 });
 
+function like(){
+	var cdseq = ${dto.cdseq};
+	var usid = "<%=mem.getId()%>";
+	$.ajax({
+		url:"like.do",
+		type:"get",
+		data:"pdseq="+cdseq+"&usid="+usid,
+		success:function(msg){
+			if(msg){
+				$("#likedetail").attr("src","images/heart.gif");
+				alert("해당 상품이 찜 목록에 추가되었습니다.");
+			}else{
+				$("#likedetail").attr("src","images/likebefore.png");
+				alert("해당 상품이 찜 목록에서 삭제되었습니다.");
+			}
+		},
+		error:function(reqest, status, error){
+			alert("해당 삼품이 찜 목록에 추가되지 않았습니다.");
+		}
+	});	
+}
 
 $("#datebtn").click(function(){
 var newDate=new Date();

@@ -49,23 +49,21 @@ enctype="multipart/form-data">
 <col style="width:auto;" />
 </colgroup>
 	<tr>
-		<td>업체아이디</td>
-		<td><input type="text" name = "cid">
+		<td>*업체아이디</td>
+		<td><input type="text" name = "cid" id="_cid">
 		<font id="_cidCheckFld"></td>
 	</tr>
 	<tr>
-		<td>업체사진</td>
+		<td>*업체사진</td>
 		<td><input type = "file" name="pname" style=" width : 400px;"></td>
 	</tr>
 	<tr>
-		<td>소개글</td>
+		<td>*소개글</td>
 		<td><textarea rows="10" cols="50" name="content" id="_content"></textarea></td>
 	</tr>
 	<tr>
-	<td colspan="2">
 	<td colspan="2" style="text-align: center">
 		<input type="submit" value="확인">
-	</td>
 	</td>
 	</tr>
 </table>

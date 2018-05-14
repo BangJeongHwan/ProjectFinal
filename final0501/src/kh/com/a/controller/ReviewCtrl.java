@@ -188,7 +188,9 @@ public class ReviewCtrl implements Serializable {
 		
 		model.addAttribute("s_category", dto.getS_category());
 		model.addAttribute("s_keyword", dto.getS_keyword());
-
+		model.addAttribute("rorder", dto.getRorder());
+		
+		System.out.println("rorder-----------" + dto.getRorder());
 		return "rlist.tiles";
 	}
 	

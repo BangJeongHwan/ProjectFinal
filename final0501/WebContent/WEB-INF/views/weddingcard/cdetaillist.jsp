@@ -230,19 +230,13 @@ font-size: 5px;
 </div>
 
 
-	<div class="search_bar" style="border-top:1px solid lightgray; width: 68%;">
+	<div class="search_bar" style="border-top:1px solid lightgray; width: 70%">
 	<form name="frmForm1" id="_frmFormSearch" method="post" action="">
 <table>
 <tr>
 	<th colspan="2">검색</th>
 </tr>
-<!-- <tr> -->
-<!-- 	<td> -->
-<!-- 		<select id="order" name="order"> -->
-<!-- 			<option value="cdseq desc">신상품순</option>						 -->
-<!-- 		</select> -->
-<!-- 	</td> -->
-<!-- </tr> -->
+
 <tr>
 	<th style="padding-left:5px;">
 		종류

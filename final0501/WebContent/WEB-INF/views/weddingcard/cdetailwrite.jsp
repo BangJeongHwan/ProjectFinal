@@ -51,15 +51,15 @@ String fupload = request.getServletContext().getRealPath("/upload");
 <col style="width:auto;" />
 </colgroup>
 	<tr>
-		<td width="100px">업체ID</td>
+		<td width="100px">*업체ID</td>
 		<td><input type="text" name="cid" readonly="readonly" value="${ccd.cid}"></td>
 	</tr>
 	<tr>
-		<td>청첩장이름</td>
+		<td>*청첩장이름</td>
 		<td><input type="text" name="title"></td>
 	</tr>
 	<tr>
-		<td>청첩장종류</td>
+		<td>*청첩장종류</td>
 		<td>
 			<select class="card_catagory" name="category" id="card_catagory">
 				<option value="mobile">모바일</option>
@@ -68,7 +68,7 @@ String fupload = request.getServletContext().getRealPath("/upload");
 		</td>
 	</tr>
 	<tr>
-		<td>봉투</td>
+		<td>*봉투</td>
 		<td>
 			<select class="card_bag" name="cbag" id="card_bag">
 				<option value="2">봉투있음</option>
@@ -77,11 +77,11 @@ String fupload = request.getServletContext().getRealPath("/upload");
 		</td>
 	</tr>
 	<tr>
-		<td>가격</td>
+		<td>*가격</td>
 		<td><input type="text" name="price"></td>
 	</tr>
 	<tr>
-		<td>청첩장크기</td>
+		<td>*청첩장크기</td>
 		<td>
 			<select class="card_size" name="cardsize" id="card_size">
 				<option value="recwidth">직사각형(가로)(171*116mm)</option>
@@ -91,7 +91,7 @@ String fupload = request.getServletContext().getRealPath("/upload");
 		</td>
 	</tr>
 	<tr>
-		<td>이미지</td>
+		<td>*이미지<p>*이미지 4개 꼭 다 올리십시오</p></td>
 	<td><input type="button" onClick="addFile();" value="추가">
 	   <table id="fileDiv">
 	      <tr>
@@ -101,7 +101,7 @@ String fupload = request.getServletContext().getRealPath("/upload");
 	</td>
 	</tr>
 	<tr>
-		<td>소개글</td>
+		<td>*소개글</td>
 		<td><textarea rows="10" cols="50" name="content" id="_content"></textarea></td>
 	</tr>
 	<tr>
@@ -150,22 +150,7 @@ function addFile(){
    
 }
 
-// function select(){
-// 	var select = "";
-// 	$("select[name='catagory']:seleted").each(function()){
-// 		select.push($(this).val);
-// 	}
-	
-// 	$.ajax({
-// 		url:'cdwriteAf.do',
-// 		type:'POST',
-// 		dataType:'text',
-// 		data:{
-// 			data:select
-// 		}
-		
-// 	});
-// }
+
 
 
 
