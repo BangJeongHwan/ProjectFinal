@@ -224,6 +224,10 @@
 		<put-attribute name="main" value="/WEB-INF/views/review/rdetail.jsp"/>
 	</definition>
 	
+	<definition name="rupdate.tiles" extends="SelectRegi.tiles">
+		<put-attribute name="main" value="/WEB-INF/views/review/rupdate.jsp"/>
+	</definition>
+	
 	
 		
 	<!-- 0419 혜영 -->

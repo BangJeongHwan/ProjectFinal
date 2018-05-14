@@ -17,6 +17,7 @@ public class ReviewParam {
 	
 	private String s_category;	// 제목, 내용, 작성자
 	private String s_keyword;	
+	private String rorder;
 	
 	private int recordCountPerPage = 8;
 	private int pageNumber = 0;
@@ -170,6 +171,16 @@ public class ReviewParam {
 
 	public void setEnd(int end) {
 		this.end = end;
+	}
+	
+	
+
+	public String getRorder() {
+		return rorder;
+	}
+
+	public void setRorder(String rorder) {
+		this.rorder = rorder;
 	}
 
 	@Override

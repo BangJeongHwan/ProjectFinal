@@ -22,7 +22,6 @@ public interface ReviewServ {
 	public boolean addrlike(RlikeDto dto) throws Exception;
 	public boolean delrlike(RlikeDto dto) throws Exception;
 	
-	
 	//�냼�쁽
 	public List<ReviewDto> WDlist(int rpdseq) throws Exception;
 	public boolean writeWdlist(ReviewDto dto) throws Exception;

@@ -59,8 +59,8 @@ height:170px;
 <section id="nino-portfolio">
 <c:if test="${login.id eq 'admin'}">
 	<button id="card_admin">관리자</button>
-	</c:if>
-
+</c:if>
+	
 		<div class="container">
 			<h2 class="nino-sectionHeading">
 				<span class="nino-subHeading">What we do</span>
@@ -218,10 +218,10 @@ $("#card_admin").click(function() {
 	$("#_frmForm").attr({ "target":"_self", "action":"cadmin.do"}).submit();
 });
 
-$("#review").click(function() {
-	alert('후기');
-	$("#_frmForm").attr({ "target":"_self", "action":"pagingrlist.do"}).submit();
-});
+// $("#review").click(function() {
+// 	alert('후기');
+// 	$("#_frmForm").attr({ "target":"_self", "action":"pagingrlist.do"}).submit();
+// });
 
 
 $("#_btnSearch").click(function() {

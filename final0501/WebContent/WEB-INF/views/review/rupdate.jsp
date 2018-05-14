@@ -6,19 +6,6 @@
 <fmt:requestEncoding value="UTF-8"/>
 <style>
 #ccdetail_main{
-margin-left:100px;
-margin-right:20px;
-}
-table th,td{
-border: 1px solid black;
-text-align: center;
-}
-button{
-text-align: center;
-align: center;
-}
-
-.main{
 	width: 90%;
 	height: 100%;
 	background-color: white;
@@ -56,10 +43,9 @@ height:170px;
 }
 
 
-
 </style>
 
-<form name="frmForm" id="_frmForm" action="rupdateAf.do?rseq=${dto.rseq }" method="post" 
+<form name="frmForm" id="_frmForm" action="rupdateAf.do" method="post" 
 enctype="multipart/form-data">
 <input type="hidden" name="rseq" value="${dto.rseq }">
 <div id = "ccdetail_main">
