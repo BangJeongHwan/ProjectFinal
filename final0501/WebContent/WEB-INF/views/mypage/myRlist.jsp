@@ -46,7 +46,7 @@ width: 100px;
 
 <thead>
 	<tr>
-		<th>번호</th><th>제목</th> <th>상품이름</th>  <th>등록일자</th>  
+		<th>번호</th><th>제목</th><th>상품이름</th><th>등록일자</th>  
 	</tr>
 </thead>
 
@@ -75,22 +75,6 @@ width: 100px;
 <div class="cl_search">
 <form name="frmForm1" id="_frmFormSearch" method="post" action="">
 
-<table style="margin-left:auto; margin-right:auto; margin-top:3px; margin-bottom:3px; border:0; padding:0;">
-<tr>
-	<td></td>
-	<td style="padding-left:5px;">
-		<select id="_s_category" name="s_category">
-			<option value="" selected="selected">선택</option>
-			<option value="title">제목</option>
-			<option value="content">소개글</option>								
-		</select>
-	</td>
-	<td style="padding-left:5px;"><input type="text" id="_s_keyword" name="s_keyword" value="${s_keyword}"/></td>
-	<td style="padding-left:5px;"><span class="button blue"><button type="button" id="_btnSearch"> 검색 </button></span></td>
-</tr>
-</table>
-<button onclick='location.href="rbwrite.do"'>후기올리기</button><br><br>
-
 <input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber}"/>						
 <input type="hidden" name="recordCountPerPage" id="_recordCountPerPage" value="${(empty recordCountPerPage)?10:recordCountPerPage}"/>						
 
@@ -109,18 +93,6 @@ width: 100px;
 </div>
 
 <script>
-
-$("#review").click(function() {
-	alert('후기');
-	$("#_frmForm").attr({ "target":"_self", "action":"pagingrlist.do"}).submit();
-});
-
-
-$("#_btnSearch").click(function() {
-	alert('search');						
-	$("#_frmFormSearch").attr({ "target":"_self", "action":"pagingclist.do" }).submit();
-	
-});
 
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
