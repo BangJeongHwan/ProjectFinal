@@ -45,4 +45,9 @@ public class MypageDaoImpl implements MypageDao {
 	public JjimlistDto getJjimStudio(int seq) throws Exception {
 		return sqlSession.selectOne(ns+"getJjimStudio",seq);
 	}
+
+	@Override
+	public JjimlistDto getJjimDress(int seq) throws Exception {
+		return sqlSession.selectOne(ns+"getJjimDress",seq);
+	}
 }

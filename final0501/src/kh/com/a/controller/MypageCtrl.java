@@ -189,6 +189,11 @@ public String jjimlist(Model model, HttpServletRequest req, HttpServletResponse 
 				jjimlist.add(jdto);
 			}else if(seq >= 4000 && seq < 5000) {
 				//드레스
+				jdto = mypageserv.getJjimDress(seq);
+				
+				System.out.println("jdto.getCname() : " + jdto.getCname());
+				
+				jjimlist.add(jdto);
 			}else if(seq >= 5000 && seq < 6000) {
 				//메이크업
 			}

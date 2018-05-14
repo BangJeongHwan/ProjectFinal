@@ -34,4 +34,10 @@
 	WHERE STSEQ=#{seq}
 </select>
 
+<select id="getJjimDress" parameterType="java.lang.Integer" resultType="kh.com.a.model.JjimlistDto">
+	SELECT DSSEQ AS SEQ, DNAME AS CNAME, PICTURE0 AS PIC
+	FROM DRESS
+	WHERE DSSEQ=#{seq}
+</select>
+
 </mapper>

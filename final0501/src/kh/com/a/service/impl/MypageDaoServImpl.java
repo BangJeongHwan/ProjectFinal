@@ -43,4 +43,9 @@ public class MypageDaoServImpl implements MypageServ {
 	public JjimlistDto getJjimStudio(int seq) throws Exception {
 		return mypage.getJjimStudio(seq); 
 	}
+
+	@Override
+	public JjimlistDto getJjimDress(int seq) throws Exception {
+		return mypage.getJjimDress(seq);
+	}
 }

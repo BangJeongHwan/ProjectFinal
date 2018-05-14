@@ -16,4 +16,5 @@ public interface MypageServ {
 	
 	public List<JjimDto> getJjimlist() throws Exception;
 	public JjimlistDto getJjimStudio(int seq) throws Exception;
+	public JjimlistDto getJjimDress(int seq) throws Exception;
 }
