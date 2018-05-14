@@ -12,10 +12,6 @@ if(mem==null){
 }
 %>
 
- <form name= "_frmForm" id = "_frmForm" method = "post" action="">
- 	<input type="hidden" name="mid" value="<%=mem.getId() %>">
- </form>
-
 <h5 class="w3-bar-item">member mypage</h5>
 <button class="w3-bar-item w3-button tablink" onclick="memmypage()">정보수정</button>
 <button class="w3-bar-item w3-button tablink" onclick="memReservList()">예약/결제내역</button>
@@ -38,6 +34,7 @@ function jjimlist(){
 
 function mrlist() {
 	$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
+	location.href = "myrlist.do?mid=<%=mem.getId()%>";
 }
 function mecp() {
 	location.href = "mecp.do"

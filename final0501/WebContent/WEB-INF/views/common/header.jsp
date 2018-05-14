@@ -97,9 +97,6 @@ if(mem==null){
 	<button class="bbtn" onclick="location.href='SelectRegi.do'"><span>회원가입 </span></button>
 </div>
 
- <form name= "_frmForm" id = "_frmForm" method = "post" action="">
- 	<input type="hidden" name="mid" value="<%=mem.getId() %>">
- </form>
 
 <script type="text/javascript">
 var auth = "<%=mem.getAuth()%>";
@@ -124,7 +121,7 @@ function mypage(){
 	}
 }	
 function mrlist() {
-	$("#_frmForm").attr({ "target":"_self", "action":"myrlist.do"}).submit();
+	location.href="myrlist.do?mid=<%=mem.getId()%>";
 }
 
 
