@@ -125,13 +125,13 @@ function writeStudio(){
 
 $("#_btnSearch").click(function() {
 	//alert('search');						
-	$("#_frmFormSearch").attr({ "target":"_self", "action":"dressMain.do" }).submit();
+	$("#_frmFormSearch").attr({ "target":"_self", "action":"studiomain.do" }).submit();
 	
 });
 
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
-	$("#_frmFormSearch").attr("target","_self").attr("action","dressMain.do").submit();
+	$("#_frmFormSearch").attr("target","_self").attr("action","studiomain.do").submit();
 }
 
 function view(x){

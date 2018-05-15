@@ -53,7 +53,6 @@ td:nth-child(even) {
 		
 		<tbody>	
 			<c:if test="${empty jjimlist}">
-				alert("hello");
 				<tr>
 					<td colspan="3">찜한 상품이 존재하지 않습니다.</td>
 				</tr>	
@@ -82,7 +81,7 @@ td:nth-child(even) {
 						
 						<c:if test="${JjimlistDto.seq >= 3000 && JjimlistDto.seq < 4000}">
 							<!-- 스튜디오 디테일 이동! -->
-							<a href="studioDetail.do?stseq=${sdDto.stseq}&pdseq=${sdDto.stseq}&usid=<%=mem.getId()%>">
+							<a href="studioDetail.do?stseq=${JjimlistDto.seq}&pdseq=${JjimlistDto.seq}&usid=<%=mem.getId()%>">
 								${JjimlistDto.cname}
 							</a>
 						</c:if>
