@@ -2,13 +2,17 @@ package kh.com.a.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -23,17 +27,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.CookieGenerator;
 
 import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.JjimDto;
 import kh.com.a.model.ReviewDto;
 import kh.com.a.model.ReviewParam;
 import kh.com.a.model2.CardVO;
 import kh.com.a.model2.CardVO2;
+import kh.com.a.model.CookieDto;
+import kh.com.a.model2.LoginDto;
 import kh.com.a.service.CardService;
+import kh.com.a.service.DressServ;
+import kh.com.a.service.MakeupServ;
+import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReviewServ;
+import kh.com.a.service.StudioServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -46,6 +58,18 @@ public class CardController {
 	
 	@Autowired
 	private ReviewServ reviewServ;
+	
+	@Autowired
+	private MypageServ mypageserv;
+	
+	@Autowired
+	DressServ dressServ;
+	
+	@Autowired
+	MakeupServ muServ;
+	
+	@Autowired
+	private StudioServ studioserv;
 	
 	@RequestMapping(value="cardlist.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String cardlist(Model model) throws Exception{
@@ -82,7 +106,7 @@ public class CardController {
 		model.addAttribute("recordCountPerPage", dto.getRecordCountPerPage());
 		model.addAttribute("totalRecordCount", totalRecordCount);
 		
-		System.out.println("����");
+		System.out.println("占쏙옙占쏙옙");
 		
 		model.addAttribute("s_category", dto.getS_category());
 		model.addAttribute("s_keyword", dto.getS_keyword());
@@ -174,7 +198,7 @@ public class CardController {
 				dto.setPicture(filename);
 				cardService.ccupdate(dto);				
 			}else{
-				System.out.println("��������");
+				System.out.println("占쏙옙占쏙옙占쏙옙占쏙옙");
 			}	
 	}
 		
@@ -207,7 +231,7 @@ public class CardController {
 		System.out.println("mf = " + mf);//ok
 		System.out.println("size--------" + mf.size());//4
 		
-		List<String> list = new ArrayList<>();//dto�� �������ֱ� ���� 
+		List<String> list = new ArrayList<>();//dto占쏙옙 占쏙옙占쏙옙占쏙옙占쌍깍옙 占쏙옙占쏙옙 
 		
 		List<String> fnlist = new ArrayList<>();
 		int getIndex = 0;
@@ -240,7 +264,7 @@ public class CardController {
 				System.out.println("oriname----------------" + oriname);//ok
 				
 				String fupload = req.getServletContext().getRealPath("/upload");
-				logger.info("���ε���:" + fupload);
+				logger.info("占쏙옙占싸듸옙占쏙옙:" + fupload);
 				
 				String newFile = FUpUtil.getNewFile(oriname);
 				
@@ -318,8 +342,10 @@ public class CardController {
 		
 	}
 	
+	
 	@RequestMapping(value="carddetail.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String carddetail(int cdseq,Model model, ReviewParam param) throws Exception{
+	public String carddetail(int cdseq,String mid,String flag,Model model, ReviewParam param,JjimDto jdto,
+			HttpServletRequest req, HttpServletResponse res,HttpSession session) throws Exception{
 		
 		logger.info("CardController carddetail " + new Date());
 		
@@ -349,6 +375,226 @@ public class CardController {
 		CardDetailDto dto = cardService.carddetail(cdseq);
 		System.out.println("carddetail = " + dto);
 		
+		JjimDto jjdto = mypageserv.getJjim(jdto);
+		
+		if(jjdto != null) {
+			model.addAttribute("jjdto", true);
+		}else {
+			model.addAttribute("jjdto", false);
+		}
+		
+		if (flag != null) {
+			model.addAttribute("flag", flag);
+		}
+		
+		LoginDto mem = (LoginDto)session.getAttribute("login");
+		
+		CookieDto cdto = new CookieDto();		
+		int  bcheck = cdto.getB();
+		String Crp1 = cdto.getCrp1();
+		
+		System.out.println("********************* Crp1 : " + Crp1);
+		
+		String Crp2 = cdto.getCrp2();
+		
+		System.out.println("********************* Crp1 : " + Crp2);
+		
+		String Crp3 = cdto.getCrp3();
+		
+		System.out.println("********************* Crp1 : " + Crp3);
+		
+		String Crp4 = cdto.getCrp4();
+		
+		System.out.println("********************* Crp1 : " + Crp4);
+		
+		String Crp5 = cdto.getCrp5();
+		
+		System.out.println("********************* Crp1 : " + Crp5);
+		
+		String Crp6 = cdto.getCrp6();
+		
+		System.out.println("********************* Crp1 : " + Crp6);
+
+		if(mem != null && mem.getId() != "guest" && mem.getAuth() != "admin")
+		{
+			Cookie[] cookies = req.getCookies();
+			
+			CardDetailDto sttDto = cardService.carddetail(cdseq);
+			
+			for(int i = 0; i < cookies.length; i++){
+				if(cookies[i].getName().equals("rp0")){
+					bcheck++;
+					cdto.setB(bcheck);
+				}
+			}
+			
+			if(bcheck == 1){
+				CookieGenerator cookie = new CookieGenerator();
+				cookie.setCookieName("rp0");
+				cookie.setCookieMaxAge(24*60*60);
+				//cookie.addCookie(res, URLEncoder.encode(sttDto.getCid(), "UTF-8"));
+				cookie.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+				Crp1 = Integer.toString(sttDto.getCdseq());
+				cdto.setCrp1(Integer.toString(sttDto.getCdseq()));
+				System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+			}else{
+				for(int i = 0; i < cookies.length; i++)
+				{
+					if(cookies[i].getName().equals("rp0") && Crp2 == null)
+					{
+						System.out.println("Crp1 = " +Crp1);
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp1");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("荑좏궎 rp1 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp0");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+						Crp2 = Integer.toString(sttDto.getCdseq());
+						cdto.setCrp2(Integer.toString(sttDto.getCdseq()));
+						System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+					}
+					else if(cookies[i].getName().equals("rp1") && Crp3 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2);
+						System.out.println("*****************");
+						
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp2");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("荑좏궎 rp2 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp1");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("荑좏궎 rp1 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp0");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+						Crp3 = Integer.toString(sttDto.getCdseq());
+						cdto.setCrp3(Integer.toString(sttDto.getCdseq()));
+						System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+					}
+					else if(cookies[i].getName().equals("rp2") && Crp4 == null)
+					{
+						System.out.println("*****************");
+						System.out.println("Crp1 = " +Crp1+"  "+"Crp2 = "+Crp2+"  "+"Crp3 = "+Crp3);
+						System.out.println("*****************");
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp3");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("荑좏궎 rp3 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp2");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("荑좏궎 rp2 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp1");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("荑좏궎 rp1 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp0");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+						Crp4 = Integer.toString(sttDto.getCdseq());
+						cdto.setCrp4(Integer.toString(sttDto.getCdseq()));
+						System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+					}
+					else if(cookies[i].getName().equals("rp3") && Crp5 == null)
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp1, "UTF-8"));
+						System.out.println("荑좏궎 rp4 �깮�꽦 �셿猷�!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("荑좏궎 rp3 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("荑좏궎 rp2 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("荑좏궎 rp1 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+						Crp5 = Integer.toString(sttDto.getCdseq());
+						cdto.setCrp5(Integer.toString(sttDto.getCdseq()));
+						System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+					}
+					else if(cookies[i].getName().equals("rp4") && Crp1 != null && Crp2 != null&& Crp3 != null 
+							&& Crp4 != null && Crp5 != null)
+					{
+						CookieGenerator cookie = new CookieGenerator();
+						cookie.setCookieName("rp4");
+						cookie.setCookieMaxAge(24*60*60);
+						cookie.addCookie(res, URLEncoder.encode(Crp2, "UTF-8"));
+						System.out.println("荑좏궎 rp4 �깮�꽦 �셿猷�!");
+					
+						CookieGenerator cookie1 = new CookieGenerator();
+						cookie1.setCookieName("rp3");
+						cookie1.setCookieMaxAge(24*60*60);
+						cookie1.addCookie(res, URLEncoder.encode(Crp3, "UTF-8"));
+						System.out.println("荑좏궎 rp3 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie2 = new CookieGenerator();
+						cookie2.setCookieName("rp2");
+						cookie2.setCookieMaxAge(24*60*60);
+						cookie2.addCookie(res, URLEncoder.encode(Crp4, "UTF-8"));
+						System.out.println("荑좏궎 rp2 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie3 = new CookieGenerator();
+						cookie3.setCookieName("rp1");
+						cookie3.setCookieMaxAge(24*60*60);
+						cookie3.addCookie(res, URLEncoder.encode(Crp5, "UTF-8"));
+						System.out.println("荑좏궎 rp1 �깮�꽦 �셿猷�!");
+						
+						CookieGenerator cookie4 = new CookieGenerator();
+						cookie4.setCookieName("rp0");
+						cookie4.setCookieMaxAge(24*60*60);
+						cookie4.addCookie(res, URLEncoder.encode(Integer.toString(sttDto.getCdseq()), "UTF-8"));
+						Crp6 = Integer.toString(sttDto.getCdseq());
+						cdto.setCrp6(Integer.toString(sttDto.getCdseq()));
+						
+						
+						cdto.setCrp2((cdto.getCrp3()));						
+						cdto.setCrp3((cdto.getCrp4()));						
+						cdto.setCrp4((cdto.getCrp5()));					
+						cdto.setCrp5((cdto.getCrp6()));
+						
+						System.out.println("荑좏궎 rp0 �깮�꽦 �셿猷�!");
+					}else{
+						System.out.println("----------�넻怨�-----------  : "+ i);
+					}
+				}
+			}
+		}
 		model.addAttribute("dto", dto);
 		
 		return "carddetail.tiles";
@@ -372,8 +618,8 @@ public class CardController {
 		
 		
 		String fupload = req.getServletContext().getRealPath("/upload");
-		logger.info("���ε���:" + fupload);
-		System.out.println("���ε���:" + fupload);
+		logger.info("占쏙옙占싸듸옙占쏙옙:" + fupload);
+		System.out.println("占쏙옙占싸듸옙占쏙옙:" + fupload);
 		String f = dto.getPicture();
 		
 		String newFile = FUpUtil.getNewFile(f);

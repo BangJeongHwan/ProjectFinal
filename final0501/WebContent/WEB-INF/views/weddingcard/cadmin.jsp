@@ -7,16 +7,30 @@
 
 <style>
 #main{
-margin-left:100px;
-margin-right:20px;
+	width: 80%;
+	height: 100%;
+	background-color: white;
+	margin : 0 auto;
+	align: center;
+	text-align: center;
+	margin-top: 50px;
+	margin-left: 300px;
 }
-table th,td{
-border: 1px solid black;
-text-align: center;
+ table { 
+ 	border: 1px solid #EBEBEB; 
+ }
+ td font{
+	font-size:12px;color:#0000ff;margin:8px 0 0 8px;letter-spacing:-0.5px;
 }
-button{
-text-align: center;
-align: center;
+tr{
+	height: 60px;
+	padding:  20px 20px;
+}
+td{
+	 align-content: center;
+}
+td:nth-child(even) {
+    background-color:white;
 }
 
 </style>

@@ -95,7 +95,7 @@ width: 100px;
 
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
-	$("#_frmFormSearch").attr("target","_self").attr("action","pagingclist.do").submit();
+	$("#_frmFormSearch").attr("target","_self").attr("action","pagingmrlist.do").submit();
 }
 
 </script>

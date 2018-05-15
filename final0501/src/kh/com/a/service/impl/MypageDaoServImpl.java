@@ -10,6 +10,8 @@ import kh.com.a.dao.MypageDao;
 import kh.com.a.model.CompanyDto;
 import kh.com.a.model.JjimDto;
 import kh.com.a.model.JjimlistDto;
+import kh.com.a.model.ReviewDto;
+import kh.com.a.model.ReviewParam;
 import kh.com.a.service.AdminpageServ;
 import kh.com.a.service.MypageServ;
 
@@ -53,4 +55,17 @@ public class MypageDaoServImpl implements MypageServ {
 	public JjimlistDto getJjimMakeup(int seq) throws Exception {
 		return mypage.getJjimMakeup(seq);
 	}
+	
+	@Override
+	public List<ReviewDto> pagingmrlist(ReviewParam dto) throws Exception {
+		// TODO Auto-generated method stub
+		return mypage.pagingmrlist(dto);
+	}
+
+	@Override
+	public int mrcount(ReviewParam dto) throws Exception {
+		// TODO Auto-generated method stub
+		return mypage.mrcount(dto);
+	}
+	
 }

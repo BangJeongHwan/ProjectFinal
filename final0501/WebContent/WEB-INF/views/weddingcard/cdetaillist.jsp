@@ -1,8 +1,17 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>
+
+<%
+LoginDto mem = (LoginDto)session.getAttribute("login");
+if(mem==null){
+	mem = new LoginDto("guest", "guest");
+	session.setAttribute("login", mem);
+}
+%>
 
 
 <%
@@ -204,7 +213,7 @@ font-size: 5px;
 	<div class="c_list_">
 		<div class="c_list_1">
 			<div class="c_image">
-				<a href = 'carddetail.do?cdseq=${cdlist.cdseq}'> <img src="upload/${cdlist.picture0}">
+				<a href = 'carddetail.do?cdseq=${cdlist.cdseq}&usid=<%=mem.getId()%>'> <img src="upload/${cdlist.picture0}">
 				</a>
 			</div>
 			<h4 class="c_name">${cdlist.title}</h4>
@@ -295,7 +304,7 @@ font-size: 5px;
 
 <script>
 
-  $("#_btnSearch").click(function() {
+$("#_btnSearch").click(function() {
   	alert('search');	
  	$("#_frmFormSearch").attr({ "target":"_self", "action":"pagingcdlist.do?wiseq=${ccd.wiseq}"}).submit();
 	

@@ -116,16 +116,16 @@ width: 70%;
 		<div class="cardname">
 		<table>
 		<colgroup>
-		<col width="50%"><col width="50%">
+		<col width="400px"><col width="400px">
 		</colgroup>
 			<tr>
-			<td colspan="2" style="font-size:40px;border-bottom: 1px solid lightgray;">${dto.title }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td style="font-size:35px;border-bottom: 1px solid lightgray;">${dto.title }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 			<td>
-
-				<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
-
 			<c:if test="${jjdto == 'true' }">
 				<img src="images/heart.gif" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+			</c:if>
+			<c:if test="${jjdto == 'false' }">
+				<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
 			</c:if>
 			</td>
 			</tr>

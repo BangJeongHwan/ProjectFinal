@@ -47,11 +47,7 @@
 	<select id="mrlistcount" parameterType="kh.com.a.model.ReviewParam" resultType="java.lang.Integer">
 	 	SELECT NVL(COUNT(*),0) AS CNT
 	 	FROM WREVIEW
-	 	WHERE MID=#{mid} AND 1=1
-	 	<if test="s_category != '' and s_category != null and s_keyword != '' and s_keyword != null">
-		<if test="s_category == 'title'"> AND TITLE LIKE '%'||#{s_keyword}||'%' </if>
-		<if test="s_category == 'contents'"> AND CONTENT LIKE '%'||#{s_keyword}||'%' </if>
-		</if>
+	 	WHERE MID=#{mid}
 	</select>
 
 <select id="myrlist" parameterType="kh.com.a.model.ReviewParam" resultType="kh.com.a.model.ReviewDto">
@@ -60,16 +56,7 @@
   		SELECT ROW_NUMBER() OVER(ORDER BY RSEQ DESC) AS RNUM,
   		RSEQ, RPDSEQ, MID, PNAME, RDATE, TITLE, CONTENT, PIC0, PIC1, PIC2, PIC3, RLIKE
   		FROM WREVIEW
-  		WHERE MID=#{mid} AND 1=1 
-  		<if test="s_category != '' and s_category != null 
- 		 	and s_keyword != '' and s_keyword != null">		 	 
-		 	<if test="s_category == 'title'"> 
-		 		AND TITLE LIKE '%'||#{s_keyword}||'%'
-		 	</if>	
-		 	<if test="s_category == 'content'">
-		 		AND CONTENT LIKE '%'||#{s_keyword}||'%'
-		 	</if>		 	
-		</if>
+  		WHERE MID=#{mid} 
 	  ) A
 	  WHERE RNUM BETWEEN ${start} AND ${end}
 </select>
