@@ -116,7 +116,7 @@ table.type05 td {
 img:hover { 
     background-color: red;
 }      
-      
+
 </style>
 
 <%int a = 1; %>
@@ -242,19 +242,19 @@ img:hover {
   <div class="w3-row">
     <a href="javascript:void(0)" onclick="openCity(event, 'picture');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      	style="font-family: 'Hanna', Fantasy;">스튜디오 사진</div>
+      	style="font-family: 'Hanna', Fantasy;   width: 25%;">스튜디오 사진</div>
     </a>
     <a href="javascript:void(0)" onclick="openCity(event, 'sdpddetail');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-       	style="font-family: 'Hanna', Fantasy;">상품 정보</div>
+       	style="font-family: 'Hanna', Fantasy;   width: 25%;">상품 정보</div>
     </a>
     <a href="javascript:void(0)" onclick="openCity(event, 'hugi');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      	style="font-family: 'Hanna', Fantasy;">후기글</div>
+      	style="font-family: 'Hanna', Fantasy;   width: 25%;">후기글</div>
     </a>
     <a href="javascript:void(0)" onclick="openCity(event, 'regervation');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding"
-      	style="font-family: 'Hanna', Fantasy;">예약</div>
+      	style="font-family: 'Hanna', Fantasy;   width: 25%;">예약</div>
     </a>
   </div>
 
