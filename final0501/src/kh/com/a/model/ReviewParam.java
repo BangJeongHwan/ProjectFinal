@@ -15,11 +15,11 @@ public class ReviewParam {
 	private String pic3;
 	private int rlike;
 	
-	private String s_category;	// Á¦¸ñ, ³»¿ë, ÀÛ¼ºÀÚ
+	private String s_category;	// ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½Û¼ï¿½ï¿½ï¿½
 	private String s_keyword;	
 	private String rorder;
 	
-	private int recordCountPerPage = 8;
+	private int recordCountPerPage = 10;
 	private int pageNumber = 0;
 	
 	private int start = 1;

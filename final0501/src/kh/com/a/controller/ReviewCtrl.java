@@ -46,10 +46,11 @@ public class ReviewCtrl implements Serializable {
 	WeddingHallServ weddingHallServ;
 
 	@RequestMapping(value="rwrite.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String rwrite(int rpdseq,HttpServletRequest req,Model model) throws Exception{
+	public String rwrite(HttpServletRequest req,Model model) throws Exception{
 		logger.info("ReviewCtrl rwrite " + new Date());
 		
-		String pname = req.getParameter("title");
+		String pname = req.getParameter("pname");
+		int rpdseq = Integer.parseInt(req.getParameter("rpdseq"));
 		
 		model.addAttribute("pname", pname);
 		System.out.println("pname=" + pname);
@@ -58,7 +59,6 @@ public class ReviewCtrl implements Serializable {
 
 		return "rwrite.tiles";
 	}
-	
 	// 정환
 	@RequestMapping(value="whreview.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String whreview(Model model, ReviewDto dto) throws Exception{
@@ -97,11 +97,13 @@ public class ReviewCtrl implements Serializable {
 	}
 	
 	@RequestMapping(value="rwriteAf.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String rwriteAf(HttpServletRequest req, 
+	public String rwriteAf(int rpdseq,HttpServletRequest req, 
 			MultipartHttpServletRequest mreq, Model model, ReviewDto dto) throws Exception{
 	
 		logger.info("DmCtrl DmwriteAf " + new Date());
-	
+		
+		String usid = req.getParameter("usid");
+		
 		List<MultipartFile> mf = mreq.getFiles("files");
 		
 		System.out.println("mf = " + mf);//ok
@@ -109,7 +111,7 @@ public class ReviewCtrl implements Serializable {
 		
 		List<String> list = new ArrayList<>();//dto에 저장해주기 위해 
 		
-		if(mf.size()==1 && mf.get(0).getOriginalFilename().equals("")) {
+		if(mf.size()==0 ) {
 			
 		}else {
 		for(int i=0; i<mf.size(); i++) {
@@ -137,6 +139,7 @@ public class ReviewCtrl implements Serializable {
 					}	
 				
 					System.out.println("list--------" + list);
+					System.out.println("listsize--------" + list.size());
 				}
 		
 					if(list.size()==0) {
@@ -146,7 +149,7 @@ public class ReviewCtrl implements Serializable {
 						dto.setPic3("null");
 					}else if(list.size()==1) {
 						dto.setPic0(list.get(0));
-						dto.setPic0("null");
+						dto.setPic1("null");
 						dto.setPic2("null");
 						dto.setPic3("null");	
 					}else if(list.size()==2) {
@@ -159,13 +162,20 @@ public class ReviewCtrl implements Serializable {
 						dto.setPic1(list.get(1));
 						dto.setPic2(list.get(2));
 						dto.setPic3("null");
+					}else if(list.size()==4) {
+						dto.setPic0(list.get(0));
+						dto.setPic1(list.get(1));
+						dto.setPic2(list.get(2));
+						dto.setPic3(list.get(3));
 					}
+					
+					System.out.println("dto======" + dto);
+					
 				reviewServ.rwrite(dto);
 			}
 		
-		return "DmBbs.tiles";
+		return "redirect:/carddetail.do?cdseq=" + rpdseq + "&usid=" + usid;
 	}
-	
 	
 	
 	
@@ -196,9 +206,7 @@ public class ReviewCtrl implements Serializable {
 		
 		model.addAttribute("s_category", dto.getS_category());
 		model.addAttribute("s_keyword", dto.getS_keyword());
-		model.addAttribute("rorder", dto.getRorder());
-		
-		System.out.println("rorder-----------" + dto.getRorder());
+
 		return "rlist.tiles";
 	}
 	
@@ -233,10 +241,6 @@ public class ReviewCtrl implements Serializable {
 		
 		System.out.println("�뀋�뀑");
 		
-		model.addAttribute("mid", dto.getMid());
-		model.addAttribute("s_category", dto.getS_category());
-		model.addAttribute("s_keyword", dto.getS_keyword());
-
 		return "mrlist.tiles";
 	}
 	

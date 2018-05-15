@@ -1,8 +1,18 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:requestEncoding value="utf-8"/>
+
+<%
+LoginDto mem = (LoginDto)session.getAttribute("login");
+
+if(mem==null){
+	mem = new LoginDto("guest", "guest");
+	session.setAttribute("login", mem);
+}
+%>
 
 <%
 String scategory = (String)request.getAttribute("s_category");
@@ -47,8 +57,8 @@ margin-top: 20px;
 }
 
 img{
-width:200px;
-height:170px;
+width:195px;
+height:165px;
 }
 
 
@@ -212,6 +222,24 @@ height:170px;
 
 </form>
 </div>
+
+<div>
+<c:if test="${not empty recentlist }"> 
+			<div class="w3-allerta" style="border: 10px solid transparent; border-image: url(images/border.png) 30% round; 
+			 margin-left: 380px; padding-left:30px; width:750px; height: 222px;">
+				<div style="margin-left: 230px; margin-top:20px">     
+					<h2>- 최근 본 상품 목록 -</h2> 
+				</div>
+				 
+				<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
+					<div style="float: left; margin-left: 30px; margin-top: 10px; width:100px">
+						<img style="width:100%; height: 80px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq });">  
+						<p style="padding-top: 5px; text-align: center; color: black"><font size="3px">${recentDto.cname }</font></p>  
+					</div>   
+				</c:forEach>         
+			</div>
+		</c:if>
+</div>
 <script>
 $("#card_admin").click(function() {
 	alert('관리자');
@@ -232,6 +260,24 @@ $("#_btnSearch").click(function() {
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
 	$("#_frmFormSearch").attr("target","_self").attr("action","pagingclist.do").submit();
+}
+
+function view(x){
+	if(x >= 1000 && x <2000){
+		//웨딩홀 
+	}else if(x >= 2000 && x < 3000){
+		//청첩장
+		location.href="carddetail.do?cdseq="+x+"&usid=<%=mem.getId()%>";
+	}else if(x >= 3000 && x < 4000){
+		//스튜디오
+		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
+	}else if(x >= 4000 && x < 5000){
+		//드레스
+		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
+	}else if(x >= 5000 && x < 6000){
+		//메이크업
+	}
+	
 }
 
 </script>

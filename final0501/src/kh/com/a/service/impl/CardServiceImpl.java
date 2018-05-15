@@ -10,6 +10,7 @@ import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.RecentDto;
 import kh.com.a.service.CardService;
 
 @Service
@@ -114,6 +115,12 @@ public class CardServiceImpl implements CardService {
 	public boolean cdupdate(CardDetailDto dto) throws Exception {
 		// TODO Auto-generated method stub
 		return cardDao.cdupdate(dto);
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		// TODO Auto-generated method stub
+		return cardDao.getRecentProduct(rp);
 	}
 
 	

@@ -11,6 +11,7 @@ import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.RecentDto;
 
 @Repository
 public class CardDaoImpl implements CardDao {
@@ -119,6 +120,12 @@ public class CardDaoImpl implements CardDao {
 		// TODO Auto-generated method stub
 		int num = sqlSession.update(ns+"cdupdate", dto);
 		return true;
+	}
+
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(ns + "getRecentProduct", rp);
 	}
 
 	

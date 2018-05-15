@@ -142,7 +142,11 @@ ORDER BY WISEQ DESC
 	SELECT SEQ_CDSEQ.NEXTVAL FROM DUAL
 </select>
 
-
+<select id="getRecentProduct" parameterType="java.lang.Integer" resultType="kh.com.a.model.RecentDto">
+	SELECT CID, (SELECT TITLE FROM CARDDETAIL WHERE CDSEQ=#{rp}), CDSEQ AS SEQ, PICTURE0 AS PIC
+	FROM CARDDETAIL
+	WHERE CDSEQ=#{rp}
+</select>
 
 
 

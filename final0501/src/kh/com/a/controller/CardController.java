@@ -2,6 +2,7 @@ package kh.com.a.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,12 +34,14 @@ import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.CookieDto;
 import kh.com.a.model.JjimDto;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReviewDto;
 import kh.com.a.model.ReviewParam;
+import kh.com.a.model.StudioDto;
 import kh.com.a.model2.CardVO;
 import kh.com.a.model2.CardVO2;
-import kh.com.a.model.CookieDto;
 import kh.com.a.model2.LoginDto;
 import kh.com.a.service.CardService;
 import kh.com.a.service.DressServ;
@@ -84,10 +87,12 @@ public class CardController {
 	}
 	
 	@RequestMapping(value="pagingclist.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String pagingclist(CardParam dto,Model model) throws Exception{
+	public String pagingclist(CardParam dto,Model model, HttpServletRequest req) throws Exception{
 		logger.info("CardController clist " + new Date());
 		
 		System.out.println(dto.toString());
+		
+		
 		
 		//paging
 		int s = dto.getPageNumber();
@@ -96,6 +101,201 @@ public class CardController {
 		
 		dto.setStart(start);
 		dto.setEnd(end);
+		
+		Cookie[] cookies = req.getCookies();
+		
+		CookieDto cdto = new CookieDto();
+		int check = cdto.getCheck();
+		
+		if(cookies!=null && cookies.length > 0){
+			
+			System.out.println("쿠키 크기 & 길이가 null 과 0 이 아니다!");
+			
+			List<RecentDto> recentlist = new ArrayList<>();
+			RecentDto recentDto = null;
+			for(int i=0;i<cookies.length;i++)
+			{
+				
+				System.out.println("----------------------");
+				System.out.println("i의 값은? : " + i);
+				System.out.println("쿠키의 이름은? : " +cookies[i].getName());
+				System.out.println("쿠키의 값은? : " +cookies[i].getValue());
+				System.out.println("----------------------");
+				
+				if(cookies[i].getName().equals("rp0"))
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp1(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("첫번째 rp : " +rp);
+					
+					//이 부분을 if문을 사용 -> 넘어온 seq를 비교하여 각각 다른 db테이블에 접근하여 데이터를 가져와 recentDto에 넣어주어야 한다.
+					//rp는 seq 값이며 rp 값을 비교하여 각 해당하는 업체의 테이블에 접근! cid, cname, seq, pic1을 가지고 와서 recentDto에 넣어준다.
+					//sql에서 각 기업에 해당하는 seq를 as를 통해 seq로 변경시켜주어야 한다.
+					if(rp>=1000 && rp<2000) {
+					//웨딩홀
+					}else if(rp>=2000 && rp<3000) {
+					//청첩장
+						recentDto = cardService.getRecentProduct(rp);
+					}else if(rp>=3000 && rp<4000) {
+					//스튜디오
+						recentDto = studioserv.getRecentProduct(rp);
+					}else if(rp>=4000 && rp<5000) {
+					//드레스
+						recentDto = dressServ.getRecentProduct(rp);
+					}else if(rp>=5000 && rp<6000) {
+					//메이크업
+						recentDto = muServ.getRecentProduct(rp);
+					}
+					
+					System.out.println("!!! cookie rp0 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+				}
+				else if(cookies[i].getName().equals("rp1")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp2(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("두번째 rp  : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp1 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp2")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp3(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("세번쨰 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp2 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp3")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp4(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("네번째 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp3 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp4")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp5(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("다섯번째 rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//웨딩홀
+						}else if(rp>=2000 && rp<3000) {
+						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//스튜디오
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//드레스	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//메이크업
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp4 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("JSESSIONID"))
+				{
+					System.out.println("JSESSIONID 통과");
+				}
+			}
+			model.addAttribute("recentlist",recentlist);
+		}
 		
 		int totalRecordCount = cardService.clistcount(dto);
 		List<CardDto> clist = cardService.pagingclist(dto);
@@ -342,7 +542,6 @@ public class CardController {
 		
 	}
 	
-	
 	@RequestMapping(value="carddetail.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String carddetail(int cdseq,String mid,String flag,Model model, ReviewParam param,JjimDto jdto,
 			HttpServletRequest req, HttpServletResponse res,HttpSession session) throws Exception{
@@ -391,6 +590,7 @@ public class CardController {
 		
 		CookieDto cdto = new CookieDto();		
 		int  bcheck = cdto.getB();
+		
 		String Crp1 = cdto.getCrp1();
 		
 		System.out.println("********************* Crp1 : " + Crp1);
@@ -721,6 +921,198 @@ public class CardController {
 		int s = dto.getPageNumber();
 		int start = (s) * dto.getRecordCountPerPage() + 1;
 		int end = (s+1) * dto.getRecordCountPerPage();
+		/*
+		Cookie[] cookies = req.getCookies();
+		
+		CookieDto cdto = new CookieDto();
+		int check = cdto.getCheck();
+		
+		if(cookies!=null && cookies.length > 0){
+			
+			System.out.println("荑좏궎 �겕湲� & 湲몄씠媛� null 怨� 0 �씠 �븘�땲�떎!");
+			
+			List<RecentDto> recentlist = new ArrayList<>();
+			RecentDto recentDto = null;
+			for(int i=0;i<cookies.length;i++)
+			{
+				
+				System.out.println("----------------------");
+				System.out.println("i�쓽 媛믪�? : " + i);
+				System.out.println("荑좏궎�쓽 �씠由꾩�? : " +cookies[i].getName());
+				System.out.println("荑좏궎�쓽 媛믪�? : " +cookies[i].getValue());
+				System.out.println("----------------------");
+				
+				if(cookies[i].getName().equals("rp0"))
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp1(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("泥ル쾲吏� rp : " +rp);
+					
+					//�씠 遺�遺꾩쓣 if臾몄쓣 �궗�슜 -> �꽆�뼱�삩 seq瑜� 鍮꾧탳�븯�뿬 媛곴컖 �떎瑜� db�뀒�씠釉붿뿉 �젒洹쇳븯�뿬 �뜲�씠�꽣瑜� 媛��졇�� recentDto�뿉 �꽔�뼱二쇱뼱�빞 �븳�떎.
+					//rp�뒗 seq 媛믪씠硫� rp 媛믪쓣 鍮꾧탳�븯�뿬 媛� �빐�떦�븯�뒗 �뾽泥댁쓽 �뀒�씠釉붿뿉 �젒洹�! cid, cname, seq, pic1�쓣 媛�吏�怨� ���꽌 recentDto�뿉 �꽔�뼱以��떎.
+					//sql�뿉�꽌 媛� 湲곗뾽�뿉 �빐�떦�븯�뒗 seq瑜� as瑜� �넻�빐 seq濡� 蹂�寃쎌떆耳쒖＜�뼱�빞 �븳�떎.
+					if(rp>=1000 && rp<2000) {
+					//�썾�뵫��
+					}else if(rp>=2000 && rp<3000) {
+					//泥�泥⑹옣
+					}else if(rp>=3000 && rp<4000) {
+					//�뒪�뒠�뵒�삤
+						recentDto = studioserv.getRecentProduct(rp);
+					}else if(rp>=4000 && rp<5000) {
+					//�뱶�젅�뒪
+						recentDto = dressServ.getRecentProduct(rp);
+					}else if(rp>=5000 && rp<6000) {
+					//硫붿씠�겕�뾽
+						recentDto = muServ.getRecentProduct(rp);
+					}
+					
+					System.out.println("!!! cookie rp0 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+				}
+				else if(cookies[i].getName().equals("rp1")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp2(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("�몢踰덉㎏ rp  : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//�썾�뵫��
+						}else if(rp>=2000 && rp<3000) {
+						//泥�泥⑹옣
+						}else if(rp>=3000 && rp<4000) {
+						//�뒪�뒠�뵒�삤
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//�뱶�젅�뒪	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//硫붿씠�겕�뾽
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp1 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp2")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp3(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("�꽭踰덉�� rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//�썾�뵫��
+						}else if(rp>=2000 && rp<3000) {
+						//泥�泥⑹옣
+						}else if(rp>=3000 && rp<4000) {
+						//�뒪�뒠�뵒�삤
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//�뱶�젅�뒪	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//硫붿씠�겕�뾽
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp2 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp3")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp4(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("�꽕踰덉㎏ rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//�썾�뵫��
+						}else if(rp>=2000 && rp<3000) {
+						//泥�泥⑹옣
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//�뒪�뒠�뵒�삤
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//�뱶�젅�뒪	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//硫붿씠�겕�뾽
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp3 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("rp4")) 
+				{
+					int rp = Integer.parseInt(URLDecoder.decode(cookies[i].getValue(), "UTF-8"));
+					if(check == 1) {
+						cdto.setCrp5(Integer.toString(rp));
+					}
+					
+					System.out.println("cookies["+i+"].getValue() : " +cookies[i].getValue());
+					System.out.println("�떎�꽢踰덉㎏ rp : " +rp);
+					
+						if(rp>=1000 && rp<2000) {
+						//�썾�뵫��
+						}else if(rp>=2000 && rp<3000) {
+						//泥�泥⑹옣
+							recentDto = cardService.getRecentProduct(rp);
+						}else if(rp>=3000 && rp<4000) {
+						//�뒪�뒠�뵒�삤
+							recentDto = studioserv.getRecentProduct(rp);
+						}else if(rp>=4000 && rp<5000) {
+						//�뱶�젅�뒪	
+							recentDto = dressServ.getRecentProduct(rp);
+						}else if(rp>=5000 && rp<6000) {
+						//硫붿씠�겕�뾽
+							recentDto = muServ.getRecentProduct(rp);
+						}
+					
+					System.out.println("!!! cookie rp4 !!!");
+					System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					
+					recentlist.add(recentDto);
+
+				}
+				else if(cookies[i].getName().equals("JSESSIONID"))
+				{
+					System.out.println("JSESSIONID �넻怨�");
+				}
+			}
+			model.addAttribute("recentlist",recentlist);
+		}*/
 		
 		dto.setStart(start);
 		dto.setEnd(end);

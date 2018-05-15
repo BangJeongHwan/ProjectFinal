@@ -6,6 +6,7 @@ import kh.com.a.model.CDetailParam;
 import kh.com.a.model.CardDetailDto;
 import kh.com.a.model.CardDto;
 import kh.com.a.model.CardParam;
+import kh.com.a.model.RecentDto;
 
 public interface CardService {
 
@@ -26,4 +27,5 @@ public interface CardService {
 	public CardDto cidckeck(String cid) throws Exception; 
 	public int getseq() throws Exception;
 	public boolean cdupdate(CardDetailDto dto) throws Exception;
+	public RecentDto getRecentProduct(int rp) throws Exception;
 }

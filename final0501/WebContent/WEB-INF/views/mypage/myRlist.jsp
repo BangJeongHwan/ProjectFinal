@@ -1,9 +1,19 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib  prefix="form" uri="http://www.springframework.org/tags/form" %>
 <fmt:requestEncoding value="UTF-8"/>
+
+<%
+LoginDto mem = (LoginDto)session.getAttribute("login");
+
+if(mem==null){
+	mem = new LoginDto("guest", "guest");
+	session.setAttribute("login", mem);
+}
+%>
 
 <style type="text/css">
 #main{
@@ -77,8 +87,8 @@ width: 100px;
 
 <input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber}"/>						
 <input type="hidden" name="recordCountPerPage" id="_recordCountPerPage" value="${(empty recordCountPerPage)?10:recordCountPerPage}"/>						
+<input type="hidden" name="mid" value="<%=mem.getId()%>">
 
-</form>
 
 <div id="paging_wrap">
 <jsp:include page="/WEB-INF/views/common/paging.jsp" flush="false">
@@ -88,6 +98,7 @@ width: 100px;
 	<jsp:param value="${totalRecordCount }" name="totalRecordCount"/>
 </jsp:include>
 </div>
+</form>
 </div>
 </div>
 
@@ -95,7 +106,7 @@ width: 100px;
 
 function goPage(pageNumber) {	
 	$("#_pageNumber").val(pageNumber) ;
-	$("#_frmFormSearch").attr("target","_self").attr("action","pagingmrlist.do").submit();
+	$("#_frmFormSearch").attr("target","_self").attr("action","myrlist.do").submit();
 }
 
 </script>
