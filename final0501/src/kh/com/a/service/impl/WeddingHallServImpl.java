@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
@@ -67,6 +68,17 @@ public class WeddingHallServImpl implements WeddingHallServ {
 		return weddingHallDao.selWeddingList(type, data);
 	}
 	
+	// 기업이름에 따른 seq
+	@Override
+	public int whseqByCid(String cid) throws Exception {
+		return weddingHallDao.whseqByCid(cid);
+	}
+	// 최신본 상품 이미지 가져오기
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return weddingHallDao.getRecentProduct(rp);
+	}
+
 	//////////////////////////////////////////////////////////
 	
 	// 홀 이름 체크
@@ -151,6 +163,8 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	public void upCommentCount(int whseq) {
 		weddingHallDao.upCommentCount(whseq);
 	}
+
+
 
 	
 

@@ -1,3 +1,4 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@page import="kh.com.a.util.myCal"%>
 <%@page import="kh.com.a.model.ReservationDto"%>
 <%@page import="kh.com.a.model.WHallPictureDto"%>
@@ -53,9 +54,7 @@
 	padding: 10px 0px;
 }
 .star th{
-	border-top: 2px solid black;
-	border-bottom: 2px solid black;
-	padding: 10px 0px;
+	padding: 20px 0px;
 }
 
 /* 테이블 및 홀이름 갯수 css */
@@ -214,7 +213,15 @@ background-color:#4D6BB3; color:#FFFFFF; line-height:1.7em; font-weight:normal;
 					
 					<thead class="star">
 						<tr>
-							<th colspan="2">별점</th>
+							<th>찜하기</th>
+							<td align="right">
+							<c:if test="${jjdto == 'false' }">
+								<img src="images/likebefore.png" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+							</c:if>
+							<c:if test="${jjdto == 'true' }">
+								<img src="images/heart.gif" id="likedetail" name="likedetail" onClick="like()" style="width: 60px;">
+							</c:if>
+							</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -601,6 +608,31 @@ function funct(syear, smonth, sday) {
 }
 </script>
 
+<%LoginDto mem = (LoginDto)request.getSession().getAttribute("login"); %>
+<!-- 찜하기 -->
+<script>
+function like(){
+	var pdseq = ${wd.whseq};
+	var usid = "<%=mem.getId()%>";
+	$.ajax({
+		url:"like.do",
+		type:"get",
+		data:"pdseq="+pdseq+"&usid="+usid,
+		success:function(msg){
+			if(msg){
+				$("#likedetail").attr("src","images/heart.gif");
+				alert("해당 상품이 찜 목록에 추가되었습니다.");
+			}else{
+				$("#likedetail").attr("src","images/likebefore.png");
+				alert("해당 상품이 찜 목록에서 삭제되었습니다.");
+			}
+		},
+		error:function(reqest, status, error){
+			alert("해당 삼품이 찜 목록에 추가되지 않았습니다.");
+		}
+	});	
+}
+</script>
 <!-- 댓글 -->
 <script>
 $("#_addcomment").click(function () {

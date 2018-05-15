@@ -132,7 +132,7 @@
   		SELECT ROW_NUMBER() OVER(ORDER BY RVSEQ DESC) AS RNUM,
   		RVSEQ, MID, REDATE, RETIME, PDSEQ, STATUS, CONTENT
   		FROM WD_RESERVATION
-  		WHERE 1=1 AND WHSEQ=(SELECT WHSEQ FROM WD_WEDDING WHERE CID=#{cid}) ) A
+  		WHERE 1=1 AND PDSEQ=(SELECT WHSEQ FROM WD_WEDDING WHERE CID=#{cid}) ) A
   	WHERE RNUM BETWEEN ${start} AND ${end}
 	</select>
 	
@@ -155,7 +155,21 @@
 		WHERE RG.MID=MEM.MID
 		ORDER BY RG.CONTENT, RG.RETIME
 	</select>
-		 
+	
+	<select id="getReservWeddingCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+	  SELECT NVL(COUNT(*), 0) AS CNT
+	  FROM WD_RESERVATION
+	  WHERE 1=1 AND PDSEQ=(SELECT DSSEQ FROM DRESS WHERE CID=#{cid})
+	 </select>
+	 
+	<select id="WgetReservCalListByPdseq" parameterType="java.lang.Integer" resultType="kh.com.a.model2.ReservCalParam">
+		SELECT R.RVSEQ, R.MID, R.REDATE, R.RETIME, R.PDSEQ, R.STATUS, R.CONTENT, M.MNAME
+		FROM WD_RESERVATION R, WD_MEMBER M
+		WHERE R.MID=M.MID
+		    AND PDSEQ=#{pdseq}
+		    AND STATUS='승인완료'
+	 </select>
+	<!-- 	  -->
 	 <!-- 혜영 -->
 	 <select id="getReservCalListByPdseq" parameterType="java.lang.Integer" resultType="kh.com.a.model2.ReservCalParam">
 		SELECT R.RVSEQ, R.MID, R.REDATE, R.RETIME, R.PDSEQ, R.STATUS, R.CONTENT, M.MNAME

@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.WHallPicSumVO;
 
 @Repository
@@ -77,7 +79,18 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 		return sqlSession.selectList(ns+"selWeddingList",map);
 	}
 	
+	// 이름으로 찾은 seq
+	@Override
+	public int whseqByCid(String cid) throws Exception {
+		return sqlSession.selectOne(ns+"whseqByCid", cid);
+	}
 	
+	// 최신 상품 이미지 가져오기
+	@Override
+	public RecentDto getRecentProduct(int rp) throws Exception {
+		return sqlSession.selectOne(ns+"getRecentProduct", rp);
+	}
+
 	//////////////////////////////////////////////////
 	
 	// 홀 이름 체크
@@ -193,6 +206,7 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	public void upCommentCount(int whseq) {
 		sqlSession.insert(ns+"upCommentCount", whseq);
 	}
+
 
 
 

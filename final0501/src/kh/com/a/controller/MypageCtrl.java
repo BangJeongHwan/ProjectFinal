@@ -37,6 +37,7 @@ import kh.com.a.service.MypageServ;
 import kh.com.a.service.PaymentServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.StudioServ;
+import kh.com.a.service.WeddingHallServ;
 
 @Controller
 public class MypageCtrl {
@@ -63,6 +64,9 @@ MemberServ memServ;
 CouponServ couponServ; 
 @Autowired
 DressServ dressServ;
+
+@Autowired
+WeddingHallServ weddingHallServ;
 	
 private static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	
@@ -362,4 +366,48 @@ public String cCalendar(Model model, HttpServletRequest req) throws Exception {
 	return "cCalendar.tiles";
 }
 
+@RequestMapping(value="wCalendar.do", method={RequestMethod.GET,RequestMethod.POST})
+public String wCalendar(Model model, HttpServletRequest req) throws Exception {
+	
+	String cid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+	String contents = "";
+	int whseq = weddingHallServ.whseqByCid(cid);
+	System.out.println(whseq);		
+	
+	List<ReservCalParam> reservCalList = reservServ.WgetReservCalListByPdseq(whseq);
+	// json parsing
+	JSONArray regiData = new JSONArray();
+	for (int i = 0; i < reservCalList.size(); i++) {
+		ReservCalParam rcParm = reservCalList.get(i);
+		String title = rcParm.getMname();
+		contents = rcParm.getContent();
+		String redate = rcParm.getRedate().substring(0, 10);	// yyyy-mm-dd
+		
+		System.out.println(redate);
+		System.out.println(contents);
+		
+		String timeSplit[] = rcParm.getRetime().split("~");
+		if (timeSplit[0].length() < 5) timeSplit[0] = "0" + timeSplit[0];
+		String start = redate + "T" + timeSplit[0];
+		String end = redate + "T" + timeSplit[1];
+		System.out.println("   " + start);
+		
+		JSONObject jo = new JSONObject();
+		jo.put("contents", contents);
+		jo.put("title", title);
+		jo.put("start", start);
+		jo.put("end", end);
+		jo.put("color", "#121212");
+		//jo.put("url", "javascript:func()");
+		regiData.put(jo);
+	}
+	
+	System.out.println("reservSize : " + reservCalList.size());
+	System.out.println("regiDataSize : " + regiData.length());
+	
+	model.addAttribute("regiData", regiData);
+	/////////////////
+	
+	return "cCalendar.tiles";
+}
 }

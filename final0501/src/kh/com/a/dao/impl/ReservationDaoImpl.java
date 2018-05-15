@@ -138,10 +138,24 @@ public class ReservationDaoImpl implements ReservationDao {
 		return sqlSession.selectList(ns+"getWdRegList", fcal);
 	}
 	
+	// 예약 갯수
+	@Override
+	public int getReservWeddingCount(String cid) {
+		int n = 0;
+		n = sqlSession.selectOne(ns+"getReservWeddingCount", cid);
+		return n;
+	}
+	
 	// 예약 리스트(업체)
 	@Override
 	public List<ReservationDto> weddingReservPagingComList(WhParam param) {
 		return sqlSession.selectList(ns+"weddingReservPagingComList", param);
+	}
+	
+	// 업체에 해당하는 예약 내역
+	@Override
+	public List<ReservCalParam> WgetReservCalListByPdseq(int whseq) throws Exception {
+		return sqlSession.selectList(ns+"WgetReservCalListByPdseq", whseq);
 	}
 	////////////////////////////////////////////////
 
@@ -154,6 +168,8 @@ public class ReservationDaoImpl implements ReservationDao {
 	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception {
 		return sqlSession.selectList(ns+"DgetReservCalListByPdseq", pdseq);
 	}
+
+	
 
 	
 	

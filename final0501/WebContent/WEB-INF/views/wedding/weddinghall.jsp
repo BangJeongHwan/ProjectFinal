@@ -1,10 +1,13 @@
+<%@page import="kh.com.a.model2.LoginDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%LoginDto login = (LoginDto)request.getSession().getAttribute("login"); %>
+
 <!-- leftbar -->
 	<div style="padding-left: 30px;">
-		<div id="_leftbar" class="w3-bar-block w3-light-white w3-card" style="position:fixed; z-index:998; width:20%; float: left; background-color: write">
+		<div id="_leftbar" class="w3-bar-block w3-light-white w3-card" style="position:fixed; z-index:998; width:20%; float: left; background-color: write; display: none;">
 			<jsp:include page="/WEB-INF/views/wedding/wh_left_bar.jsp"/>
 		</div>
 	</div>
@@ -36,7 +39,20 @@
 			<span class="nino-subHeading">Will you marry me?</span>
 			WEDDING-HALL
 		</h2>
-				
+		
+		<c:if test="${not empty recentlist }">
+		<div style="border:1px solid pink;width:750px; height: 120px; border: 1px; padding-left:200px;">
+			<h3>최근 본 상품 목록</h3>
+				<c:forEach var="recentDto" items="${recentlist }" varStatus="i">
+					<div style="float: left">
+						<img style="padding-left:10px; width:100px; hight: 100px;" src="upload/${recentDto.pic }" onclick="view(${recentDto.seq })">  
+						<p style="size: 10px">${recentDto.cname }</p>
+					</div>
+				</c:forEach>
+		</div>
+		<br><br>
+		</c:if>
+	
 		<div id="wrapper" style="padding-left: 1px; width:80%; float: right;">	
 			<div class="sectionContent">
 				<div class="row nino-hoverEffect" id="_list">		<!-- css추가 : nino-hoverEffect -->
@@ -46,7 +62,7 @@
 								<div class="articleThumb">
 									<!-- css추가 -->			
 									<div class="item">
-										<a class="overlay" href="hallView.do?whseq=${wd.whseq }">			<!-- detail창 이동 -->	
+										<a class="overlay" href="hallView.do?whseq=${wd.whseq }&pdseq=${wd.whseq }&usid=<%=login.getId()%>">			<!-- detail창 이동 -->	
 											<span class="content">
 												 <i class="fa fa-camera nino-icon "></i>
 												<p>홀타입 : ${wd.htype }</p>
@@ -59,7 +75,7 @@
 										</a>
 									</div>
 								</div>
-								<h3 class="articleTitle"><a href="hallView.do?whseq=${wd.whseq }">${wd.cname }</a></h3>		<!-- detail창 이동 -->	
+								<h3 class="articleTitle"><a href="hallView.do?whseq=${wd.whseq }&pdseq=${wd.whseq }&usid=<%=login.getId()%>">${wd.cname }</a></h3>		<!-- detail창 이동 -->	
 								<p class="articleDesc">
 									${wd.content}
 								</p>
@@ -153,9 +169,9 @@ function resetList(type, data){
 
 // 스크롤에 따라 보이고 안보이고
 $(window).scroll(function(){
-    if ($(this).scrollTop() > 500) {
+	if ($(this).scrollTop() > 500) {
        $('#_leftbar').css("display","block");
-    }else {
+    }else{
        $('#_leftbar').css("display","none");
     }
 });
