@@ -9,6 +9,7 @@
 <button class="w3-bar-item w3-button tablink" onclick="commypage()">정보수정</button>
 <%if(login.getAuth().equals("WH")){ %>
 <button class="w3-bar-item w3-button tablink" onclick="whrecvView()">예약승인</button>
+<button class="w3-bar-item w3-button tablink" onclick="whreserListView()">예약목록</button>
 <%}else if(login.getAuth().equals("DS")){ %>
 <button class="w3-bar-item w3-button tablink" onclick="reserView()">예약승인</button>
 <button class="w3-bar-item w3-button tablink" onclick="reserListView()">예약목록</button>
@@ -25,6 +26,9 @@ function commypage() {
 // 웨딩
 function whrecvView() {
 	location.href = "reservationWhList.do";
+}
+function whreserListView(){
+	location.href = "wCalendar.do";
 }
 // 드레스
 function reserView() {

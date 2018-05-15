@@ -3,6 +3,7 @@ package kh.com.a.service;
 import java.util.List;
 
 import kh.com.a.dao.WeddingHallDao;
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
@@ -15,7 +16,8 @@ public interface WeddingHallServ {
 	public WeddingDto getWedding(int whseq);
 	public void Weddingdel(int whseq);
 	public List<WeddingDto> selWeddingList(String type, String data);
-	
+	public int whseqByCid(String cid) throws Exception;
+	public RecentDto getRecentProduct(int rp) throws Exception;
 	///////////////////////////////////////////////////////////////
 	public List<WeddingHallDto> getHallList(int whseq);
 	public boolean checkHallName(String hallname);

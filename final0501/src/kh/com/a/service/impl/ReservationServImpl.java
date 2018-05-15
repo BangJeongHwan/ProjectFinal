@@ -127,11 +127,21 @@ public class ReservationServImpl implements ReservationServ {
 	public List<ReservationVO> getWdRegList(ReservationDto fcal) {
 		return reservDao.getWdRegList(fcal);
 	}
-	// 예약된 목록
+
 	@Override
 	public List<ReservationDto> weddingReservPagingComList(WhParam param) {
-		// TODO Auto-generated method stub
-		return null;
+		return reservDao.weddingReservPagingComList(param);
+	}
+	// 예약 갯수
+	@Override
+	public int getReservWeddingCount(String cid) {
+		return reservDao.getReservWeddingCount(cid);
+	}
+	
+	// 기업에 해당하는 예약 목록
+	@Override
+	public List<ReservCalParam> WgetReservCalListByPdseq(int whseq) throws Exception {
+		return reservDao.WgetReservCalListByPdseq(whseq);
 	}
 	///////
 	@Override
@@ -156,6 +166,8 @@ public class ReservationServImpl implements ReservationServ {
 		
 		return reservList;
 	}
+
+
 
 	
 	

@@ -2,10 +2,12 @@ package kh.com.a.dao;
 
 import java.util.List;
 
+import kh.com.a.model.RecentDto;
 import kh.com.a.model.ReservationDto;
 import kh.com.a.model.WHallPictureDto;
 import kh.com.a.model.WeddingDto;
 import kh.com.a.model.WeddingHallDto;
+import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.WHallPicSumVO;
 
 public interface WeddingHallDao {
@@ -14,7 +16,8 @@ public interface WeddingHallDao {
 	public WeddingDto getWedding(int whseq);
 	public void Weddingdel(int whseq);
 	public List<WeddingDto> selWeddingList(String type, String data);
-	
+	public int whseqByCid(String cid) throws Exception;
+	public RecentDto getRecentProduct(int rp) throws Exception;
 	////////////////////////////////////////////////////////////
 	public List<WeddingHallDto> getHallList(int whseq);
 	public boolean checkHallName(String hallname);

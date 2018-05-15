@@ -34,6 +34,8 @@ public interface ReservationDao {
 	public List<ReservationDto> getWDResvListByPdseqRedate(ReservationDto reserv) throws Exception;
 	public List<ReservationVO> getWdRegList(ReservationDto fcal);
 	public List<ReservationDto> weddingReservPagingComList(WhParam param);
+	public int getReservWeddingCount(String cid);
+	public List<ReservCalParam> WgetReservCalListByPdseq(int whseq) throws Exception;
 //	0501
 	public List<ReservCalParam> getReservCalListByPdseq(int pdseq) throws Exception;
 	public List<ReservCalParam> DgetReservCalListByPdseq(int pdseq) throws Exception;
