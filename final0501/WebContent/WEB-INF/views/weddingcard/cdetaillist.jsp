@@ -296,6 +296,10 @@ font-size: 5px;
 	</span></td>
 </tr>
 </table>
+
+<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber}"/>						
+<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage" value="${(empty recordCountPerPage)?10:recordCountPerPage}"/>						
+
 </form>
 </div>
 </div>	
