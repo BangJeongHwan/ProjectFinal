@@ -76,7 +76,7 @@ $(document).ready(function(){
 </div>
 
 <!-- 페이징 처리 -->
-	<div style="text-align: center">
+	<div style="margin-left:300px">
 	<jsp:include page="/WEB-INF/views/common/paging.jsp" flush="false">
 		<jsp:param value="${pageNumber }" name="pageNumber"/>
 		<jsp:param value="${pageCountPerScreen }" name="pageCountPerScreen"/>
@@ -85,19 +85,19 @@ $(document).ready(function(){
 	</jsp:include>
 	</div>
 
-	<div>
+	<div style="margin-left:350px">
 	<form name="frmForm1" id="_frmFormSearch" method="post" action="">
-	<table border="0" style="background-color: white">
+	<table style="border: 1; background-color: white; width: 900px">
 	<tr>
-		<td>
+		<td style="width:200px">
 			<select id="_s_category" name="s_category">
 				<option value="" selected="selected">선택</option>
 				<option value="cid">기업이름</option>
 				<option value="content">내용</option>									
 			</select>
 		</td>
-		<td style="padding-left:5px;"><input type="text" id="_s_keyword" name="s_keyword" value="${s_keyword}"/></td>
-		<td style="padding-left:5px;"><span><button type="button" id="_btnSearch"> 검색 </button></span></td>
+		<td style="padding-left:50px; width:500px"><input type="text" style="width: 400px"id="_s_keyword" name="s_keyword" value="${s_keyword}"/></td>
+		<td style="padding-left:90px"><span><button type="button" id="_btnSearch"> 검색 </button></span></td>
 	</tr>
 	</table>
 	

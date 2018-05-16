@@ -67,14 +67,14 @@ td:nth-child(even) {
 					<td style="text-align: left">					
 						<c:if test="${JjimlistDto.seq >= 1000 && JjimlistDto.seq < 2000}">
 							<!-- 웨딩홀 디테일 이동! 변경시켜주어야함-->
-							<a href="studioDetail.do?stseq=${sdDto.stseq}&pdseq=${sdDto.stseq}&usid=<%=mem.getId()%>">
+							<a href="hallView.do?whseq=${JjimlistDto.seq}&pdseq=${JjimlistDto.seq}&usid=<%=mem.getId()%>">
 								${JjimlistDto.cname}
 							</a>
 						</c:if>
 						
 						<c:if test="${JjimlistDto.seq >= 2000 && JjimlistDto.seq < 3000}">
 							<!-- 청첩장 디테일 이동! 변경시켜주어야함-->
-							<a href="studioDetail.do?stseq=${sdDto.stseq}&pdseq=${sdDto.stseq}&usid=<%=mem.getId()%>">
+							<a href="carddetail.do?cdseq=${JjimlistDto.seq}&usid=<%=mem.getId()%>">
 								${JjimlistDto.cname}
 							</a>
 						</c:if>
@@ -95,7 +95,7 @@ td:nth-child(even) {
 						
 						<c:if test="${JjimlistDto.seq >= 5000 && JjimlistDto.seq < 6000}">
 							<!-- 메이크업 디테일 이동! 변경시켜주어야함-->
-							<a href="studioDetail.do?stseq=${sdDto.stseq}&pdseq=${sdDto.stseq}&usid=<%=mem.getId()%>">
+							<a href="muDetailView.do?museq=${JjimlistDto.seq}">
 								${JjimlistDto.cname}
 							</a>
 						</c:if>						
