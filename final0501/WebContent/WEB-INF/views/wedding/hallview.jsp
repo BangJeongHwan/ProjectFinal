@@ -718,7 +718,7 @@ function makeCalender(mon){
 					// 예약 목록
 					tagStr += "<div id='_intable"+i+"'>"
 					tagStr += "<table class='innerTable'>";
-					tagStr += "<col width='120px'/>";
+					tagStr += "<col width='150px'/>";
 					for(var j=0;j<list.length;j++){ //향상된 for
 						if(list[j].redate.substring(0,10)==dates){
 							//alert(dates);
@@ -733,9 +733,9 @@ function makeCalender(mon){
 								contents = contents.substring(0,15) + ".."
 							}
 							if(count<3){
-								tagStr += "<tr bgcolor='#B2EBF4'>";
+								tagStr += "<tr bgcolor='#747474'>";
 								tagStr += "<td>";         
-								tagStr +="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔	 
+								tagStr +="<font style='font-size:8px;color:#fff'>"; //글씨작게해서15자 들어가게끔	 
 								tagStr += contents;
 								tagStr +="</font>";
 								tagStr +="</td>";
@@ -778,7 +778,7 @@ function makeCalender(mon){
 					// 예약 목록
 					tagStr += "<div id='_intable"+i+"'>"
 					tagStr += "<table class='innerTable'>";
-					tagStr += "<col width='120px'/>";
+					tagStr += "<col width='150px'/>";
 					for(var j=0;j<list.length;j++){ //향상된 for
 						if(list[j].redate.substring(0,10)==dates){
 							//alert(dates);
@@ -793,9 +793,9 @@ function makeCalender(mon){
 								contents = contents.substring(0,15) + ".."
 							}
 							if(count<3){
-								tagStr += "<tr bgcolor='#B2EBF4'>";
+								tagStr += "<tr bgcolor='#747474'>";
 								tagStr += "<td>";         
-								tagStr +="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔	 
+								tagStr +="<font style='font-size:8px;color:#fff'>"; //글씨작게해서15자 들어가게끔	 
 								tagStr += contents;
 								tagStr +="</font>";
 								tagStr +="</td>";
@@ -837,7 +837,7 @@ function makeCalender(mon){
 					// 예약 목록
 					tagStr += "<div id='_intable"+i+"'>"
 					tagStr += "<table class='innerTable'>";
-					tagStr += "<col width='120px'/>";
+					tagStr += "<col width='150px'/>";
 					for(var j=0;j<list.length;j++){ //향상된 for
 						if(list[j].redate.substring(0,10)==dates){
 							//alert(dates);
@@ -852,9 +852,9 @@ function makeCalender(mon){
 								contents = contents.substring(0,15) + ".."
 							}
 							if(count<3){
-								tagStr += "<tr bgcolor='#B2EBF4'>";
+								tagStr += "<tr bgcolor='#747474'>";
 								tagStr += "<td>";         
-								tagStr +="<font style='font-size:8px;color:#090000'>"; //글씨작게해서15자 들어가게끔	 
+								tagStr +="<font style='font-size:8px;color:#fff'>"; //글씨작게해서15자 들어가게끔	 
 								tagStr += contents;
 								tagStr +="</font>";
 								tagStr +="</td>";
@@ -1149,6 +1149,8 @@ $(function() {
 function initMap() {
 	var x = ${wd.latitude};
 	var y = ${wd.longitude};
+	//alert(x);
+	//alert(y);
 	var uluru = {lat: x, lng: y};					// 위도 경도
  	var map = new google.maps.Map(document.getElementById('map1'), {	// wedmap에 뿌려줄거임
 	   	zoom: 18,								// 숫자가 올라갈수록 지도 확대

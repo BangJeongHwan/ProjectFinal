@@ -95,8 +95,11 @@ public class WeddingHallDaoImpl implements WeddingHallDao {
 	
 	// 홀 이름 체크
 	@Override
-	public boolean checkHallName(String hallname) {
-		WeddingHallDto wdPd = sqlSession.selectOne(ns+"checkHallName", hallname);
+	public boolean checkHallName(int whseq,String hallname) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("whseq", whseq);
+		map.put("hallname", hallname);
+		WeddingHallDto wdPd = sqlSession.selectOne(ns+"checkHallName", map);
 		return wdPd!=null?true:false;
 	}
 

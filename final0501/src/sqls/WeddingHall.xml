@@ -55,7 +55,11 @@
 		ORDER BY WHSEQ DESC
 	</select>
 	
-	
+	<select id="getRecentProduct" parameterType="java.lang.Integer" resultType="kh.com.a.model.RecentDto">
+		SELECT CID, CNAME AS CNAME, WHSEQ AS SEQ, PICTURE AS PIC
+		FROM WD_WEDDING
+		WHERE WHSEQ=#{rp}
+	</select>
 	<!-- hall -->
 	
 	<!-- hall list -->
@@ -74,10 +78,10 @@
 		WHERE PDSEQ=#{pdseq}
 	</update>
 	
-	<select id="checkHallName" parameterType="java.lang.String" resultType="kh.com.a.model.WeddingHallDto">
+	<select id="checkHallName" parameterType="hashmap" resultType="kh.com.a.model.WeddingHallDto">
 		SELECT *
 		FROM WD_WHALL
-		WHERE hallname=#{hallname}
+		WHERE WHSEQ=#{whseq} AND HALLNAME=#{hallname}
 	</select>
 	<select id="getHallList" parameterType="java.lang.Integer" resultType="kh.com.a.model.WeddingHallDto">
 		SELECT PDSEQ, WHSEQ, HALLNAME, FLOOR, MINCOOK, MAXCOOK, FORMAT, FACILITY, 

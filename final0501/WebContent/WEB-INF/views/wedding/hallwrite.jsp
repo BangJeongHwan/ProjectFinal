@@ -235,10 +235,13 @@ $(function () {
 		for(i=0;i<hallnameArr.length;i++){
 			hallname += hallnameArr[i];
 		}
-		
+		var data={
+				"hallname":hallname,
+				"whseq":${wd.whseq}
+		}
 		$.ajax({
 			url:"checkhallname.do",
-	        data:"hallname="+hallname,      // parameter 타입으로 이동
+	        data:data,      // parameter 타입으로 이동
 	        success:function(msg){
 	        	if(hallname==""){
 	        		$("#_hnameCheckFld").text("※ 홀 이름을 입력해주세요!");

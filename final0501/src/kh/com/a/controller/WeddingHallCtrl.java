@@ -40,6 +40,7 @@ import kh.com.a.model2.LoginDto;
 import kh.com.a.model2.ReservationVO;
 import kh.com.a.model2.WHallPicSumVO;
 import kh.com.a.model2.WdParam;
+import kh.com.a.service.CardService;
 import kh.com.a.service.DressServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
@@ -55,15 +56,25 @@ import kh.com.a.util.myCal;
 public class WeddingHallCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	
+	// 웨딩
 	@Autowired
 	WeddingHallServ weddingHallServ;
 
+	//스튜디오
 	@Autowired
 	private StudioServ studioserv;
+	
+	// 드레스
 	@Autowired
 	DressServ dressServ;
+	
+	//메이크업
 	@Autowired
 	MakeupServ muServ;
+	
+	// 청첩장
+	@Autowired
+	private CardService cardService;
 	
 	
 	//예약 때문에
@@ -85,6 +96,7 @@ public class WeddingHallCtrl {
 		
 		LoginDto login = (LoginDto)req.getSession().getAttribute("login");
 		model.addAttribute("login", login);
+		
 		///////////////// 최신본 상품
 		Cookie[] cookies = req.getCookies();
 		
@@ -124,6 +136,7 @@ public class WeddingHallCtrl {
 						recentDto = weddingHallServ.getRecentProduct(rp);
 					}else if(rp>=2000 && rp<3000) {
 					//청첩장
+						recentDto = cardService.getRecentProduct(rp);
 					}else if(rp>=3000 && rp<4000) {
 					//스튜디오
 						recentDto = studioserv.getRecentProduct(rp);
@@ -136,8 +149,8 @@ public class WeddingHallCtrl {
 					}
 					
 					System.out.println("!!! cookie rp0 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 				}
@@ -156,6 +169,7 @@ public class WeddingHallCtrl {
 							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -168,8 +182,8 @@ public class WeddingHallCtrl {
 						}
 					
 					System.out.println("!!! cookie rp1 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -189,6 +203,7 @@ public class WeddingHallCtrl {
 							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -201,8 +216,8 @@ public class WeddingHallCtrl {
 						}
 					
 					System.out.println("!!! cookie rp2 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -222,6 +237,7 @@ public class WeddingHallCtrl {
 							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -234,8 +250,8 @@ public class WeddingHallCtrl {
 						}
 					
 					System.out.println("!!! cookie rp3 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -255,6 +271,7 @@ public class WeddingHallCtrl {
 							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -267,8 +284,8 @@ public class WeddingHallCtrl {
 						}
 					
 					System.out.println("!!! cookie rp4 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -619,12 +636,12 @@ public class WeddingHallCtrl {
 	// 홀 이름 체크
 	@ResponseBody
 	@RequestMapping(value="checkhallname.do", method={RequestMethod.GET,RequestMethod.POST})
-	public Map<String, Object> checkhallname(String hallname) throws Exception {
+	public Map<String, Object> checkhallname(String hallname, int whseq) throws Exception {
 		logger.info("WeddingHallCtrl checkhallname" + new Date());
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		if (weddingHallServ.checkHallName(hallname)) {
+		if (weddingHallServ.checkHallName(whseq,hallname)) {
 			map.put("message", "true");
 		} else {
 			map.put("message", "false");
@@ -682,6 +699,10 @@ public class WeddingHallCtrl {
 		
 		// 홀 사진 넣기
 		weddingHallServ.addHallPicture(hallPd.getWhseq(), hallPd.getHallname(), FileNameList);
+		
+		String usid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+		
+		model.addAttribute("usid", usid);
 		model.addAttribute("whseq", hallPd.getWhseq());
 		return "redirect:/hallView.do";
 	}
@@ -893,8 +914,9 @@ public class WeddingHallCtrl {
 			}
 			weddingHallServ.addHallPicture(hallPd.getWhseq(), hallPd.getHallname(), FileNameList);
 		}
-			
+		String usid = ((LoginDto)req.getSession().getAttribute("login")).getId();
 		
+		model.addAttribute("usid", usid);
 		model.addAttribute("whseq", hallPd.getWhseq());
 		return "redirect:/hallView.do";
 	}
@@ -902,12 +924,14 @@ public class WeddingHallCtrl {
 	
 	// 홀 삭제
 	@RequestMapping(value="Halldel.do", method={RequestMethod.GET,RequestMethod.POST})
-	public String Halldel(Model model, int pdseq, int whseq, String hallname) {
+	public String Halldel(Model model, int pdseq, int whseq, String hallname, HttpServletRequest req) {
 		logger.info("WeddingHallCtrl Halldel" + new Date());
 		
 		weddingHallServ.Halldel(pdseq);
 		weddingHallServ.Hallpicdel(whseq, hallname);
 		
+		String usid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+		model.addAttribute("usid", usid);
 		model.addAttribute("whseq",whseq);
 		return "redirect:/hallView.do";
 	}

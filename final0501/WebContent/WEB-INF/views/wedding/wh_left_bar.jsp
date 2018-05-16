@@ -77,29 +77,6 @@
 		<tr>
 			<td colspan="2" align="center" style="padding: 2px 0px;"><hr width="80%"></td>
 		</tr>
-		
-		<!-- 
-		<tr>
-			<td colspan="2">식사가격</td>
-		</tr>
-		<tr>
-			<td><input type="radio" value="전체">전체</td>
-			<td><input type="radio" value="1~2">1~2만원</td>
-		</tr>
-		<tr>
-			<td><input type="radio" value="2~3">2~3만원</td>
-			<td><input type="radio" value="3~4">3~4만원</td>
-		</tr>
-		<tr>
-			<td><input type="radio" value="4~5">4~5만원</td>
-			<td><input type="radio" value="5~6">5~6만원</td>
-		</tr>
-		<tr>
-			<td><input type="radio" value="6~7">6~7만원</td>
-			<td><input type="radio" value="7">7만원이상</td>
-		</tr>
-		 -->
-		
 		<tr>
 			<th colspan="3">보증인원</th>
 		</tr>

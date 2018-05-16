@@ -13,6 +13,13 @@
 
 <!-- datepicker -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+
+
+<!-- 구글 맵  -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIZ4hkMflbjiUrfDA_2S-AAyUvyKJxdc0&callback=initMap"></script>	
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+
+
 <%
 LoginDto mem = (LoginDto)session.getAttribute("login");
 if(mem==null){

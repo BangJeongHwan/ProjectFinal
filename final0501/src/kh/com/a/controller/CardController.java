@@ -49,6 +49,7 @@ import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReviewServ;
 import kh.com.a.service.StudioServ;
+import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -70,7 +71,8 @@ public class CardController {
 	
 	@Autowired
 	MakeupServ muServ;
-	
+	@Autowired
+	WeddingHallServ weddingHallServ;
 	@Autowired
 	private StudioServ studioserv;
 	
@@ -137,6 +139,7 @@ public class CardController {
 					//sql에서 각 기업에 해당하는 seq를 as를 통해 seq로 변경시켜주어야 한다.
 					if(rp>=1000 && rp<2000) {
 					//웨딩홀
+						recentDto = weddingHallServ.getRecentProduct(rp);
 					}else if(rp>=2000 && rp<3000) {
 					//청첩장
 						recentDto = cardService.getRecentProduct(rp);
@@ -152,8 +155,8 @@ public class CardController {
 					}
 					
 					System.out.println("!!! cookie rp0 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 				}
@@ -169,6 +172,7 @@ public class CardController {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
 							recentDto = cardService.getRecentProduct(rp);
@@ -184,8 +188,8 @@ public class CardController {
 						}
 					
 					System.out.println("!!! cookie rp1 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -202,6 +206,7 @@ public class CardController {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
 							recentDto = cardService.getRecentProduct(rp);
@@ -217,8 +222,8 @@ public class CardController {
 						}
 					
 					System.out.println("!!! cookie rp2 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -235,6 +240,7 @@ public class CardController {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
 							recentDto = cardService.getRecentProduct(rp);
@@ -250,8 +256,8 @@ public class CardController {
 						}
 					
 					System.out.println("!!! cookie rp3 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -268,6 +274,7 @@ public class CardController {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
 							recentDto = cardService.getRecentProduct(rp);
@@ -283,8 +290,8 @@ public class CardController {
 						}
 					
 					System.out.println("!!! cookie rp4 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 

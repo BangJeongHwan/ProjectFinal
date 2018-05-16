@@ -20,7 +20,7 @@ public interface WeddingHallServ {
 	public RecentDto getRecentProduct(int rp) throws Exception;
 	///////////////////////////////////////////////////////////////
 	public List<WeddingHallDto> getHallList(int whseq);
-	public boolean checkHallName(String hallname);
+	public boolean checkHallName(int whseq, String hallname);
 	public boolean addHall(WeddingHallDto wdPd);
 	public void addHallPicture(int whseq, String hallname, List<String> FileNameList);
 	public boolean modHall(WeddingHallDto wdPd);

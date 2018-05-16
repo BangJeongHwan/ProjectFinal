@@ -83,8 +83,8 @@ public class WeddingHallServImpl implements WeddingHallServ {
 	
 	// 홀 이름 체크
 	@Override
-	public boolean checkHallName(String hallname) {
-		return weddingHallDao.checkHallName(hallname);
+	public boolean checkHallName(int whseq,String hallname) {
+		return weddingHallDao.checkHallName(whseq,hallname);
 	}
 	
 	// hall 추가

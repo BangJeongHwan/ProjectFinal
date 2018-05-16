@@ -39,12 +39,14 @@ import kh.com.a.model2.ReservCalParam;
 import kh.com.a.model2.SdParam;
 import kh.com.a.model2.StudioParam;
 import kh.com.a.model2.StudioPicDto;
+import kh.com.a.service.CardService;
 import kh.com.a.service.DressServ;
 import kh.com.a.service.MakeupServ;
 import kh.com.a.service.MypageServ;
 import kh.com.a.service.ReservationServ;
 import kh.com.a.service.ReviewServ;
 import kh.com.a.service.StudioServ;
+import kh.com.a.service.WeddingHallServ;
 import kh.com.a.util.FUpUtil;
 
 @Controller
@@ -62,6 +64,12 @@ public class StudioCtrl {
 	DressServ dressServ;
 	@Autowired
 	MakeupServ muServ;
+	// 웨딩
+	@Autowired
+	WeddingHallServ weddingHallServ;
+	// 청첩장
+	@Autowired
+	private CardService cardService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(StudioCtrl.class);
 	
@@ -114,8 +122,10 @@ public class StudioCtrl {
 					//sql에서 각 기업에 해당하는 seq를 as를 통해 seq로 변경시켜주어야 한다.
 					if(rp>=1000 && rp<2000) {
 					//웨딩홀
+						recentDto = weddingHallServ.getRecentProduct(rp);
 					}else if(rp>=2000 && rp<3000) {
 					//청첩장
+						recentDto = cardService.getRecentProduct(rp);
 					}else if(rp>=3000 && rp<4000) {
 					//스튜디오
 						recentDto = studioserv.getRecentProduct(rp);
@@ -128,8 +138,8 @@ public class StudioCtrl {
 					}
 					
 					System.out.println("!!! cookie rp0 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 				}
@@ -145,8 +155,10 @@ public class StudioCtrl {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -159,8 +171,8 @@ public class StudioCtrl {
 						}
 					
 					System.out.println("!!! cookie rp1 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -177,8 +189,10 @@ public class StudioCtrl {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -191,8 +205,8 @@ public class StudioCtrl {
 						}
 					
 					System.out.println("!!! cookie rp2 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -209,8 +223,10 @@ public class StudioCtrl {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -223,8 +239,8 @@ public class StudioCtrl {
 						}
 					
 					System.out.println("!!! cookie rp3 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 
@@ -241,8 +257,10 @@ public class StudioCtrl {
 					
 						if(rp>=1000 && rp<2000) {
 						//웨딩홀
+							recentDto = weddingHallServ.getRecentProduct(rp);
 						}else if(rp>=2000 && rp<3000) {
 						//청첩장
+							recentDto = cardService.getRecentProduct(rp);
 						}else if(rp>=3000 && rp<4000) {
 						//스튜디오
 							recentDto = studioserv.getRecentProduct(rp);
@@ -255,8 +273,8 @@ public class StudioCtrl {
 						}
 					
 					System.out.println("!!! cookie rp4 !!!");
-					System.out.println("recentDto.getCid() : " + recentDto.getCid());
-					System.out.println("recentDto.getCname() : " + recentDto.getCname());
+					//System.out.println("recentDto.getCid() : " + recentDto.getCid());
+					//System.out.println("recentDto.getCname() : " + recentDto.getCname());
 					
 					recentlist.add(recentDto);
 

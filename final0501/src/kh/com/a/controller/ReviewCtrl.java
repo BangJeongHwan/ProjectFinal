@@ -64,10 +64,11 @@ public class ReviewCtrl implements Serializable {
 	public String whreview(Model model, ReviewDto dto) throws Exception{
 		logger.info("ReviewCtrl whreview " + new Date());
 		boolean b = reviewServ.writeWdlist(dto);
+		
 		if(b) {
 			weddingHallServ.upCommentCount(dto.getRpdseq());
 		}
-		return "redirect:/hallView.do?whseq="+dto.getRpdseq()+"&jcal=''";
+		return "redirect:/hallView.do?whseq="+dto.getRpdseq()+"&jcal=''&usid="+dto.getMid();
 	}
 	
 	//0430 소현

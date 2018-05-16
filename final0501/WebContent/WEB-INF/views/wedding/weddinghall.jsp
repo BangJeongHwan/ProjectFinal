@@ -99,22 +99,22 @@ var type = "";
 $("input:radio[name=Htype]").on('click',function () {
 	data = $("input:radio[name=Htype]:checked").val();
 	type = "Hall";
-	alert(type);
-	alert(data);
+	//alert(type);
+	//alert(data);
 	resetList(type, data);
 });
 $("input:radio[name=Ctype]").on('click',function () {
 	data = $("input:radio[name=Ctype]:checked").val();
 	type = "Cook";
-	alert(type);
-	alert(data);
+	//alert(type);
+	//alert(data);
 	resetList(type, data);
 });
 $("input:radio[name=Ptype]").on('click',function () {
 	data = $("input:radio[name=Ptype]:checked").val();
 	type = "People";
-	alert(type);
-	alert(data);
+	//alert(type);
+	//alert(data);
 	resetList(type, data);
 });
 
@@ -159,7 +159,7 @@ function resetList(type, data){
 				}
 				$("#_list").append(tagStr);
 			}
-			alert(msg.list.length);
+			//alert(msg.list.length);
 	    },
 	    error:function(reqest, status, error){
 	        alert("실패");

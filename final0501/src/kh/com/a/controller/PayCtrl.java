@@ -610,6 +610,7 @@ public class PayCtrl {
 			reservServ.wdHallResv(rDto);		
 			
 			model.addAttribute("whseq", rDto.getPdseq());
+			model.addAttribute("usid", rDto.getMid());
 			return "redirect:/hallView.do";
 		}
 		

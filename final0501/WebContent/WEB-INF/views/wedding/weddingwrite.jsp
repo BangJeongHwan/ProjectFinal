@@ -214,8 +214,8 @@ $(function () {
 			alert("소개 내용을 입력해주세요!");
 			$("#_content").focus();
 		}else{
-			alert("위도 : "+$("#_latitude").val());
-			alert("경도 : "+$("#_longitude").val());
+			//alert("위도 : "+$("#_latitude").val());
+			//alert("경도 : "+$("#_longitude").val());
 			$("#_frmForm").attr({"target":"_self", "action":"weddingwriteAf.do"}).submit();
 		}
 			
