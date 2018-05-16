@@ -477,13 +477,20 @@ public class PayCtrl {
 	@RequestMapping(value="viewPdseqPage.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String viewPdseqPage(Model model, int pdseq, HttpServletRequest req) throws Exception {
 		
-		if (pdseq >= 2000 && pdseq < 3000) {
-			return "redirect:/carddetail.do?cdseq=" + pdseq;
-		} else if (pdseq >= 3000 && pdseq < 4000) {
-			return "redirect:/studioDetail.do?stseq=" + pdseq;
-		} else {
+		String usid = ((LoginDto)req.getSession().getAttribute("login")).getId();
+		
+		/*if (pdseq >= 1000 && pdseq < 2000) {	// 웨딩홀
+			
+		} else*/ if (pdseq >= 2000 && pdseq < 3000) {	// 청첩장
+			return "redirect:/carddetail.do?cdseq=" + pdseq + "&usid=" + usid;
+		} else if (pdseq >= 3000 && pdseq < 4000) {	// 스튜디오
+			return "redirect:/studioDetail.do?stseq=" + pdseq + "&pdseq=" + pdseq + "&usid=" + usid;
+		} else if (pdseq >= 4000 && pdseq < 5000) { // 드레스
+			return "dressDetail.do?dsseq="+ pdseq + "&pdseq=" + pdseq + "&usid=" + usid;
+		} else {									// 메이크업
 			return "redirect:/muDetailView.do?museq=" + pdseq;
 		}
+		
 		
 	}
 

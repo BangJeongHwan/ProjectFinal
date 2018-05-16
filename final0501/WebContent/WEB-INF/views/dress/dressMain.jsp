@@ -131,8 +131,10 @@ function goPage(pageNumber) {
 function view(x){
 	if(x >= 1000 && x <2000){
 		//웨딩홀 
+		location.href = "hallView.do?whseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
 	}else if(x >= 2000 && x < 3000){
 		//청첩장
+		location.href="carddetail.do?cdseq="+x+"&usid=<%=mem.getId()%>";
 	}else if(x >= 3000 && x < 4000){
 		//스튜디오
 		location.href="studioDetail.do?stseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
@@ -141,6 +143,7 @@ function view(x){
 		location.href="dressDetail.do?dsseq="+x+"&pdseq="+x+"&usid=<%=mem.getId()%>";
 	}else if(x >= 5000 && x < 6000){
 		//메이크업
+		location.href="muDetailView.do?museq="+x;
 	}
 }
 </script>
