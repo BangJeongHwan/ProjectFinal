@@ -734,6 +734,7 @@ $("#_redate").datepicker(   // inputbox 의 id 가 startDate
 		selectDate(date,'');
 	}
 });
+
 $('img.ui-datepicker-trigger').attr('style','cursor:pointer;');
 
 // datepicker 날짜 선택시 수행
