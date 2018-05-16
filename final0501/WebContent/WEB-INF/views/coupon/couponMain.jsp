@@ -8,16 +8,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/template.css" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/materialdesignicons.min.css" />
+	<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/materialdesignicons.min.css" /> --%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/jquery.mCustomScrollbar.min.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/prettyPhoto.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/unslider.css" />
+	<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/prettyPhoto.css" />--%>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/unslider.css" /> 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<title>웨딩</title>
@@ -213,27 +213,41 @@
 	border: none;
 }
 #scrollToHome {
-    width: 70px;
-    height: 70px;
-    padding-top: 5px;
-    text-align: center;
-    text-decoration: none;
-    position: fixed;
-    bottom: 100px;
+   position: fixed;
+    bottom: 10%;
     right: 90px;
     display: none;
-    cursor: pointer;
     z-index: 2;
-    border: 3px solid white;
-    border-radius: 45px;
+    width: 90px;
+    line-height: 85px;
 }
-
+#scrollToHome a{
+    text-align: center;
+    text-decoration: none;
+	cursor: pointer;
+    position: relative;
+    width: 100%
+    
+}
+#scrollToHome li{
+		border: 3px solid white;
+    border-radius: 45px;
+    text-align: center;
+    margin-top: 15px;
+}
+#scrollToHome a > span{
+font-size: 20px;
+    font-weight: 800;
+    color: white;
+}
+    
 .prodiv5{
 	display: none;
     width: 204px;
     height: 93px;
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent1%>pro.jpg) no-repeat center center / cover;
+    z-index: 10;
 }
 
 .prodiv15{
@@ -241,8 +255,8 @@
     width: 14%;
     height: 7.5%;
     position: relative;
-    background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent2%>pro.jpg) no-repeat center center / cover;
-}
+    background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent2%>pro.jpg) no-repeat center center / cover;}
+    z-index: 10;
 .prodiv20{
 	display: none;
     width: 7%;
@@ -250,6 +264,7 @@
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent3%>pro.jpg) no-repeat center center / cover;
     display: none;
+    z-index: 10;
 }
 
 
@@ -305,7 +320,29 @@ if(mem==null){
 	</header><!--/#header-->
 	
 	<!-- <a style=" position: fixed; z-index: 100;"><i class="fa fa-home" style="font-size:23px"></i></a> -->
-	<a id="scrollToHome" href="index.do"><i class="fa fa-home" style="font-size:50px; color: white;"></i></a>
+	
+	<div id="scrollToHome">
+		<ul>
+			<li>
+				<a href="index.do"><i class="fa fa-home" style="font-size:50px; color: white;"></i></a>
+			</li>
+			<li>
+				<a href="weddingHallView.do"><span>웨딩홀</span></a>
+			</li>
+			<li>
+				<a href="studiomain.do"><span>스드메</span></a>
+			</li>
+			<li>
+				<a href="findhoney.do"><span>신혼여행</span></a>
+			</li>
+			<li>
+				<a href="pagingclist.do"><span>청첩장</span></a>
+			</li>
+		
+		</ul>
+		
+	</div>
+	
 	
 <section id="nino-uniqueDesign">
     	<div class="container">
@@ -716,7 +753,7 @@ if(mem==null){
 			data:cpdata,
 			success:function(msg){
 					if(msg == "true"){
-						alert("쿠폰 성공");
+						console.log("쿠폰 성공");
 					}else{
 						alert("이미 받으신 쿠폰입니다.");
 					}					
