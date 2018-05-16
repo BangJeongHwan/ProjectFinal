@@ -32,11 +32,11 @@
 /* todohm */
 /* Position the "next button" to the right */
 .hmnext {
-  margin-left: 63%;
+  margin-left: 75%;
   border-radius: 3px 0 0 3px;
 }
 .hmprev{
-	margin-left: 13%;
+	margin-left: 17%;
 }
 
 /* On hover, add a black background color with a little bit see-through */

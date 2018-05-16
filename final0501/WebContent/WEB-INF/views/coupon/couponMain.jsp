@@ -247,7 +247,6 @@ font-size: 20px;
     height: 93px;
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent1%>pro.jpg) no-repeat center center / cover;
-    z-index: 10;
 }
 
 .prodiv15{
@@ -256,7 +255,7 @@ font-size: 20px;
     height: 7.5%;
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent2%>pro.jpg) no-repeat center center / cover;}
-    z-index: 10;
+    
 .prodiv20{
 	display: none;
     width: 7%;
@@ -264,7 +263,6 @@ font-size: 20px;
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent3%>pro.jpg) no-repeat center center / cover;
     display: none;
-    z-index: 10;
 }
 
 
