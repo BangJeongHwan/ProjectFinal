@@ -751,10 +751,10 @@ function cptelSet(index){
 var IMP = window.IMP; // 생략가능
 IMP.init('imp38938843'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
 
-function pay() {
+/* function pay() {
 	$("#_payFrm").attr("action", "afPayView.do").submit();
-}
-/* 
+} */
+
 function pay() {
 	IMP.request_pay({
 	    pg : 'inicis', // version 1.1.0부터 지원.
@@ -784,7 +784,7 @@ function pay() {
 	    }
 	    //alert(msg);
 	});
-} */
+} 
 
 
 

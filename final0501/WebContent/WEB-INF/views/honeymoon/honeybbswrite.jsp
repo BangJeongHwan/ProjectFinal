@@ -230,7 +230,6 @@ function fileSelect(selectFileIndex) {				//onchange
 	
 	// 본래 있던 파일이 삭제되면
 	if (fileName.trim() == "" && fileNameArray[selectFileIndex] != "") {
-		alert("delete");
 		fileSize--;
 		fileNameArray[selectFileIndex] = "";
 	} else {
@@ -327,7 +326,6 @@ $(document).ready(function(){
 });
 //선택한이미지 넣기
 function readImage(input,i) {
-	alert($(input).attr("id"));
 		if ( input.files && input.files[0] ) {
 			var FR= new FileReader();
 			FR.onload = function(e) {
