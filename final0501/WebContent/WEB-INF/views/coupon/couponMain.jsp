@@ -142,6 +142,7 @@
     margin-top: 33%;
     margin-left: 15%;
 }
+
 #nino-latestBlog {
 		text-align: center;
 		background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/bgimg-2.jpg) no-repeat center center / cover;
@@ -205,6 +206,7 @@
     -webkit-animation-name: fadeInDown;
     animation-name: fadeInDown;
 }
+
 .nino-fixed-nav #nino-navbar .navbar-nav > li > a {
         font-size: 15px;
     line-height: 1;
@@ -240,6 +242,7 @@ font-size: 20px;
     font-weight: 800;
     color: white;
 }
+ 
     
 .prodiv5{
 	display: none;
@@ -254,15 +257,15 @@ font-size: 20px;
     width: 14%;
     height: 7.5%;
     position: relative;
-    background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent2%>pro.jpg) no-repeat center center / cover;}
-    
+    background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent2%>pro.jpg) no-repeat center center / cover;
+}
+
 .prodiv20{
 	display: none;
     width: 7%;
     height: 3.75%;
     position: relative;
     background: #e0e0e0 url(<%=request.getContextPath()%>/assets/images/coupon/<%=persent3%>pro.jpg) no-repeat center center / cover;
-    display: none;
 }
 
 
