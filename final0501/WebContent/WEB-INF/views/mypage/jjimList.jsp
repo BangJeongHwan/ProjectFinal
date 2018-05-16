@@ -88,7 +88,7 @@ td:nth-child(even) {
 						
 						<c:if test="${JjimlistDto.seq >= 4000 && JjimlistDto.seq < 5000}">
 							<!-- 드레스 디테일 이동! 변경시켜주어야함-->
-							<a href="studioDetail.do?stseq=${sdDto.stseq}&pdseq=${sdDto.stseq}&usid=<%=mem.getId()%>">
+							<a href="dressDetail.do?dsseq=${JjimlistDto.seq}&pdseq=${JjimlistDto.seq}&usid=<%=mem.getId()%>">
 								${JjimlistDto.cname}
 							</a>
 						</c:if>
