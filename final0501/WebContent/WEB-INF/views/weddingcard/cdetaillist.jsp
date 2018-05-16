@@ -202,7 +202,7 @@ font-size: 5px;
 	</section><!--/#nino-portfolio-->
 
 	<div style="border-bottom:1px solid lightgray;" class="c_list">
-	<h1>&nbsp;&nbsp;${ccd.cid}</h1> 
+	<h1>&nbsp;&nbsp;${ccd.cname}</h1> 
 	<h2>&nbsp;&nbsp;청첩장 보기</h2>
 	<span>행복이 시작되는 아름다운 날 for you, with us와 함께하세요. </span><br>
 	</div>
@@ -225,9 +225,6 @@ font-size: 5px;
 </c:forEach>	
 	</div>
 	
-
-<input type="hidden" name="pageNumber" id="_pageNumber" value="${(empty pageNumber)?0:pageNumber}"/>						
-<input type="hidden" name="recordCountPerPage" id="_recordCountPerPage" value="${(empty recordCountPerPage)?10:recordCountPerPage}"/>						
 
 <div id="paging_wrap">
 <jsp:include page="/WEB-INF/views/common/paging.jsp" flush="false">
