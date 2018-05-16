@@ -724,7 +724,7 @@ var day = "";
 $("#_redate").datepicker(   // inputbox 의 id 가 startDate 
 	{dateFormat:'yy/mm/dd' // 만약 2011년 4월 29일 선택하면  inputbox 에 '2011/04/29' 로표시
 	, showOn: 'button' // 클릭으로 우측에 달력 icon 을 보인다.
-	, buttonImage: 'assets/images/calen.jpg' // 우측 달력 icon 의 이미지 패스 
+	, buttonImage: 'assets/images/calen.png' // 우측 달력 icon 의 이미지 패스 
 	, buttonImageOnly: true //  inputbox 뒤에 달력icon만 표시한다. ('...' 표시생략)
 	, changeMonth: true // 월선택 select box 표시 (기본은 false)
 	, changeYear: true  // 년선택 selectbox 표시 (기본은 false)
